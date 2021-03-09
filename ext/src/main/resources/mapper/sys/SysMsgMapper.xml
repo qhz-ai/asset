@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.sys.mapper.SysMsgMapper">
+    
+    <resultMap type="SysMsg" id="SysMsgResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="url"    column="url"    />
+        <result property="type"    column="type"    />
+        <result property="addTime"    column="add_time"    />
+        <result property="addUser"    column="add_user"    />
+        <result property="addUserName"    column="add_user_name"    />
+        <result property="toUser"    column="to_user"    />
+        <result property="toUserName"    column="to_user_name"    />
+        <result property="readTime"    column="read_time"    />
+    </resultMap>
+
+    <sql id="selectSysMsgVo">
+        select id, title, content, url, type, add_time, add_user, add_user_name, to_user, to_user_name, read_time from sys_msg
+    </sql>
+
+    <select id="selectSysMsgList" parameterType="SysMsg" resultMap="SysMsgResult">
+        <include refid="selectSysMsgVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="addTime != null "> and add_time = #{addTime}</if>
+            <if test="addUser != null "> and add_user = #{addUser}</if>
+            <if test="addUserName != null  and addUserName != ''"> and add_user_name like concat('%', #{addUserName}, '%')</if>
+            <if test="toUser != null "> and to_user = #{toUser}</if>
+            <if test="toUserName != null  and toUserName != ''"> and to_user_name like concat('%', #{toUserName}, '%')</if>
+            <if test="readTime != null "> and read_time = #{readTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysMsgById" parameterType="Long" resultMap="SysMsgResult">
+        <include refid="selectSysMsgVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysMsg" parameterType="SysMsg" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_msg
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="url != null">url,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="addTime != null">add_time,</if>
+            <if test="addUser != null">add_user,</if>
+            <if test="addUserName != null and addUserName != ''">add_user_name,</if>
+            <if test="toUser != null">to_user,</if>
+            <if test="toUserName != null">to_user_name,</if>
+            <if test="readTime != null">read_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="url != null">#{url},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="addTime != null">#{addTime},</if>
+            <if test="addUser != null">#{addUser},</if>
+            <if test="addUserName != null and addUserName != ''">#{addUserName},</if>
+            <if test="toUser != null">#{toUser},</if>
+            <if test="toUserName != null">#{toUserName},</if>
+            <if test="readTime != null">#{readTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysMsg" parameterType="SysMsg">
+        update sys_msg
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="addTime != null">add_time = #{addTime},</if>
+            <if test="addUser != null">add_user = #{addUser},</if>
+            <if test="addUserName != null and addUserName != ''">add_user_name = #{addUserName},</if>
+            <if test="toUser != null">to_user = #{toUser},</if>
+            <if test="toUserName != null">to_user_name = #{toUserName},</if>
+            <if test="readTime != null">read_time = #{readTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysMsgById" parameterType="Long">
+        delete from sys_msg where id = #{id}
+    </delete>
+
+    <delete id="deleteSysMsgByIds" parameterType="String">
+        delete from sys_msg where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    
+    <select id="countNoRead" parameterType="Long" resultMap="SysMsgResult">
+        select count(id) from sys_msg where to_user = #{userId} and read_time is null
+    </select>
+    
+    <delete id="readMsgByIds" parameterType="String">
+        update sys_msg set read_time=now() where read_time is null and id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.asset.mapper.AssetPurchaseMapper">
+    
+    <resultMap type="AssetPurchase" id="AssetPurchaseResult">
+        <result property="id"    column="id"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="name"    column="name"    />
+        <result property="param"    column="param"    />
+        <result property="factory"    column="factory"    />
+        <result property="proxy"    column="proxy"    />
+        <result property="amount"    column="amount"    />
+        <result property="price1"    column="price1"    />
+        <result property="price2"    column="price2"    />
+        <result property="reason"    column="reason"    />
+        <result property="comment"    column="comment"    />
+        <result property="checkUserId"    column="check_user_id"    />
+        <result property="checkStatus"    column="check_status"    />
+        <result property="checkTime"    column="check_time"    />
+        <result property="checkReason"    column="check_reason"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="masterUserId"    column="master_user_id"    />
+        <result property="finishTime"    column="finish_time"    />
+        <result property="isComplete"    column="is_complete"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <association property="applyUser"    column="create_by" javaType="SysUser" resultMap="applyUserResult" />
+        <association property="checkUser"    column="check_user_id" javaType="SysUser" resultMap="checkUserResult" />
+        <association property="masterUser"    column="check_user_id" javaType="SysUser" resultMap="masterUserResult" />
+        <association property="cate"    column="cate_id" javaType="AssetCategory" resultMap="cateResult" />
+    </resultMap>
+    
+    <resultMap type="SysUser" id="applyUserResult">
+        <result property="userId"    column="apply_user_id"    />
+        <result property="nickName"    column="apply_user_name"    />
+    </resultMap>
+    <resultMap type="SysUser" id="checkUserResult">
+        <result property="userId"    column="check_user_id"    />
+        <result property="nickName"    column="check_user_name"    />
+    </resultMap>
+    <resultMap type="SysUser" id="masterUserResult">
+        <result property="userId"    column="master_user_id"    />
+        <result property="nickName"    column="master_user_name"    />
+    </resultMap>
+    <resultMap type="AssetCategory" id="cateResult">
+        <result property="id"    column="cate_id"    />
+        <result property="title"    column="cate_name"    />
+        <result property="type"    column="cate_type"    />
+    </resultMap>
+
+    <sql id="selectAssetPurchaseVo">
+        select t.*, au.user_id apply_user_id, au.nick_name apply_user_name, cu.nick_name check_user_name, mu.nick_name master_user_name, c.title cate_name, c.type cate_type
+         from asset_purchase t
+         join asset_category c on t.cate_id = c.id
+         join sys_user au on au.user_name = t.create_by
+         left join sys_user cu on cu.user_id = t.check_user_id
+         left join sys_user mu on mu.user_id = t.master_user_id
+    </sql>
+
+    <select id="selectAssetPurchaseList" parameterType="AssetPurchase" resultMap="AssetPurchaseResult">
+        <include refid="selectAssetPurchaseVo"/>
+        <where>  
+            <if test="cateId != null "> and t.cate_id = #{cateId}</if>
+            <if test="name != null  and name != ''"> and t.name like concat('%', #{name}, '%')</if>
+            <if test="checkStatus != null  and checkStatus != ''"> and t.check_status = #{checkStatus}</if>
+            <if test="isComplete != null  and isComplete != ''"> and t.is_complete = #{isComplete}</if>
+        </where>
+    </select>
+    
+    <select id="selectAssetPurchaseById" parameterType="Long" resultMap="AssetPurchaseResult">
+        <include refid="selectAssetPurchaseVo"/>
+        where t.id = #{id}
+    </select>
+        
+    <insert id="insertAssetPurchase" parameterType="AssetPurchase" useGeneratedKeys="true" keyProperty="id">
+        insert into asset_purchase
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">cate_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="param != null and param != ''">param,</if>
+            <if test="factory != null">factory,</if>
+            <if test="proxy != null">proxy,</if>
+            <if test="amount != null">amount,</if>
+            <if test="price1 != null">price1,</if>
+            <if test="price2 != null">price2,</if>
+            <if test="reason != null and reason != ''">reason,</if>
+            <if test="comment != null">comment,</if>
+            <if test="checkUserId != null">check_user_id,</if>
+            <if test="checkStatus != null">check_status,</if>
+            <if test="checkTime != null">check_time,</if>
+            <if test="checkReason != null">check_reason,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="masterUserId != null">master_user_id,</if>
+            <if test="finishTime != null">finish_time,</if>
+            <if test="isComplete != null">is_complete,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">#{cateId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="param != null and param != ''">#{param},</if>
+            <if test="factory != null">#{factory},</if>
+            <if test="proxy != null">#{proxy},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="price1 != null">#{price1},</if>
+            <if test="price2 != null">#{price2},</if>
+            <if test="reason != null and reason != ''">#{reason},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="checkUserId != null">#{checkUserId},</if>
+            <if test="checkStatus != null">#{checkStatus},</if>
+            <if test="checkTime != null">#{checkTime},</if>
+            <if test="checkReason != null">#{checkReason},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="masterUserId != null">#{masterUserId},</if>
+            <if test="finishTime != null">#{finishTime},</if>
+            <if test="isComplete != null">#{isComplete},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAssetPurchase" parameterType="AssetPurchase">
+        update asset_purchase
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cateId != null">cate_id = #{cateId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="param != null and param != ''">param = #{param},</if>
+            <if test="factory != null">factory = #{factory},</if>
+            <if test="proxy != null">proxy = #{proxy},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="price1 != null">price1 = #{price1},</if>
+            <if test="price2 != null">price2 = #{price2},</if>
+            <if test="reason != null and reason != ''">reason = #{reason},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="checkUserId != null">check_user_id = #{checkUserId},</if>
+            <if test="checkStatus != null">check_status = #{checkStatus},</if>
+            <if test="checkTime != null">check_time = #{checkTime},</if>
+            <if test="checkReason != null">check_reason = #{checkReason},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="masterUserId != null">master_user_id = #{masterUserId},</if>
+            <if test="finishTime != null">finish_time = #{finishTime},</if>
+            <if test="isComplete != null">is_complete = #{isComplete},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateAssetPurchaseComplete" parameterType="Long">
+        update asset_purchase set is_complete = 'Y',finish_time = now() where id=#{id} and (amount &lt;= (select sum(amount) from asset_entering where purchase_id=#{id}))
+    </update>
+
+    <delete id="deleteAssetPurchaseById" parameterType="Long">
+        delete from asset_purchase where id = #{id}
+    </delete>
+
+    <delete id="deleteAssetPurchaseByIds" parameterType="String">
+        delete from asset_purchase where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

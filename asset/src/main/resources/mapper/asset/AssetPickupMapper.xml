@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.asset.mapper.AssetPickupMapper">
+    
+    <resultMap type="AssetPickup" id="AssetPickupResult">
+        <result property="id"    column="id"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="materialId"    column="material_id"    />
+        <result property="amount"    column="amount"    />
+        <result property="reason"    column="reason"    />
+        <result property="comment"    column="comment"    />
+        <result property="checkUserId"    column="check_user_id"    />
+        <result property="checkStatus"    column="check_status"    />
+        <result property="checkTime"    column="check_time"    />
+        <result property="checkReason"    column="check_reason"    />
+        <result property="isDelivery"    column="is_delivery"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        
+        <association property="applyUser"    column="create_by" javaType="SysUser" resultMap="applyUserResult" />
+        <association property="checkUser"    column="check_user_id" javaType="SysUser" resultMap="checkUserResult" />
+        <association property="cate"    column="cate_id" javaType="AssetCategory" resultMap="cateResult" />
+        <association property="material"    column="material_id" javaType="AssetMaterial" resultMap="assetMaterialResult" />
+    </resultMap>
+    
+    <resultMap type="SysUser" id="applyUserResult">
+        <result property="userId"    column="apply_user_id"    />
+        <result property="nickName"    column="apply_user_name"    />
+    </resultMap>
+    <resultMap type="SysUser" id="checkUserResult">
+        <result property="userId"    column="check_user_id"    />
+        <result property="nickName"    column="check_user_name"    />
+    </resultMap>
+    <resultMap type="AssetCategory" id="cateResult">
+        <result property="id"    column="cate_id"    />
+        <result property="title"    column="cate_name"    />
+        <result property="type"    column="cate_type"    />
+    </resultMap>
+    <resultMap type="AssetMaterial" id="assetMaterialResult">
+        <result property="id"    column="id"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="name"    column="material_name"    />
+    </resultMap>
+    
+    <sql id="selectAssetPickupVo">
+        select t.*, au.user_id apply_user_id, au.nick_name apply_user_name, cu.nick_name check_user_name, c.title cate_name, c.type cate_type, m.name material_name
+         from asset_pickup t
+         join asset_category c on t.cate_id = c.id
+         join sys_user au on au.user_name = t.create_by
+         left join sys_user cu on cu.user_id = t.check_user_id
+         left join asset_material m on t.material_id = m.id
+    </sql>
+
+    <select id="selectAssetPickupList" parameterType="AssetPickup" resultMap="AssetPickupResult">
+        <include refid="selectAssetPickupVo"/>
+        <where>  
+            <if test="cateId != null "> and t.cate_id = #{cateId}</if>
+            <if test="materialId != null "> and t.material_id = #{materialId}</if>
+            <if test="checkStatus != null  and checkStatus != ''"> and t.check_status = #{checkStatus}</if>
+            <if test="createBy != null  and createBy != ''"> and t.create_by = #{createBy}</if>
+            
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(t.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(t.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectAssetPickupById" parameterType="Long" resultMap="AssetPickupResult">
+        <include refid="selectAssetPickupVo"/>
+        where t.id = #{id}
+    </select>
+        
+    <insert id="insertAssetPickup" parameterType="AssetPickup" useGeneratedKeys="true" keyProperty="id">
+        insert into asset_pickup
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">cate_id,</if>
+            <if test="materialId != null">material_id,</if>
+            <if test="amount != null">amount,</if>
+            <if test="reason != null and reason != ''">reason,</if>
+            <if test="comment != null">comment,</if>
+            <if test="checkUserId != null">check_user_id,</if>
+            <if test="checkStatus != null">check_status,</if>
+            <if test="checkTime != null">check_time,</if>
+            <if test="checkReason != null">check_reason,</if>
+            <if test="isDelivery != null">is_delivery,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">#{cateId},</if>
+            <if test="materialId != null">#{materialId},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="reason != null and reason != ''">#{reason},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="checkUserId != null">#{checkUserId},</if>
+            <if test="checkStatus != null">#{checkStatus},</if>
+            <if test="checkTime != null">#{checkTime},</if>
+            <if test="checkReason != null">#{checkReason},</if>
+            <if test="isDelivery != null">#{isDelivery},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAssetPickup" parameterType="AssetPickup">
+        update asset_pickup
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cateId != null">cate_id = #{cateId},</if>
+            <if test="materialId != null">material_id = #{materialId},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="reason != null and reason != ''">reason = #{reason},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="checkUserId != null">check_user_id = #{checkUserId},</if>
+            <if test="checkStatus != null">check_status = #{checkStatus},</if>
+            <if test="checkTime != null">check_time = #{checkTime},</if>
+            <if test="checkReason != null">check_reason = #{checkReason},</if>
+            <if test="isDelivery != null">is_delivery = #{isDelivery},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAssetPickupById" parameterType="Long">
+        delete from asset_pickup where id = #{id}
+    </delete>
+
+    <delete id="deleteAssetPickupByIds" parameterType="String">
+        delete from asset_pickup where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

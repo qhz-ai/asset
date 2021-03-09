@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.asset.mapper.AssetInfoMapper">
+    
+    <resultMap type="AssetInfo" id="AssetInfoResult">
+        <result property="id"    column="id"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="cateName"    column="cate_name"    />
+        <result property="num"    column="num"    />
+        <result property="name"    column="name"    />
+        <result property="param"    column="param"    />
+        <result property="factory"    column="factory"    />
+        <result property="proxy"    column="proxy"    />
+        <result property="price"    column="price"    />
+        <result property="price1"    column="price1"    />
+        <result property="price2"    column="price2"    />
+        <result property="houseId"    column="house_id"    />
+        <result property="houseName"    column="house_name"    />
+        <result property="imgId"    column="img_id"    />
+        <result property="comment"    column="comment"    />
+        <result property="status"    column="status"    />
+        <result property="useUserId"    column="use_user_id"    />
+        <result property="userName"    column="use_user_name"    />
+        <result property="finishTime"    column="finish_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <association property="useUser"    column="use_user_id" javaType="SysUser" resultMap="useUserResult" />
+        <association property="cate"    column="cate_id" javaType="AssetCategory" resultMap="cateResult" />
+        <association property="house"    column="house_id" javaType="AssetWarehouse" resultMap="warehouseResult" />
+        <association property="img"    column="img_id" javaType="SysFiles" resultMap="imgResult" />
+    </resultMap>
+    
+    <resultMap type="SysUser" id="useUserResult">
+        <result property="userId"    column="use_user_id"    />
+        <result property="nickName"    column="use_user_name"    />
+    </resultMap>
+    
+    <resultMap type="AssetCategory" id="cateResult">
+        <result property="id"    column="cate_id"    />
+        <result property="title"    column="cate_name"    />
+        <result property="type"    column="cate_type"    />
+    </resultMap>
+    
+    <resultMap type="AssetWarehouse" id="warehouseResult">
+        <result property="id"    column="house_id"    />
+        <result property="title"    column="house_name"    />
+    </resultMap>
+    
+    <resultMap type="SysFiles" id="imgResult">
+        <result property="id"    column="img_id"    />
+        <result property="title"    column="img_name"    />
+        <result property="path"    column="img_path"    />
+    </resultMap>
+
+    <sql id="selectAssetInfoVo">
+        select t.*, c.title cate_name, c.type cate_type, w.title house_name, uu.nick_name use_user_name, f.title img_name, f.path img_path
+        from asset_info t 
+        join asset_category c on t.cate_id = c.id
+        left join asset_warehouse w on w.id = t.house_id
+        left join sys_user uu on uu.user_id = t.use_user_id
+        left join sys_files f on f.id = t.img_id
+    </sql>
+
+    <select id="selectAssetInfoList" parameterType="AssetInfo" resultMap="AssetInfoResult">
+        <include refid="selectAssetInfoVo"/>
+        <where>  
+            <if test="cateId != null "> and t.cate_id = #{cateId}</if>
+            <if test="num != null  and num != ''"> and t.num = #{num}</if>
+            <if test="name != null  and name != ''"> and t.name like concat('%', #{name}, '%')</if>
+            <if test="houseId != null "> and t.house_id = #{houseId}</if>
+            <if test="status != null  and status != ''"> and t.status = #{status}</if>
+            <if test="useUserId != null "> and t.use_user_id = #{useUserId}</if>
+        </where>
+    </select>
+    
+    <select id="selectAssetInfoById" parameterType="Long" resultMap="AssetInfoResult">
+        <include refid="selectAssetInfoVo"/>
+        where t.id = #{id}
+    </select>
+    
+    <select id="selectAssetInfoByNum" parameterType="String" resultMap="AssetInfoResult">
+        <include refid="selectAssetInfoVo"/>
+        where t.num = #{num}
+    </select>
+    
+        
+    <insert id="insertAssetInfo" parameterType="AssetInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into asset_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">cate_id,</if>
+            <if test="num != null and num != ''">num,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="param != null and param != ''">param,</if>
+            <if test="factory != null">factory,</if>
+            <if test="proxy != null">proxy,</if>
+            <if test="price != null">price,</if>
+            <if test="price1 != null">price1,</if>
+            <if test="price2 != null">price2,</if>
+            <if test="houseId != null">house_id,</if>
+            <if test="imgId != null">img_id,</if>
+            <if test="comment != null">comment,</if>
+            <if test="status != null">status,</if>
+            <if test="useUserId != null">use_user_id,</if>
+            <if test="finishTime != null">finish_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">#{cateId},</if>
+            <if test="num != null and num != ''">#{num},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="param != null and param != ''">#{param},</if>
+            <if test="factory != null">#{factory},</if>
+            <if test="proxy != null">#{proxy},</if>
+            <if test="price != null">#{price},</if>
+            <if test="price1 != null">#{price1},</if>
+            <if test="price2 != null">#{price2},</if>
+            <if test="houseId != null">#{houseId},</if>
+            <if test="imgId != null">#{imgId},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="status != null">#{status},</if>
+            <if test="useUserId != null">#{useUserId},</if>
+            <if test="finishTime != null">#{finishTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAssetInfo" parameterType="AssetInfo">
+        update asset_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cateId != null">cate_id = #{cateId},</if>
+            <if test="num != null and num != ''">num = #{num},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="param != null and param != ''">param = #{param},</if>
+            <if test="factory != null">factory = #{factory},</if>
+            <if test="proxy != null">proxy = #{proxy},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="price1 != null">price1 = #{price1},</if>
+            <if test="price2 != null">price2 = #{price2},</if>
+            <if test="houseId != null">house_id = #{houseId},</if>
+            <if test="imgId != null">img_id = #{imgId},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="useUserId != null">use_user_id = #{useUserId},</if>
+            <if test="finishTime != null">finish_time = #{finishTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAssetInfoById" parameterType="Long">
+        delete from asset_info where id = #{id}
+    </delete>
+
+    <delete id="deleteAssetInfoByIds" parameterType="String">
+        delete from asset_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

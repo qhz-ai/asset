@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.xdata.mapper.XdataPipeMapper">
+    
+    <resultMap type="XdataPipe" id="XdataPipeResult">
+        <result property="id"    column="id"    />
+        <result property="clientId"    column="client_id"    />
+        <result property="modelId"    column="model_id"    />
+        <result property="mode"    column="mode"    />
+        <result property="readSql"    column="read_sql"    />
+        <result property="insertSql"    column="insert_sql"    />
+        <result property="updateSql"    column="update_sql"    />
+        <result property="delSql"    column="del_sql"    />
+        <result property="existSql"    column="exist_sql"    />
+        <result property="lastTime"    column="last_time"    />
+        <result property="lastResult"    column="last_result"    />
+        <result property="listSort"    column="list_sort"    />
+        <result property="status"    column="status"    />
+		<association property="client" javaType="XdataClient">
+			<id property="id" column="client_id"/>
+			<result property="title" column="client_title"/>
+		</association>
+		<association property="model" javaType="XdataModel">
+			<id property="id" column="model_id"/>
+			<result property="title" column="model_title"/>
+		</association>
+    </resultMap>
+
+    <sql id="selectXdataPipeVo">
+        select id, client_id, model_id, mode, read_sql, insert_sql, update_sql, del_sql, exist_sql, last_time, last_result, list_sort, status from xdata_pipe
+    </sql>
+
+    <select id="selectXdataPipeList" parameterType="XdataPipe" resultMap="XdataPipeResult">
+        select t.*, m.title model_title, c.title client_title from xdata_pipe t
+        join xdata_client c on c.id=t.client_id
+        join xdata_model m on m.id=t.model_id
+        <where>  
+            <if test="clientId != null "> and t.client_id = #{clientId}</if>
+            <if test="modelId != null "> and t.model_id = #{modelId}</if>
+            <if test="mode != null  and mode != ''"> and t.mode = #{mode}</if>
+            <if test="status != null  and status != ''"> and t.status = #{status}</if> 
+			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				and date_format(t.last_time,'%y%m%d %H:%i:%s') &gt;= date_format(#{params.beginTime},'%y%m%d %H:%i:%s')
+			</if>
+			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				and date_format(t.last_time,'%y%m%d %H:%i:%s') &lt;= date_format(#{params.endTime},'%y%m%d %H:%i:%s')
+			</if>
+        </where>
+    </select>
+    
+    <select id="selectXdataPipeById" parameterType="Long" resultMap="XdataPipeResult">
+        <include refid="selectXdataPipeVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectJob" parameterType="String" resultType="XdataPipe">
+        <include refid="selectXdataPipeVo"/>
+		where status = '1'
+        ORDER BY list_sort DESC
+    </select>
+    
+        
+    <insert id="insertXdataPipe" parameterType="XdataPipe" useGeneratedKeys="true" keyProperty="id">
+        insert into xdata_pipe
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clientId != null">client_id,</if>
+            <if test="modelId != null">model_id,</if>
+            <if test="mode != null and mode != ''">mode,</if>
+            <if test="readSql != null and readSql != ''">read_sql,</if>
+            <if test="insertSql != null and insertSql != ''">insert_sql,</if>
+            <if test="updateSql != null and updateSql != ''">update_sql,</if>
+            <if test="delSql != null">del_sql,</if>
+            <if test="existSql != null">exist_sql,</if>
+            <if test="lastTime != null">last_time,</if>
+            <if test="lastResult != null">last_result,</if>
+            <if test="listSort != null">list_sort,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="clientId != null">#{clientId},</if>
+            <if test="modelId != null">#{modelId},</if>
+            <if test="mode != null and mode != ''">#{mode},</if>
+            <if test="readSql != null and readSql != ''">#{readSql},</if>
+            <if test="insertSql != null and insertSql != ''">#{insertSql},</if>
+            <if test="updateSql != null and updateSql != ''">#{updateSql},</if>
+            <if test="delSql != null">#{delSql},</if>
+            <if test="existSql != null">#{existSql},</if>
+            <if test="lastTime != null">#{lastTime},</if>
+            <if test="lastResult != null">#{lastResult},</if>
+            <if test="listSort != null">#{listSort},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXdataPipe" parameterType="XdataPipe">
+        update xdata_pipe
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clientId != null">client_id = #{clientId},</if>
+            <if test="modelId != null">model_id = #{modelId},</if>
+            <if test="mode != null and mode != ''">mode = #{mode},</if>
+            <if test="readSql != null and readSql != ''">read_sql = #{readSql},</if>
+            <if test="insertSql != null and insertSql != ''">insert_sql = #{insertSql},</if>
+            <if test="updateSql != null and updateSql != ''">update_sql = #{updateSql},</if>
+            <if test="delSql != null">del_sql = #{delSql},</if>
+            <if test="existSql != null">exist_sql = #{existSql},</if>
+            <if test="lastTime != null">last_time = #{lastTime},</if>
+            <if test="lastResult != null">last_result = #{lastResult},</if>
+            <if test="listSort != null">list_sort = #{listSort},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteXdataPipeById" parameterType="Long">
+        delete from xdata_pipe where id = #{id}
+    </delete>
+
+    <delete id="deleteXdataPipeByIds" parameterType="String">
+        delete from xdata_pipe where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.sys.mapper.SysDatasetMapper">
+    
+    <resultMap type="SysDataset" id="SysDatasetResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="type"    column="type"    />
+        <result property="title"    column="title"    />
+        <result property="sqls"    column="sqls"    />
+        <result property="param"    column="param"    />
+        <result property="listSort"    column="list_sort"    />
+        <result property="comment"    column="comment"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectSysDatasetVo">
+        select id, code, type, title, sqls, param, list_sort, comment, status from sys_dataset
+    </sql>
+
+    <select id="selectSysDatasetList" parameterType="SysDataset" resultMap="SysDatasetResult">
+        <include refid="selectSysDatasetVo"/>
+        <where>  
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysDatasetById" parameterType="Long" resultMap="SysDatasetResult">
+        <include refid="selectSysDatasetVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectSysDatasetByCode" parameterType="String" resultMap="SysDatasetResult">
+        <include refid="selectSysDatasetVo"/>
+        where code = #{code}
+    </select>
+        
+    <insert id="insertSysDataset" parameterType="SysDataset" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_dataset
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null and code != ''">code,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="sqls != null and sqls != ''">sqls,</if>
+            <if test="param != null">param,</if>
+            <if test="listSort != null">list_sort,</if>
+            <if test="comment != null">comment,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null and code != ''">#{code},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="sqls != null and sqls != ''">#{sqls},</if>
+            <if test="param != null">#{param},</if>
+            <if test="listSort != null">#{listSort},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysDataset" parameterType="SysDataset">
+        update sys_dataset
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null and code != ''">code = #{code},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="sqls != null and sqls != ''">sqls = #{sqls},</if>
+            <if test="param != null">param = #{param},</if>
+            <if test="listSort != null">list_sort = #{listSort},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysDatasetById" parameterType="Long">
+        delete from sys_dataset where id = #{id}
+    </delete>
+
+    <delete id="deleteSysDatasetByIds" parameterType="String">
+        delete from sys_dataset where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+     <select id="count" parameterType="SysDataset" resultType="Float">
+        ${sqls}
+    </select>
+    
+     <select id="query" parameterType="SysDataset" resultType="java.util.HashMap">
+        ${sqls}
+    </select>
+</mapper>

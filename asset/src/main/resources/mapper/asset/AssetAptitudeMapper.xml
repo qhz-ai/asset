@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.asset.mapper.AssetAptitudeMapper">
+    
+    <resultMap type="AssetAptitude" id="AssetAptitudeResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="imgId"    column="img_id"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="cateName"    column="cate_name"    />
+        <result property="getTime"    column="get_time"    />
+        <result property="comment"    column="comment"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <association property="cate"    column="cate_id" javaType="AssetCategory" resultMap="cateResult" />
+        <association property="img"    column="img_id" javaType="SysFiles" resultMap="imgResult" />
+    </resultMap>
+    
+    <resultMap type="AssetCategory" id="cateResult">
+        <result property="id"    column="cate_id"    />
+        <result property="title"    column="cate_name"    />
+        <result property="type"    column="cate_type"    />
+    </resultMap>
+        
+    <resultMap type="SysFiles" id="imgResult">
+        <result property="id"    column="img_id"    />
+        <result property="title"    column="img_name"    />
+        <result property="path"    column="img_path"    />
+    </resultMap>
+
+    
+    <sql id="selectAssetAptitudeVo">
+        select t.*, c.title cate_name, c.type cate_type, f.title img_name, f.path img_path
+        from asset_aptitude t 
+        join asset_category c on t.cate_id = c.id
+        left join sys_files f on f.id = t.img_id
+    </sql>
+
+    <select id="selectAssetAptitudeList" parameterType="AssetAptitude" resultMap="AssetAptitudeResult">
+        <include refid="selectAssetAptitudeVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and t.name like concat('%', #{name}, '%')</if>
+            <if test="cateId != null "> and t.cate_id = #{cateId}</if>
+            
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(t.get_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(t.get_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectAssetAptitudeById" parameterType="Long" resultMap="AssetAptitudeResult">
+        <include refid="selectAssetAptitudeVo"/>
+        where t.id = #{id}
+    </select>
+        
+    <insert id="insertAssetAptitude" parameterType="AssetAptitude" useGeneratedKeys="true" keyProperty="id">
+        insert into asset_aptitude
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="imgId != null">img_id,</if>
+            <if test="cateId != null">cate_id,</if>
+            <if test="getTime != null">get_time,</if>
+            <if test="comment != null">comment,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="imgId != null">#{imgId},</if>
+            <if test="cateId != null">#{cateId},</if>
+            <if test="getTime != null">#{getTime},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAssetAptitude" parameterType="AssetAptitude">
+        update asset_aptitude
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="imgId != null">img_id = #{imgId},</if>
+            <if test="cateId != null">cate_id = #{cateId},</if>
+            <if test="getTime != null">get_time = #{getTime},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAssetAptitudeById" parameterType="Long">
+        delete from asset_aptitude where id = #{id}
+    </delete>
+
+    <delete id="deleteAssetAptitudeByIds" parameterType="String">
+        delete from asset_aptitude where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.sys.mapper.SysFilesMapper">
+    
+    <resultMap type="SysFiles" id="SysFilesResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="path"    column="path"    />
+        <result property="md5"    column="md5"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectSysFilesVo">
+        select id, title, path, md5, create_by, create_time from sys_files
+    </sql>
+
+    <select id="selectSysFilesList" parameterType="SysFiles" resultMap="SysFilesResult">
+        <include refid="selectSysFilesVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="path != null  and path != ''"> and path like concat('%', #{path}, '%')</if>
+            <if test="md5 != null  and md5 != ''"> and md5 = #{md5}</if>
+        </where>
+    </select>
+    
+    
+    <select id="selectSysFiles" parameterType="SysFiles" resultMap="SysFilesResult">
+        <include refid="selectSysFilesVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="md5 != null  and md5 != ''"> and md5 = #{md5}</if>
+        </where>
+        limit 1
+    </select>
+    
+    <select id="selectSysFilesById" parameterType="Long" resultMap="SysFilesResult">
+        <include refid="selectSysFilesVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysFiles" parameterType="SysFiles" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_files
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="path != null and path != ''">path,</if>
+            <if test="md5 != null and md5 != ''">md5,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="path != null and path != ''">#{path},</if>
+            <if test="md5 != null and md5 != ''">#{md5},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysFiles" parameterType="SysFiles">
+        update sys_files
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="path != null and path != ''">path = #{path},</if>
+            <if test="md5 != null and md5 != ''">md5 = #{md5},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysFilesById" parameterType="Long">
+        delete from sys_files where id = #{id}
+    </delete>
+
+    <delete id="deleteSysFilesByIds" parameterType="String">
+        delete from sys_files where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

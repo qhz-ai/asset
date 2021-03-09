@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.asset.mapper.AssetMaterialMapper">
+    
+    <resultMap type="AssetMaterial" id="AssetMaterialResult">
+        <result property="id"    column="id"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="cateName"    column="cate_name"    />
+        <result property="name"    column="name"    />
+        <result property="param"    column="param"    />
+        <result property="factory"    column="factory"    />
+        <result property="proxy"    column="proxy"    />
+        <result property="unit"    column="unit"    />
+        <result property="amount"    column="amount"    />
+        <result property="price1"    column="price1"    />
+        <result property="price2"    column="price2"    />
+        <result property="houseId"    column="house_id"    />
+        <result property="houseName"    column="house_name"    />
+        <result property="comment"    column="comment"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <association property="cate"    column="cate_id" javaType="AssetCategory" resultMap="cateResult" />
+        <association property="house"    column="house_id" javaType="AssetWarehouse" resultMap="warehouseResult" />
+    </resultMap>
+    
+    <resultMap type="AssetCategory" id="cateResult">
+        <result property="id"    column="cate_id"    />
+        <result property="title"    column="cate_name"    />
+        <result property="type"    column="cate_type"    />
+    </resultMap>
+    
+    <resultMap type="AssetWarehouse" id="warehouseResult">
+        <result property="id"    column="house_id"    />
+        <result property="title"    column="house_name"    />
+    </resultMap>
+
+    <sql id="selectAssetMaterialVo">
+        select t.*, c.title cate_name, c.type cate_type, w.title house_name
+        from asset_material t 
+        join asset_category c on t.cate_id = c.id
+        left join asset_warehouse w on w.id = t.house_id
+    </sql>
+
+    <select id="selectAssetMaterialList" parameterType="AssetMaterial" resultMap="AssetMaterialResult">
+        <include refid="selectAssetMaterialVo"/>
+        <where>  
+            <if test="cateId != null "> and t.cate_id = #{cateId}</if>
+            <if test="name != null  and name != ''"> and t.name like concat('%', #{name}, '%')</if>
+            <if test="houseId != null "> and t.house_id = #{houseId}</if>
+            <if test="status != null  and status != ''"> and t.status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectAssetMaterialById" parameterType="Long" resultMap="AssetMaterialResult">
+        <include refid="selectAssetMaterialVo"/>
+        where t.id = #{id}
+    </select>
+    
+    <select id="selectAssetMaterialByName" parameterType="String" resultMap="AssetMaterialResult">
+        <include refid="selectAssetMaterialVo"/>
+        where t.name = #{name}
+    </select>
+        
+    <insert id="insertAssetMaterial" parameterType="AssetMaterial" useGeneratedKeys="true" keyProperty="id">
+        insert into asset_material
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">cate_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="param != null and param != ''">param,</if>
+            <if test="factory != null">factory,</if>
+            <if test="proxy != null">proxy,</if>
+            <if test="unit != null and unit != ''">unit,</if>
+            <if test="amount != null">amount,</if>
+            <if test="price1 != null">price1,</if>
+            <if test="price2 != null">price2,</if>
+            <if test="houseId != null">house_id,</if>
+            <if test="comment != null">comment,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">#{cateId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="param != null and param != ''">#{param},</if>
+            <if test="factory != null">#{factory},</if>
+            <if test="proxy != null">#{proxy},</if>
+            <if test="unit != null and unit != ''">#{unit},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="price1 != null">#{price1},</if>
+            <if test="price2 != null">#{price2},</if>
+            <if test="houseId != null">#{houseId},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAssetMaterial" parameterType="AssetMaterial">
+        update asset_material
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cateId != null">cate_id = #{cateId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="param != null and param != ''">param = #{param},</if>
+            <if test="factory != null">factory = #{factory},</if>
+            <if test="proxy != null">proxy = #{proxy},</if>
+            <if test="unit != null and unit != ''">unit = #{unit},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="price1 != null">price1 = #{price1},</if>
+            <if test="price2 != null">price2 = #{price2},</if>
+            <if test="houseId != null">house_id = #{houseId},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAssetMaterialById" parameterType="Long">
+        delete from asset_material where id = #{id}
+    </delete>
+
+    <delete id="deleteAssetMaterialByIds" parameterType="String">
+        delete from asset_material where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

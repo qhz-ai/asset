@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.xdata.mapper.XdataClientMapper">
+    
+    <resultMap type="XdataClient" id="XdataClientResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="type"    column="type"    />
+        <result property="code"    column="code"    />
+        <result property="secret"    column="secret"    />
+        <result property="url"    column="url"    />
+        <result property="icon"    column="icon"    />
+        <result property="jdbc"    column="jdbc"    />
+        <result property="dbUser"    column="db_user"    />
+        <result property="dbType"    column="db_type"    />
+        <result property="dbPass"    column="db_pass"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectXdataClientVo">
+        select id, title, type, code, secret, url, icon, jdbc, db_user, db_type, db_pass, status from xdata_client
+    </sql>
+
+    <select id="selectXdataClientList" parameterType="XdataClient" resultMap="XdataClientResult">
+        <include refid="selectXdataClientVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="dbType != null  and dbType != ''"> and db_type = #{dbType}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectXdataClientById" parameterType="Long" resultMap="XdataClientResult">
+        <include refid="selectXdataClientVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertXdataClient" parameterType="XdataClient" useGeneratedKeys="true" keyProperty="id">
+        insert into xdata_client
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="code != null and code != ''">code,</if>
+            <if test="secret != null and secret != ''">secret,</if>
+            <if test="url != null">url,</if>
+            <if test="icon != null">icon,</if>
+            <if test="jdbc != null">jdbc,</if>
+            <if test="dbType != null">db_type,</if>
+            <if test="dbUser != null">db_user,</if>
+            <if test="dbPass != null">db_pass,</if>
+            <if test="status != null and status != ''">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="code != null and code != ''">#{code},</if>
+            <if test="secret != null and secret != ''">#{secret},</if>
+            <if test="url != null">#{url},</if>
+            <if test="icon != null">#{icon},</if>
+            <if test="jdbc != null">#{jdbc},</if>
+            <if test="dbType != null">#{dbType},</if>
+            <if test="dbUser != null">#{dbUser},</if>
+            <if test="dbPass != null">#{dbPass},</if>
+            <if test="status != null and status != ''">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXdataClient" parameterType="XdataClient">
+        update xdata_client
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="code != null and code != ''">code = #{code},</if>
+            <if test="secret != null and secret != ''">secret = #{secret},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="jdbc != null">jdbc = #{jdbc},</if>
+            <if test="dbType != null">db_type = #{dbType},</if>
+            <if test="dbUser != null">db_user = #{dbUser},</if>
+            <if test="dbPass != null">db_pass = #{dbPass},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteXdataClientById" parameterType="Long">
+        delete from xdata_client where id = #{id}
+    </delete>
+
+    <delete id="deleteXdataClientByIds" parameterType="String">
+        delete from xdata_client where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

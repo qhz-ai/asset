@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.xdata.mapper.XdataModelMapper">
+    
+    <resultMap type="XdataModel" id="XdataModelResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="type"    column="type"    />
+        <result property="tables"    column="tables"    />
+        <result property="listSort"    column="list_sort"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectXdataModelVo">
+        select id, title, type, tables, list_sort, status from xdata_model
+    </sql>
+
+    <select id="selectXdataModelList" parameterType="XdataModel" resultMap="XdataModelResult">
+        <include refid="selectXdataModelVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="tables != null  and tables != ''"> and tables = #{tables}</if>
+            <if test="listSort != null "> and list_sort = #{listSort}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectXdataModelById" parameterType="Long" resultMap="XdataModelResult">
+        <include refid="selectXdataModelVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertXdataModel" parameterType="XdataModel" useGeneratedKeys="true" keyProperty="id">
+        insert into xdata_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="tables != null and tables != ''">tables,</if>
+            <if test="listSort != null">list_sort,</if>
+            <if test="status != null and status != ''">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="tables != null and tables != ''">#{tables},</if>
+            <if test="listSort != null">#{listSort},</if>
+            <if test="status != null and status != ''">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXdataModel" parameterType="XdataModel">
+        update xdata_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="tables != null and tables != ''">tables = #{tables},</if>
+            <if test="listSort != null">list_sort = #{listSort},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteXdataModelById" parameterType="Long">
+        delete from xdata_model where id = #{id}
+    </delete>
+
+    <delete id="deleteXdataModelByIds" parameterType="String">
+        delete from xdata_model where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
