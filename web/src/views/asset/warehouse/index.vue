@@ -190,7 +190,7 @@ export default {
       // 表单校验
       rules: {
         title: [
-          { required: true, message: "个仓库名称不能为空", trigger: "blur" }
+          { required: true, message: "仓库名称不能为空", trigger: "blur" }
         ],
         address: [
           { required: true, message: "地址不能为空", trigger: "blur" }
