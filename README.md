@@ -1,7 +1,7 @@
 # assets
 
 #### 介绍
-基于RuoYi[http://ruoyi.vip/]框架开发的资产管理系统，结合了自己封装的常用扩展（见ext模块）
+基于[RuoYi](http://ruoyi.vip/)框架开发的资产管理系统，结合了自己封装的常用扩展（见ext模块）
 
 #### 软件架构
 软件采用Java+MySQL+Redis的基础架构进行设计开发，主要实现
@@ -9,7 +9,7 @@
 
 #### 安装教程
 
-参照RuoYi[https://doc.ruoyi.vip/ruoyi-vue/document/hjbs.html]部署文档，前端目录为web
+参照RuoYi(https://doc.ruoyi.vip/ruoyi-vue/document/hjbs.html)部署文档，前端目录为web
 
 
 #### 使用说明
