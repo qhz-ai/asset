@@ -126,6 +126,7 @@
       </el-table-column>
       <el-table-column label="是否完成" align="center" prop="isComplete" :formatter="isCompleteFormat" />
       <el-table-column label="维修结果" align="center" prop="result" :formatter="resultFormat" />
+      <el-table-column label="维修费用" align="center" prop="money" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -231,6 +232,19 @@
             ></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="维修结果" prop="result">
+          <el-select v-model="form.result" placeholder="请选择维修结果">
+            <el-option
+              v-for="dict in resultOptions"
+              :key="dict.dictValue"
+              :label="dict.dictLabel"
+              :value="dict.dictValue"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="维护费用" prop="money">
+          <el-input v-model="form.money" placeholder="请输入维护费用"/>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -305,6 +319,8 @@ export default {
         isComplete: null,
         keywords: null,
         result: null,
+        orderByColumn:"t.id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},

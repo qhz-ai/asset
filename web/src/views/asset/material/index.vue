@@ -258,6 +258,8 @@ export default {
         name: null,
         houseId: null,
         status: null,
+        orderByColumn:"t.id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},

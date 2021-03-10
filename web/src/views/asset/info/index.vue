@@ -103,6 +103,11 @@
       <el-table-column label="购买价格" align="center" prop="price2" />
       <el-table-column label="仓库" align="center" prop="house.title" />
       <el-table-column label="资产状态" align="center" prop="status" :formatter="statusFormat" />
+      <el-table-column label="报废时间" align="center" prop="scrapTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.scrapTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="使用人" align="center" prop="userName" />
       <el-table-column label="预计归还时间" align="center" prop="finishTime" width="180">
         <template slot-scope="scope">
@@ -173,6 +178,14 @@
               :value="dict.dictValue"
             />
           </el-select>
+        </el-form-item>
+        <el-form-item label="报废时间" prop="scrapTime" v-if="form.status == '5'">
+          <el-date-picker clearable size="small"
+            v-model="form.scrapTime"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择报废时间">
+          </el-date-picker>
         </el-form-item>
         <el-form-item label="使用人" prop="useUserId" v-if="form.status == '2'">
           <el-select v-model="form.useUserId" filterable placeholder="请输入姓名选择" :loading="loading">
@@ -309,6 +322,8 @@ export default {
         houseId: null,
         status: null,
         useUserId: null,
+        orderByColumn:"t.id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},

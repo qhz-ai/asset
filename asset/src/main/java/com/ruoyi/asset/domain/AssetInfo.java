@@ -123,5 +123,10 @@ public class AssetInfo extends BaseEntity
     @ApiModelProperty("预计归还时间")
     private Date finishTime;
 
-
+    /** 报废时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "报废时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @ApiModelProperty("报废时间")
+    private Date scrapTime;
+    
 }

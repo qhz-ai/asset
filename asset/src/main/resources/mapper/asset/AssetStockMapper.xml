@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.asset.mapper.AssetStockMapper">
+    
+    <resultMap type="AssetStock" id="AssetStockResult">
+        <result property="id"    column="id"    />
+        <result property="year"    column="year"    />
+        <result property="worth"    column="worth"    />
+        <result property="assetCount"    column="asset_count"    />
+        <result property="assetWorth"    column="asset_worth"    />
+        <result property="materialCount"    column="material_count"    />
+        <result property="materialWorth"    column="material_worth"    />
+        <result property="scrapCount"    column="scrap_count"    />
+        <result property="scrapWorth"    column="scrap_worth"    />
+        <result property="maintainCount"    column="maintain_count"    />
+        <result property="purchaseCount"    column="purchase_count"    />
+        <result property="purchaseWorth"    column="purchase_worth"    />
+        <result property="comment"    column="comment"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectAssetStockVo">
+        select id, year, worth, asset_count, asset_worth, material_count, material_worth, scrap_count, scrap_worth, maintain_count, purchase_count, purchase_worth, comment, create_by, create_time, update_by, update_time from asset_stock
+    </sql>
+
+    <select id="selectAssetStockList" parameterType="AssetStock" resultMap="AssetStockResult">
+        <include refid="selectAssetStockVo"/>
+        <where>  
+            <if test="year != null "> and year = #{year}</if>
+        </where>
+    </select>
+    
+    <select id="selectAssetStockById" parameterType="Long" resultMap="AssetStockResult">
+        <include refid="selectAssetStockVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAssetStock" parameterType="AssetStock" useGeneratedKeys="true" keyProperty="id">
+        insert into asset_stock
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="year != null">year,</if>
+            <if test="worth != null">worth,</if>
+            <if test="assetCount != null">asset_count,</if>
+            <if test="assetWorth != null">asset_worth,</if>
+            <if test="materialCount != null">material_count,</if>
+            <if test="materialWorth != null">material_worth,</if>
+            <if test="scrapCount != null">scrap_count,</if>
+            <if test="scrapWorth != null">scrap_worth,</if>
+            <if test="maintainCount != null">maintain_count,</if>
+            <if test="purchaseCount != null">purchase_count,</if>
+            <if test="purchaseWorth != null">purchase_worth,</if>
+            <if test="comment != null">comment,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="year != null">#{year},</if>
+            <if test="worth != null">#{worth},</if>
+            <if test="assetCount != null">#{assetCount},</if>
+            <if test="assetWorth != null">#{assetWorth},</if>
+            <if test="materialCount != null">#{materialCount},</if>
+            <if test="materialWorth != null">#{materialWorth},</if>
+            <if test="scrapCount != null">#{scrapCount},</if>
+            <if test="scrapWorth != null">#{scrapWorth},</if>
+            <if test="maintainCount != null">#{maintainCount},</if>
+            <if test="purchaseCount != null">#{purchaseCount},</if>
+            <if test="purchaseWorth != null">#{purchaseWorth},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAssetStock" parameterType="AssetStock">
+        update asset_stock
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="year != null">year = #{year},</if>
+            <if test="worth != null">worth = #{worth},</if>
+            <if test="assetCount != null">asset_count = #{assetCount},</if>
+            <if test="assetWorth != null">asset_worth = #{assetWorth},</if>
+            <if test="materialCount != null">material_count = #{materialCount},</if>
+            <if test="materialWorth != null">material_worth = #{materialWorth},</if>
+            <if test="scrapCount != null">scrap_count = #{scrapCount},</if>
+            <if test="scrapWorth != null">scrap_worth = #{scrapWorth},</if>
+            <if test="maintainCount != null">maintain_count = #{maintainCount},</if>
+            <if test="purchaseCount != null">purchase_count = #{purchaseCount},</if>
+            <if test="purchaseWorth != null">purchase_worth = #{purchaseWorth},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    
+    <update id="sumAssetStockAssetCount" parameterType="String">
+        update asset_stock set asset_count = (select count(id) from asset_info where status !='5') where year = #{year}
+    </update>
+    <update id="sumAssetStockAssetWorth" parameterType="String">
+        update asset_stock set asset_worth = (select sum(price) from asset_info where status !='5') where year = #{year}
+    </update>
+    
+    <update id="sumAssetStockMaterialCount" parameterType="String">
+        update asset_stock set material_count = (select count(id) from asset_material where status !='3') where year = #{year}
+    </update>
+    <update id="sumAssetStockMaterialWorth" parameterType="String">
+        update asset_stock set material_worth = (select sum(price2 * amount) from asset_material where status !='3') where year = #{year}
+    </update>    
+    
+    <update id="sumAssetStockScrapCount" parameterType="String">
+        update asset_stock set scrap_count = (select count(id) from asset_info where status ='5' and year(scrap_time) = #{year}) where year = #{year}
+    </update>
+    <update id="sumAssetStockScrapWorth" parameterType="String">
+        update asset_stock set scrap_worth = (select sum(price) from asset_info where status ='5' and year(scrap_time) = #{year}) where year = #{year}
+    </update>
+    
+    <update id="sumAssetStockPurchaseCount" parameterType="String">
+        update asset_stock set purchase_count = (select count(id) from asset_purchase where check_status='1' and year(check_time) = #{year}) where year = #{year}
+    </update>
+    <update id="sumAssetStockPurchaseWorth" parameterType="String">
+        update asset_stock set purchase_worth = (select sum(price1 * amount) from asset_purchase where check_status='1' and year(check_time) = #{year}) where year = #{year}
+    </update>
+    
+    <update id="sumAssetStockMaintainCount" parameterType="String">
+        update asset_stock set maintain_count = (select count(id) from asset_maintain where check_status='1' and year(check_time) = #{year}) where year = #{year}
+    </update>
+    
+    <update id="sumAssetStockWorth" parameterType="String">
+        update asset_stock set worth = asset_worth + material_worth where year = #{year}
+    </update>
+
+    <delete id="deleteAssetStockById" parameterType="Long">
+        delete from asset_stock where id = #{id}
+    </delete>
+
+    <delete id="deleteAssetStockByIds" parameterType="String">
+        delete from asset_stock where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

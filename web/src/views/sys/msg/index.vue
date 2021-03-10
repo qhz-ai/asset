@@ -61,10 +61,10 @@
       </el-table-column>
       <el-table-column label="链接" align="center" prop="url">
         <template slot-scope="scope">
-          <router-link :to="scope.row.url" class="link-type" v-if="scope.row.url.substr(0,4) != 'http'">
+          <router-link :to="scope.row.url" class="link-type" v-if="scope.row.url != null && scope.row.url.substr(0,4) != 'http'">
             <span>打开</span>
           </router-link>
-          <el-link :href="scope.row.url" target="_blank" v-if="scope.row.url.substr(0,4) == 'http'">打开</el-link>
+          <el-link :href="scope.row.url" target="_blank" v-if="scope.row.url != null && scope.row.url.substr(0,4) == 'http'">打开</el-link>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -167,7 +167,9 @@ export default {
         type: null,
         pid: null,
         addTime: null,
-        addUser: null
+        addUser: null,
+        orderByColumn:"id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},

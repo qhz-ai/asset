@@ -223,7 +223,9 @@ export default {
         code: null,
         title: null,
         type: null,
-        status: null
+        status: null,
+        orderByColumn:"id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},

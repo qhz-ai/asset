@@ -116,6 +116,7 @@
       </el-table-column>
       <el-table-column label="是否完成" align="center" prop="isComplete" :formatter="isCompleteFormat" />
       <el-table-column label="维修结果" align="center" prop="result" :formatter="resultFormat" />
+      <el-table-column label="维修费用" align="center" prop="money" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button v-if="scope.row.checkStatus != '1'"
@@ -260,6 +261,8 @@ export default {
         isComplete: null,
         comment: null,
         result: null,
+        orderByColumn:"t.id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},

@@ -167,7 +167,9 @@ export default {
         type: null,
         pid: null,
         addTime: null,
-        addUser: null
+        addUser: null,
+        orderByColumn:"id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},

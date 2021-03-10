@@ -139,6 +139,8 @@ export default {
         title: null,
         path: null,
         md5: null,
+        orderByColumn:"id",
+        isAsc:"DESC"
       },
       // 导入参数
       upload: {

@@ -1,5 +1,6 @@
 package com.ruoyi.asset.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.annotation.Excel;
@@ -117,7 +118,13 @@ public class AssetMaintain extends BaseEntity
     @Excel(name = "是否完成", dictType = "sys_yes_no")
     @ApiModelProperty("是否完成")
     private String isComplete;
+    
 
+    /** 维修费用 */
+    @Excel(name = "维修费用")
+    @ApiModelProperty("维修费用")
+    private BigDecimal money;
+    
     /** 维修说明 */
     @ApiModelProperty("维修说明")
     private String comment;

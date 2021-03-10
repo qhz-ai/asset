@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.ruoyi.xdata.domain.XdataPipe;
@@ -33,6 +34,7 @@ public class XDataJob {
 	/**
 	 * 定时任务入口
 	 */
+	@Scheduled(cron = "0 0/5 * * * ?")
 	public void sync() {
 		if(!DbUtil.run()) {
 			System.out.println("正在执行中，本次任务将忽略...");

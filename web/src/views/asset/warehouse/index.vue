@@ -182,6 +182,8 @@ export default {
         links: null,
         status: null,
         comment: null,
+        orderByColumn:"id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},

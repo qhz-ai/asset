@@ -170,7 +170,9 @@ export default {
         type: null,
         tables: null,
         listSort: null,
-        status: null
+        status: null,
+        orderByColumn:"id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},

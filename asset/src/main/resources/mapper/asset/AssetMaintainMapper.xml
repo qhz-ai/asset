@@ -19,6 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="checkReason"    column="check_reason"    />
         <result property="createBy"    column="create_by"    />
         <result property="isComplete"    column="is_complete"    />
+        <result property="money"    column="money"    />
         <result property="comment"    column="comment"    />
         <result property="result"    column="result"    />
         <result property="createTime"    column="create_time"    />
@@ -110,6 +111,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="checkReason != null">check_reason,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             <if test="isComplete != null">is_complete,</if>
+            <if test="money != null">money,</if>
             <if test="comment != null">comment,</if>
             <if test="result != null">result,</if>
             <if test="createTime != null">create_time,</if>
@@ -130,6 +132,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="checkReason != null">#{checkReason},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             <if test="isComplete != null">#{isComplete},</if>
+            <if test="money != null">#{money},</if>
             <if test="comment != null">#{comment},</if>
             <if test="result != null">#{result},</if>
             <if test="createTime != null">#{createTime},</if>
@@ -154,6 +157,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="checkReason != null">check_reason = #{checkReason},</if>
             <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
             <if test="isComplete != null">is_complete = #{isComplete},</if>
+            <if test="money != null">money = #{money},</if>
             <if test="comment != null">comment = #{comment},</if>
             <if test="result != null">result = #{result},</if>
             <if test="createTime != null">create_time = #{createTime},</if>

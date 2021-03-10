@@ -102,6 +102,7 @@
       </el-table-column>
       <el-table-column label="是否完成" align="center" prop="isComplete" :formatter="isCompleteFormat" />
       <el-table-column label="维修结果" align="center" prop="result" :formatter="resultFormat" />
+      <el-table-column label="维修费用" align="center" prop="money" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button v-if="scope.row.isComplete != 'Y'"
@@ -164,6 +165,9 @@
             ></el-option>
           </el-select>
         </el-form-item>
+            <el-form-item label="维护费用" prop="money">
+              <el-input v-model="form.money" placeholder="请输入维护费用"/>
+            </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="详细信息">
             <el-form-item label="资产分类" prop="cateId">
@@ -264,6 +268,8 @@ export default {
         isComplete: null,
         comment: null,
         result: null,
+        orderByColumn:"t.id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},

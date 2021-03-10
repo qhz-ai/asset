@@ -195,7 +195,9 @@ export default {
         jdbc: null,
         dbUser: null,
         dbPass: null,
-        status: null
+        status: null,
+        orderByColumn:"id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},

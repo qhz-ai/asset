@@ -24,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="useUserId"    column="use_user_id"    />
         <result property="userName"    column="use_user_name"    />
         <result property="finishTime"    column="finish_time"    />
+        <result property="scrapTime"    column="scrap_time"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
@@ -106,6 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">status,</if>
             <if test="useUserId != null">use_user_id,</if>
             <if test="finishTime != null">finish_time,</if>
+            <if test="scrapTime != null">scrap_time,</if>
             <if test="createBy != null and createBy != ''">create_by,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null and updateBy != ''">update_by,</if>
@@ -127,6 +129,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">#{status},</if>
             <if test="useUserId != null">#{useUserId},</if>
             <if test="finishTime != null">#{finishTime},</if>
+            <if test="scrapTime != null">#{scrapTime},</if>
             <if test="createBy != null and createBy != ''">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
@@ -152,6 +155,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">status = #{status},</if>
             <if test="useUserId != null">use_user_id = #{useUserId},</if>
             <if test="finishTime != null">finish_time = #{finishTime},</if>
+            <if test="scrapTime != null">scrap_time = #{scrapTime},</if>
             <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>

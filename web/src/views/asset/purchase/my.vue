@@ -185,6 +185,8 @@ export default {
         name: null,
         checkStatus: null,
         isComplete: null,
+        orderByColumn:"t.id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},

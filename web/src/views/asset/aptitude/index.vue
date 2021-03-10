@@ -168,6 +168,8 @@ export default {
         name: null,
         cateId: null,
         getTime: null,
+        orderByColumn:"t.id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},

@@ -295,6 +295,8 @@ export default {
         startTime: null,
         finishTime: null,
         isComplete: null,
+        orderByColumn:"t.id",
+        isAsc:"DESC"
       },
       // 表单参数
       form: {},
