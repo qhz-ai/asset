@@ -1,0 +1,5 @@
+1、执行bin/package.bat,打包后端代码
+2、执行web/build.bat，打包前端代码
+3、将后端包（admin/target/admin.war）用zip工具解压到ROOT目录，将前端代码(web/dist)也放到ROOT目录中
+4、用这个ROOT目录替换tomcat的webapps下的ROOT目录即可
+5、配置文件在ROOT/WEB-INF/classes下
