@@ -20,7 +20,7 @@ import com.ruoyi.system.mapper.SysMenuMapper;
 @Service
 public class SysChartServiceImpl implements ISysChartService 
 {
-	public static long CHART_MENU = 1372l;
+	public static long CHART_MENU = 9;
     @Autowired
     private SysChartMapper sysChartMapper;
     

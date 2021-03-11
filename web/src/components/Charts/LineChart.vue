@@ -117,7 +117,7 @@ export default {
           this.options.xAxis.data.push(response.data[i][this.xaxis]);
           this.options.series[0].data.push(response.data[i][this.yaxis]);
         }
-        console.log(this.options);
+        
         this.chart.setOption(this.options)
       });
 

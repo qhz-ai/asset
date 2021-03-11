@@ -54,14 +54,14 @@
       <el-table-column label="盘点说明" align="center" prop="comment" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
+          <el-button v-if="year > scope.row.year"
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['asset:stock:edit']"
           >修改</el-button>
-          <el-button
+          <el-button v-if="year == scope.row.year"
             size="mini"
             type="text"
             icon="el-icon-plus"
@@ -83,6 +83,8 @@
     <!-- 添加或修改资产盘点对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+       <el-tabs type="card" >
+        <el-tab-pane label="基本信息">
         <el-form-item label="年度" prop="year">
           <el-date-picker clearable size="small"
             v-model="form.year"
@@ -94,14 +96,22 @@
         <el-form-item label="资产总值" prop="worth">
           <el-input v-model="form.worth" placeholder="请输入资产总值" />
         </el-form-item>
+        <el-form-item label="耗材总类" prop="materialCount">
+          <el-input v-model="form.materialCount" placeholder="请输入耗材总类" />
+        </el-form-item>
+        <el-form-item label="资产维护次数" prop="maintainCount">
+          <el-input v-model="form.maintainCount" placeholder="请输入资产维护次数" />
+        </el-form-item>
+        <el-form-item label="盘点说明" prop="comment">
+          <el-input v-model="form.comment" type="textarea" placeholder="请输入内容" />
+        </el-form-item>
+        </el-tab-pane>
+        <el-tab-pane label="详细信息">
         <el-form-item label="固定资产总数" prop="assetCount">
           <el-input v-model="form.assetCount" placeholder="请输入固定资产总数" />
         </el-form-item>
         <el-form-item label="固定资产总值" prop="assetWorth">
           <el-input v-model="form.assetWorth" placeholder="请输入固定资产总值" />
-        </el-form-item>
-        <el-form-item label="耗材总类" prop="materialCount">
-          <el-input v-model="form.materialCount" placeholder="请输入耗材总类" />
         </el-form-item>
         <el-form-item label="耗材资产总值" prop="materialWorth">
           <el-input v-model="form.materialWorth" placeholder="请输入耗材资产总值" />
@@ -112,18 +122,14 @@
         <el-form-item label="报废资产总值" prop="scrapWorth">
           <el-input v-model="form.scrapWorth" placeholder="请输入报废资产总值" />
         </el-form-item>
-        <el-form-item label="资产维护次数" prop="maintainCount">
-          <el-input v-model="form.maintainCount" placeholder="请输入资产维护次数" />
-        </el-form-item>
         <el-form-item label="采购次数" prop="purchaseCount">
           <el-input v-model="form.purchaseCount" placeholder="请输入采购次数" />
         </el-form-item>
         <el-form-item label="采购总值" prop="purchaseWorth">
           <el-input v-model="form.purchaseWorth" placeholder="请输入采购总值" />
         </el-form-item>
-        <el-form-item label="盘点说明" prop="comment">
-          <el-input v-model="form.comment" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
+        </el-tab-pane>
+      </el-tabs>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -156,6 +162,7 @@ export default {
       total: 0,
       // 资产盘点表格数据
       stockList: [],
+      year: 0,
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -190,6 +197,7 @@ export default {
   },
   created() {
     this.getList();
+    this.year = (new Date()).getFullYear();
   },
   methods: {
     /** 查询资产盘点列表 */
