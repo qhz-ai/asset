@@ -55,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
     
-    <select id="selectJob" parameterType="String" resultType="XdataPipe">
+    <select id="selectJobs" parameterType="String" resultType="XdataPipe">
         <include refid="selectXdataPipeVo"/>
 		where status = '1'
         ORDER BY list_sort DESC
