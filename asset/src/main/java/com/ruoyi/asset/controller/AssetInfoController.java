@@ -18,6 +18,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.asset.domain.AssetInfo;
+import com.ruoyi.asset.domain.BatchInfo;
 import com.ruoyi.asset.service.IAssetInfoService;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
@@ -122,5 +123,25 @@ public class AssetInfoController extends BaseController
     {
         ExcelUtil<AssetInfo> util = new ExcelUtil<AssetInfo>(AssetInfo.class);
         return util.importTemplateExcel("资产信息数据");
+    }
+    
+    /**
+     * 调拨
+     * @return
+     */
+    @GetMapping("/move")
+    public AjaxResult move(BatchInfo info)
+    {
+    	return toAjax(assetInfoService.moveInfo(info));
+    }
+    
+    /**
+     * 报废
+     * @return
+     */
+    @GetMapping("/scrap")
+    public AjaxResult scrap(BatchInfo info)
+    {
+    	return toAjax(assetInfoService.scrapInfo(info));
     }
 }

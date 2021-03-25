@@ -60,3 +60,23 @@ export function importTemplate() {
     method: 'get'
   })
 }
+
+
+// 调拨资产信息
+export function moveInfo(query) {
+  return request({
+    url: '/asset/info/move',
+    method: 'get',
+    params: query
+  })
+}
+
+
+// 报废资产信息
+export function scrapInfo(query) {
+  return request({
+    url: '/asset/info/scrap',
+    method: 'get',
+    params: query
+  })
+}

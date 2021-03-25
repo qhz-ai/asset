@@ -2,6 +2,7 @@ package com.ruoyi.asset.service.impl;
 
 import java.util.List;
 
+import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.exception.CustomException;
 import com.ruoyi.common.utils.CollectionUtils;
@@ -9,6 +10,7 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.ValidationUtils;
+import com.ruoyi.system.mapper.SysDeptMapper;
 import com.ruoyi.system.mapper.SysUserMapper;
 
 import org.slf4j.Logger;
@@ -23,6 +25,7 @@ import com.ruoyi.asset.mapper.AssetWarehouseMapper;
 import com.ruoyi.asset.domain.AssetCategory;
 import com.ruoyi.asset.domain.AssetInfo;
 import com.ruoyi.asset.domain.AssetWarehouse;
+import com.ruoyi.asset.domain.BatchInfo;
 import com.ruoyi.asset.service.IAssetInfoService;
 
 /**
@@ -44,6 +47,8 @@ public class AssetInfoServiceImpl implements IAssetInfoService
     private AssetInfoMapper assetInfoMapper;
     @Autowired
     private SysUserMapper sysUserMapper;
+    @Autowired
+    private SysDeptMapper sysDeptMapper;
 
     /**
      * 查询资产信息
@@ -165,6 +170,14 @@ public class AssetInfoServiceImpl implements IAssetInfoService
             	
             	vo.setHouseId(aw.getId());        
             	
+            	if(StringUtils.isNotBlank(vo.getDeptName())) {
+            		SysDept dc = sysDeptMapper.selectDeptByName(vo.getDeptName());
+                	if(dc == null) {
+                		throw new CustomException("部门不存在:"+vo.getDeptName());
+                	}
+                	vo.setDeptId(dc.getDeptId());
+            	}
+            	
             	if(StringUtils.isNotBlank(vo.getUserName())) {
             		SysUser uc = new SysUser();
             		uc.setNickName(vo.getUserName());
@@ -174,7 +187,6 @@ public class AssetInfoServiceImpl implements IAssetInfoService
                 	}
                 	vo.setUseUserId(users.get(0).getUserId());
             	}
-            	
             	
             	//旧数据
             	AssetInfo old = assetInfoMapper.selectAssetInfoByNum(vo.getNum());
@@ -215,5 +227,30 @@ public class AssetInfoServiceImpl implements IAssetInfoService
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();
+    }
+    
+
+
+    /**
+     * 资产调拨
+     * 
+     * @param info BatchInfo 调拨信息
+     * @return 结果
+     */
+    @Override
+    public int moveInfo(BatchInfo info) {
+    	return assetInfoMapper.moveInfo(info);
+    }
+
+
+    /**
+     * 资产报废
+     * 
+     * @param info BatchInfo 资产信息
+     * @return 结果
+     */
+    @Override
+    public int scrapInfo(BatchInfo info) {
+    	return assetInfoMapper.scrapInfo(info);
     }
 }

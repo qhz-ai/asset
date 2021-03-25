@@ -2,6 +2,7 @@ package com.ruoyi.asset.service;
 
 import java.util.List;
 import com.ruoyi.asset.domain.AssetPickup;
+import com.ruoyi.asset.domain.BatchInfo;
 
 /**
  * 耗材领用Service接口
@@ -66,4 +67,5 @@ public interface IAssetPickupService
      * @return 结果
      */
     public int checkAssetPickup(AssetPickup assetPickup);
+    
 }

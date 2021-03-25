@@ -1,4 +1,4 @@
-package com.ruoyi.xdata.task;
+package com.ruoyi.task;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.ruoyi.util.DbUtil;
 import com.ruoyi.xdata.domain.XdataPipe;
 import com.ruoyi.xdata.mapper.XdataClientMapper;
 import com.ruoyi.xdata.mapper.XdataPipeMapper;
@@ -34,27 +35,33 @@ public class XDataJob {
 	/**
 	 * 定时任务入口
 	 */
-	@Scheduled(cron = "0 0/5 * * * ?")
+	//@Scheduled(cron = "0 0/5 * * * ?")
+	@Scheduled(cron = "0 * * * * ?")
 	public void sync() {
 		if(!DbUtil.run()) {
 			System.out.println("正在执行中，本次任务将忽略...");
 			return;
 		}
+		System.out.println("开始执行数据同步任务...");
 		List<XdataPipe> list = xdataPipeMapper.selectJobs();
 		for(XdataPipe p : list) {
 			try { 
 				int count = trans(p);
-
-				if(count > 0) {
-					p.setLastResult(0l + count);
-					p.setLastTime(new Date());
-					xdataPipeMapper.updateXdataPipe(p);
-				}
 				
-			}catch (Exception e) {				
+				p.setLastResult(0l + count);
+				p.setLastTime(new Date());
+				xdataPipeMapper.updateXdataPipe(p);
+				
+			}catch (Exception e) {	
+				p.setLastResult(-1l);
+				p.setLastTime(new Date());
+				xdataPipeMapper.updateXdataPipe(p);
+				
 				e.printStackTrace();
 			}
 		}
+		System.out.println("数据同步任务结束...");
+		DbUtil.stop();
 	}
 	
 	/**
@@ -89,8 +96,8 @@ public class XDataJob {
 		}
 		con1.commit();
 		con2.commit();
-		db1.stop();
-		db2.stop();
+		db1.release();
+		db2.release();
 		con1.close();
 		con2.close();
 		return count;

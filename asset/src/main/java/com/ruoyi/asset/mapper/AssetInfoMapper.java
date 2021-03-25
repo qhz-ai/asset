@@ -2,6 +2,7 @@ package com.ruoyi.asset.mapper;
 
 import java.util.List;
 import com.ruoyi.asset.domain.AssetInfo;
+import com.ruoyi.asset.domain.BatchInfo;
 
 /**
  * 资产信息Mapper接口
@@ -66,4 +67,23 @@ public interface AssetInfoMapper
      * @return 结果
      */
     public int deleteAssetInfoByIds(Long[] ids);
+    
+
+
+    /**
+     * 资产调拨
+     * 
+     * @param info BatchInfo 调拨信息
+     * @return 结果
+     */
+    public int moveInfo(BatchInfo info);
+
+
+    /**
+     * 资产报废
+     * 
+     * @param info BatchInfo 资产信息
+     * @return 结果
+     */
+    public int scrapInfo(BatchInfo info);
 }

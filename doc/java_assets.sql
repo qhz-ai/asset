@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 10/03/2021 19:10:26
+ Date: 25/03/2021 16:08:52
 */
 
 SET NAMES utf8mb4;
@@ -91,7 +91,7 @@ CREATE TABLE `asset_delivery`  (
   `update_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '出库' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '出库' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of asset_delivery
@@ -99,6 +99,9 @@ CREATE TABLE `asset_delivery`  (
 INSERT INTO `asset_delivery` VALUES (1, 6, 0, NULL, 41, 1.000, 2, 1, 10, 'admin', '2021-03-08 18:55:34', NULL, NULL);
 INSERT INTO `asset_delivery` VALUES (2, 6, 1, NULL, 41, 1.000, 2, 1, 10, 'admin', '2021-03-08 19:07:19', NULL, NULL);
 INSERT INTO `asset_delivery` VALUES (3, 11, 1, 1, NULL, 1.000, 2, 1, 10, 'admin', '2021-03-09 09:34:49', NULL, NULL);
+INSERT INTO `asset_delivery` VALUES (4, 11, 2, 2, NULL, 1.000, 2, 1, NULL, 'admin', '2021-03-25 15:21:27', NULL, NULL);
+INSERT INTO `asset_delivery` VALUES (5, 8, 3, 1, NULL, 1.000, 2, 1, NULL, 'admin', '2021-03-25 15:24:05', NULL, NULL);
+INSERT INTO `asset_delivery` VALUES (6, 11, 4, 2, NULL, 2.000, 2, 1, NULL, 'admin', '2021-03-25 15:25:19', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for asset_entering
@@ -161,6 +164,7 @@ CREATE TABLE `asset_info`  (
   `img_id` int(11) NULL DEFAULT NULL COMMENT '图例',
   `comment` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '资产说明',
   `status` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '资产状态',
+  `dept_id` int(11) NULL DEFAULT NULL COMMENT '所属部门',
   `use_user_id` int(11) NULL DEFAULT NULL COMMENT '使用人',
   `finish_time` datetime NULL DEFAULT NULL COMMENT '预计归还时间',
   `scrap_time` date NULL DEFAULT NULL COMMENT '报废时间',
@@ -174,17 +178,17 @@ CREATE TABLE `asset_info`  (
 -- ----------------------------
 -- Records of asset_info
 -- ----------------------------
-INSERT INTO `asset_info` VALUES (34, 6, '3242314', '开发电脑', NULL, '', '', 5200.000, 6000.000, 5600.000, 1, 7, '', '7', NULL, NULL, NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-08 15:06:36');
-INSERT INTO `asset_info` VALUES (35, 6, '2342343', '开发电脑', NULL, '', '', 5600.000, 6000.000, 5600.000, 1, NULL, '', '1', NULL, NULL, NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-08 14:34:17');
-INSERT INTO `asset_info` VALUES (36, 6, '234123', '开发电脑', NULL, '', '', 4900.000, 6000.000, 5500.000, 2, NULL, '', '3', NULL, NULL, NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-08 14:34:17');
-INSERT INTO `asset_info` VALUES (37, 6, '234', '开发电脑', NULL, '', '', 4900.000, 6000.000, 5500.000, 2, NULL, '', '1', NULL, NULL, NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-08 14:34:17');
-INSERT INTO `asset_info` VALUES (38, 6, '124', '开发电脑', NULL, '', '', 4900.000, 6000.000, 5500.000, 2, NULL, '', '1', NULL, NULL, NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-08 14:34:17');
-INSERT INTO `asset_info` VALUES (39, 6, '2341', '开发电脑', NULL, '', '', 4800.000, 6000.000, 5400.000, 2, NULL, '', '5', NULL, NULL, '2020-09-07', 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-10 15:53:16');
-INSERT INTO `asset_info` VALUES (40, 6, '1234213', '开发电脑', NULL, '', '', 4800.000, 6000.000, 5400.000, 2, NULL, '', '1', NULL, NULL, NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-08 14:34:17');
-INSERT INTO `asset_info` VALUES (41, 6, '42134', '开发电脑', NULL, '', '', 1500.000, 5000.000, 1500.000, 2, NULL, '', '1', NULL, '2021-03-08 19:08:51', NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-08 14:34:17');
-INSERT INTO `asset_info` VALUES (42, 6, '2134324', '开发电脑', NULL, '', '', 4000.000, 6000.000, 4000.000, 2, NULL, '', '5', NULL, NULL, '2021-03-09', 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-10 15:53:26');
-INSERT INTO `asset_info` VALUES (43, 6, '2213763', '开发电脑', NULL, '', '', 4000.000, 6000.000, 4000.000, 2, NULL, '', '1', NULL, NULL, NULL, 'admin', '2021-03-08 14:34:17', NULL, NULL);
-INSERT INTO `asset_info` VALUES (44, 8, 'dyj-023414', '激光打印机', '激光打印机', NULL, NULL, 6500.000, 24.000, 234.000, 1, 9, '234', '2', 1, '2021-03-31 00:00:00', NULL, 'admin', '2021-03-08 14:48:17', 'admin', '2021-03-08 14:54:28');
+INSERT INTO `asset_info` VALUES (34, 6, '3242314', '开发电脑', NULL, '', '', 5200.000, 6000.000, 5600.000, 1, 7, '', '7', NULL, NULL, NULL, NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-08 15:06:36');
+INSERT INTO `asset_info` VALUES (35, 6, '2342343', '开发电脑', NULL, '', '', 5600.000, 6000.000, 5600.000, 1, NULL, '', '1', NULL, NULL, NULL, NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-08 14:34:17');
+INSERT INTO `asset_info` VALUES (36, 6, '234123', '开发电脑', NULL, '', '', 4900.000, 6000.000, 5500.000, 2, NULL, '', '3', NULL, NULL, NULL, NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-08 14:34:17');
+INSERT INTO `asset_info` VALUES (37, 6, '234', '开发电脑', NULL, '', '', 4900.000, 6000.000, 5500.000, 2, NULL, '', '1', NULL, NULL, NULL, NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-08 14:34:17');
+INSERT INTO `asset_info` VALUES (38, 6, '124', '开发电脑', NULL, '', '', 4900.000, 6000.000, 5500.000, 2, NULL, '', '1', NULL, NULL, NULL, NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-08 14:34:17');
+INSERT INTO `asset_info` VALUES (39, 6, '2341', '开发电脑', NULL, '', '', 4800.000, 6000.000, 5400.000, 2, NULL, '', '5', NULL, NULL, NULL, '2020-09-07', 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-25 16:05:37');
+INSERT INTO `asset_info` VALUES (40, 6, '1234213', '开发电脑', NULL, '', '', 4800.000, 6000.000, 5400.000, 2, NULL, '', '5', NULL, NULL, NULL, NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-25 16:05:37');
+INSERT INTO `asset_info` VALUES (41, 6, '42134', '开发电脑', NULL, '', '', 1500.000, 5000.000, 1500.000, 2, NULL, '', '1', 105, NULL, '2021-03-08 00:00:00', NULL, 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-25 14:59:18');
+INSERT INTO `asset_info` VALUES (42, 6, '2134324', '开发电脑', NULL, '', '', 4000.000, 6000.000, 4000.000, 1, NULL, '', '5', 108, NULL, NULL, '2021-03-09', 'admin', '2021-03-08 14:32:32', 'admin', '2021-03-10 15:53:26');
+INSERT INTO `asset_info` VALUES (43, 6, '2213763', '开发电脑', NULL, '', '', 4000.000, 6000.000, 4000.000, 1, NULL, '', '1', 108, NULL, NULL, NULL, 'admin', '2021-03-08 14:34:17', NULL, NULL);
+INSERT INTO `asset_info` VALUES (44, 8, 'dyj-023414', '激光打印机', '激光打印机', NULL, NULL, 6500.000, 24.000, 234.000, 1, 9, '234', '2', 104, 1, '2021-03-31 00:00:00', NULL, 'admin', '2021-03-08 14:48:17', 'admin', '2021-03-25 14:59:13');
 
 -- ----------------------------
 -- Table structure for asset_maintain
@@ -247,8 +251,8 @@ CREATE TABLE `asset_material`  (
 -- ----------------------------
 -- Records of asset_material
 -- ----------------------------
-INSERT INTO `asset_material` VALUES (1, 11, '圆珠笔', '无', '4324', '2343', '只', 9.000, 3.000, 2.000, 2, NULL, '1', 'admin', '2021-03-08 10:28:11', 'admin', '2021-03-08 13:40:57');
-INSERT INTO `asset_material` VALUES (2, 11, '中性笔', NULL, '4324', '2343', '只', 20.000, 3.000, 2.000, 2, '', '2', 'admin', '2021-03-08 15:29:09', NULL, NULL);
+INSERT INTO `asset_material` VALUES (1, 11, '圆珠笔', '无', '4324', '2343', '只', 8.000, 3.000, 2.000, 2, NULL, '1', 'admin', '2021-03-08 10:28:11', 'admin', '2021-03-08 13:40:57');
+INSERT INTO `asset_material` VALUES (2, 11, '中性笔', NULL, '4324', '2343', '只', 17.000, 3.000, 2.000, 2, '', '2', 'admin', '2021-03-08 15:29:09', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for asset_pickup
@@ -258,6 +262,7 @@ CREATE TABLE `asset_pickup`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增长主键ID',
   `cate_id` int(11) NOT NULL COMMENT '资产分类',
   `material_id` int(11) NOT NULL COMMENT '耗材ID',
+  `apply_user_id` int(11) NULL DEFAULT NULL COMMENT '申请人',
   `amount` float(10, 3) NOT NULL COMMENT '领用数量',
   `reason` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '申请原由',
   `comment` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '申请说明',
@@ -271,12 +276,15 @@ CREATE TABLE `asset_pickup`  (
   `update_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '耗材领用' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '耗材领用' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of asset_pickup
 -- ----------------------------
-INSERT INTO `asset_pickup` VALUES (1, 11, 1, 1.000, '1', NULL, 1, '1', '2021-03-09 09:33:32', NULL, 'Y', 'admin', '2021-03-08 19:53:59', NULL, NULL);
+INSERT INTO `asset_pickup` VALUES (1, 11, 1, 1, 1.000, '1', NULL, 1, '1', '2021-03-09 09:33:32', NULL, 'Y', 'admin', '2021-03-08 19:53:59', NULL, NULL);
+INSERT INTO `asset_pickup` VALUES (2, 11, 2, 1, 1.000, 'asfsdafdas', '233', 1, '1', '2021-03-25 15:17:56', NULL, 'Y', 'admin', '2021-03-25 15:17:45', NULL, NULL);
+INSERT INTO `asset_pickup` VALUES (3, 8, 1, 1, 1.000, '141324', NULL, 1, '1', '2021-03-25 15:24:01', NULL, 'Y', 'admin', '2021-03-25 15:23:56', NULL, NULL);
+INSERT INTO `asset_pickup` VALUES (4, 11, 2, 1, 2.000, '21341234', NULL, NULL, '1', NULL, NULL, 'Y', 'admin', '2021-03-25 15:25:09', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for asset_purchase
@@ -370,13 +378,14 @@ CREATE TABLE `asset_stock`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `year`(`year`) USING BTREE COMMENT '一年一盘点'
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '资产盘点' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '资产盘点' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of asset_stock
 -- ----------------------------
-INSERT INTO `asset_stock` VALUES (1, '2020', 42358.00, 9, 42300.00, 2, 58.00, 1, 4800, 0, 0, NULL, NULL, 'admin', '2021-03-10 14:54:34', NULL, NULL);
-INSERT INTO `asset_stock` VALUES (3, '2021', 42358.00, 9, 42300.00, 2, 58.00, 1, 4000, 1, 2, 300.00, '摇铃的', 'admin', '2021-03-10 15:41:13', 'admin', '2021-03-10 15:44:47');
+INSERT INTO `asset_stock` VALUES (1, '2020', 36358.00, 9, 32300.00, 2, 3358.00, 34, 4800, 34, 5, 12341.00, NULL, 'admin', '2021-03-10 14:54:34', 'admin', '2021-03-11 16:44:59');
+INSERT INTO `asset_stock` VALUES (3, '2021', 42350.00, 9, 42300.00, 2, 50.00, 1, 4000, 1, 2, 300.00, '摇铃的', 'admin', '2021-03-10 15:41:13', 'admin', '2021-03-11 16:22:36');
+INSERT INTO `asset_stock` VALUES (4, '2019', 34358.00, 9, 33300.00, 2, 5843.00, 4, 435, 56, 34, 45432.00, NULL, 'admin', '2021-03-11 15:31:15', 'admin', '2021-03-11 16:44:45');
 
 -- ----------------------------
 -- Table structure for asset_use
@@ -798,7 +807,7 @@ CREATE TABLE `sys_chart`  (
   `status` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `code`(`code`) USING BTREE COMMENT '代码不能重复'
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '报表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '报表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_chart
@@ -815,6 +824,12 @@ INSERT INTO `sys_chart` VALUES (9, 'gauge', 'enroll_signup', '招生注册率', 
 INSERT INTO `sys_chart` VALUES (10, 'table', 'student_glory_query', '学生荣耀查询', 21, NULL, NULL, 'name=学生姓名\ncode=学号\ntitle=荣耀名称\nlevel_name=级别\ntype_name=类型\ndepart=颁奖单位\nget_time=获奖时间', 9, '1');
 INSERT INTO `sys_chart` VALUES (11, 'table', 'student_scheduling', '学生课表', 22, NULL, NULL, 'week=周次\nsectionName=节次\nroomName=教室\ncourseName=课程\nname=教师', 9, '1');
 INSERT INTO `sys_chart` VALUES (12, 'line', 'student_checkin', '招生报到统计', 23, 'year=年份', 'total=报到人数', NULL, 9, '1');
+INSERT INTO `sys_chart` VALUES (13, 'bar', 'worth_year_bar', '总资产统计', 29, 'title=年度', 'value=资产总值', NULL, 1, '1');
+INSERT INTO `sys_chart` VALUES (14, 'bar', 'asset_worth_year_bar', '固定资产统计', 31, 'title=年度', 'value=总值', NULL, 2, '1');
+INSERT INTO `sys_chart` VALUES (15, 'bar', 'purchase_worth_year_bar', '采购统计', 32, 'title=年度', 'value=总额', NULL, 3, '1');
+INSERT INTO `sys_chart` VALUES (16, 'bar', 'scrap_worth_year_bar', '报废统计', 33, 'title=年度', 'value=报废价值', NULL, 4, '1');
+INSERT INTO `sys_chart` VALUES (17, 'line', 'maintain_year_bar', '维护统计', 34, 'title=年度', 'value=次数', NULL, 5, '1');
+INSERT INTO `sys_chart` VALUES (18, 'line', 'material_worth_year_bar', '耗材统计', 37, 'title=年度', 'value=总价值', NULL, 7, '1');
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -857,17 +872,25 @@ CREATE TABLE `sys_dataset`  (
   `status` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `code`(`code`) USING BTREE COMMENT '代码不能重复'
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据集' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据集' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dataset
 -- ----------------------------
 INSERT INTO `sys_dataset` VALUES (4, '3', 'unread_msg', '未读消息数', 'SELECT count(id) FROM sys_msg WHERE to_user=ME AND read_time IS NULL', NULL, 1, NULL, '1');
-INSERT INTO `sys_dataset` VALUES (24, '3', 'all_worth', '资产总值', 'select (select sum(price2 * amount) from asset_material where status !=\'3\') + (select sum(price) from asset_info where status !=\'5\')', NULL, 2, NULL, '1');
-INSERT INTO `sys_dataset` VALUES (25, '3', 'asset_count', '固定资产总数', 'select count(id) from asset_info where status !=\'5\'', NULL, 2, NULL, '1');
+INSERT INTO `sys_dataset` VALUES (24, '3', 'all_worth', '资产总值', 'select worth from  asset_stock where year = DATE_FORMAT(now(),\'%Y\')', NULL, 2, NULL, '1');
+INSERT INTO `sys_dataset` VALUES (25, '3', 'asset_count', '固定资产总数', 'select asset_worth from  asset_stock where year = DATE_FORMAT(now(),\'%Y\')', NULL, 2, NULL, '1');
 INSERT INTO `sys_dataset` VALUES (26, '3', 'material_count', '耗材种类', 'select count(id) from asset_material where status !=\'3\'', NULL, 3, NULL, '1');
 INSERT INTO `sys_dataset` VALUES (27, '3', 'material_worth', '耗材价值', 'select sum(price2 * amount) from asset_material where status !=\'3\'', NULL, 3, NULL, '1');
 INSERT INTO `sys_dataset` VALUES (28, '3', 'asset_worth', '固定资产总值', 'select sum(price) from asset_info where status !=\'5\'', NULL, 2, NULL, '1');
+INSERT INTO `sys_dataset` VALUES (29, '2', 'worth_year', '总资产统计', 'select * from (select worth value,year title from asset_stock order by year desc limit 10) t order by title asc', NULL, 4, NULL, '1');
+INSERT INTO `sys_dataset` VALUES (31, '2', 'asset_worth_year', '固定资产统计', 'select * from (select asset_worth value,year title from asset_stock order by year desc limit 10) t order by title asc', NULL, 4, NULL, '1');
+INSERT INTO `sys_dataset` VALUES (32, '2', 'purchase_worth_year', '采购统计', 'select * from (select purchase_worth value,year title from asset_stock order by year desc limit 10) t order by title asc', NULL, 4, NULL, '1');
+INSERT INTO `sys_dataset` VALUES (33, '2', 'scrap_worth_year', '报废统计', 'select * from (select scrap_worth value,year title from asset_stock order by year desc limit 10) t order by title asc', NULL, 4, NULL, '1');
+INSERT INTO `sys_dataset` VALUES (34, '2', 'maintain_year', '维护统计', 'select * from (select maintain_count value,year title from asset_stock order by year desc limit 10) t order by title asc', NULL, 4, NULL, '1');
+INSERT INTO `sys_dataset` VALUES (35, '3', 'scrap_worth', '报废总值', 'select worth from  asset_stock where year = DATE_FORMAT(now(),\'%Y\')', NULL, 2, NULL, '1');
+INSERT INTO `sys_dataset` VALUES (36, '3', 'purchase_worth', '采购总值', 'select purchase_worth from  asset_stock where year = DATE_FORMAT(now(),\'%Y\')', NULL, 4, NULL, '1');
+INSERT INTO `sys_dataset` VALUES (37, '2', 'material_worth_year', '耗材统计', 'select * from (select material_worth value,year title from asset_stock order by year desc limit 10) t order by title asc', NULL, 5, NULL, '1');
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -1144,7 +1167,7 @@ CREATE TABLE `sys_logininfor`  (
   `msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '提示消息',
   `login_time` datetime NULL DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`info_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 105 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -1154,6 +1177,12 @@ INSERT INTO `sys_logininfor` VALUES (101, 'admin', '127.0.0.1', '内网IP', 'Chr
 INSERT INTO `sys_logininfor` VALUES (102, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '退出成功', '2021-03-09 13:48:37');
 INSERT INTO `sys_logininfor` VALUES (103, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2021-03-09 13:48:42');
 INSERT INTO `sys_logininfor` VALUES (104, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2021-03-10 18:40:58');
+INSERT INTO `sys_logininfor` VALUES (105, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2021-03-11 17:07:27');
+INSERT INTO `sys_logininfor` VALUES (106, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '退出成功', '2021-03-11 17:14:18');
+INSERT INTO `sys_logininfor` VALUES (107, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2021-03-11 17:15:23');
+INSERT INTO `sys_logininfor` VALUES (108, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '退出成功', '2021-03-11 17:15:32');
+INSERT INTO `sys_logininfor` VALUES (109, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2021-03-11 17:18:24');
+INSERT INTO `sys_logininfor` VALUES (110, 'admin', '127.0.0.1', '内网IP', 'Chrome 8', 'Windows 10', '0', '登录成功', '2021-03-25 14:30:42');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -1179,14 +1208,14 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2151 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2180 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES (1, '系统管理', 0, 1, 'system', NULL, 1, 0, 'M', '0', '0', '', 'system', 'admin', '2021-02-25 16:38:41', '', NULL, '系统管理目录');
-INSERT INTO `sys_menu` VALUES (2, '系统监控', 4, 3, 'monitor', NULL, 1, 0, 'M', '0', '0', '', 'monitor', 'admin', '2021-02-25 16:38:41', 'admin', '2021-02-25 17:25:09', '系统监控目录');
-INSERT INTO `sys_menu` VALUES (3, '开发工具', 0, 4, 'tool', NULL, 1, 0, 'M', '0', '0', '', 'tool', 'admin', '2021-02-25 16:38:41', 'admin', '2021-02-25 17:53:35', '系统工具目录');
+INSERT INTO `sys_menu` VALUES (2, '系统监控', 4, 4, 'monitor', NULL, 1, 0, 'M', '0', '0', '', 'monitor', 'admin', '2021-02-25 16:38:41', 'admin', '2021-03-25 14:45:25', '系统监控目录');
+INSERT INTO `sys_menu` VALUES (3, '开发工具', 4, 4, 'tool', NULL, 1, 0, 'M', '0', '0', '', 'tool', 'admin', '2021-02-25 16:38:41', 'admin', '2021-03-25 14:45:34', '系统工具目录');
 INSERT INTO `sys_menu` VALUES (4, '管理工具', 0, 4, 'ext', NULL, 1, 0, 'M', '0', '0', '', 'validCode', 'admin', '2021-02-25 16:38:41', 'admin', '2021-02-25 17:18:02', '若依官网地址');
 INSERT INTO `sys_menu` VALUES (9, '查询统计', 0, 9, 'charts', NULL, 1, 0, 'M', '0', '0', '', 'chart', 'admin', '2021-02-25 17:19:34', 'admin', '2021-02-25 17:21:16', '');
 INSERT INTO `sys_menu` VALUES (100, '用户管理', 1, 1, 'user', 'system/user/index', 1, 0, 'C', '0', '0', 'system:user:list', 'user', 'admin', '2021-02-25 16:38:41', 'admin', '2021-02-25 17:20:30', '用户管理菜单');
@@ -1411,6 +1440,26 @@ INSERT INTO `sys_menu` VALUES (2147, '资产盘点新增', 2145, 2, '#', '', 1, 
 INSERT INTO `sys_menu` VALUES (2148, '资产盘点修改', 2145, 3, '#', '', 1, 0, 'F', '0', '0', 'asset:stock:edit', '#', 'admin', '2021-03-10 14:45:23', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2149, '资产盘点删除', 2145, 4, '#', '', 1, 0, 'F', '0', '0', 'asset:stock:remove', '#', 'admin', '2021-03-10 14:45:23', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2150, '资产盘点导出', 2145, 5, '#', '', 1, 0, 'F', '0', '0', 'asset:stock:export', '#', 'admin', '2021-03-10 14:45:23', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2151, '总资产统计', 9, 9, 'sys/chart/menu/worth_year_bar', 'sys/chart/menu', 1, 0, 'C', '0', '0', NULL, 'chart', 'admin', '2021-03-11 14:50:52', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2152, '固定资产统计', 9, 9, 'sys/chart/menu/asset_worth_year_bar', 'sys/chart/menu', 1, 0, 'C', '0', '0', NULL, 'chart', 'admin', '2021-03-11 14:51:09', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2153, '采购统计', 9, 9, 'sys/chart/menu/purchase_worth_year_bar', 'sys/chart/menu', 1, 0, 'C', '0', '0', NULL, 'chart', 'admin', '2021-03-11 14:51:11', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2154, '报废统计', 9, 9, 'sys/chart/menu/scrap_worth_year_bar', 'sys/chart/menu', 1, 0, 'C', '0', '0', NULL, 'chart', 'admin', '2021-03-11 14:51:13', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2155, '维护统计', 9, 9, 'sys/chart/menu/maintain_year_bar', 'sys/chart/menu', 1, 0, 'C', '0', '0', NULL, 'chart', 'admin', '2021-03-11 14:51:15', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2156, '耗材统计', 9, 9, 'sys/chart/menu/material_worth_year_bar', 'sys/chart/menu', 1, 0, 'C', '0', '0', NULL, 'chart', 'admin', '2021-03-11 16:22:02', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2160, '网盘管理', 4, 3, 'yun', NULL, 1, 0, 'M', '0', '0', NULL, 'international', 'admin', '2021-03-25 14:33:03', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2166, '云盘目录', 2160, 1, 'folder', 'yun/folder/index', 1, 0, 'C', '0', '0', 'yun:folder:list', 'tab', 'admin', '2021-03-15 10:32:32', 'admin', '2021-03-24 14:40:22', '云盘目录菜单');
+INSERT INTO `sys_menu` VALUES (2167, '云盘目录查询', 2166, 1, '#', '', 1, 0, 'F', '0', '0', 'yun:folder:query', '#', 'admin', '2021-03-15 10:32:32', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2168, '云盘目录新增', 2166, 2, '#', '', 1, 0, 'F', '0', '0', 'yun:folder:add', '#', 'admin', '2021-03-15 10:32:32', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2169, '云盘目录修改', 2166, 3, '#', '', 1, 0, 'F', '0', '0', 'yun:folder:edit', '#', 'admin', '2021-03-15 10:32:32', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2170, '云盘目录删除', 2166, 4, '#', '', 1, 0, 'F', '0', '0', 'yun:folder:remove', '#', 'admin', '2021-03-15 10:32:32', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2171, '云盘目录导出', 2166, 5, '#', '', 1, 0, 'F', '0', '0', 'yun:folder:export', '#', 'admin', '2021-03-15 10:32:32', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2172, '云盘文件', 2160, 1, 'files', 'yun/files/index', 1, 0, 'C', '0', '0', 'yun:files:list', 'documentation', 'admin', '2021-03-15 10:32:44', 'admin', '2021-03-24 14:40:40', '云盘文件菜单');
+INSERT INTO `sys_menu` VALUES (2173, '云盘文件查询', 2172, 1, '#', '', 1, 0, 'F', '0', '0', 'yun:files:query', '#', 'admin', '2021-03-15 10:32:44', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2174, '云盘文件新增', 2172, 2, '#', '', 1, 0, 'F', '0', '0', 'yun:files:add', '#', 'admin', '2021-03-15 10:32:44', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2175, '云盘文件修改', 2172, 3, '#', '', 1, 0, 'F', '0', '0', 'yun:files:edit', '#', 'admin', '2021-03-15 10:32:44', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2176, '云盘文件删除', 2172, 4, '#', '', 1, 0, 'F', '0', '0', 'yun:files:remove', '#', 'admin', '2021-03-15 10:32:44', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2177, '云盘文件导出', 2172, 5, '#', '', 1, 0, 'F', '0', '0', 'yun:files:export', '#', 'admin', '2021-03-15 10:32:44', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2178, '我的网盘', 2039, 13, 'yun/files/my', 'yun/files/my', 1, 0, 'C', '0', '0', 'yun:files:my', 'upload', 'admin', '2021-03-16 11:28:04', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_msg
@@ -1498,7 +1547,7 @@ CREATE TABLE `sys_oper_log`  (
   `error_msg` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`oper_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 519 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 586 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1922,6 +1971,73 @@ INSERT INTO `sys_oper_log` VALUES (515, '数据集', 2, 'com.ruoyi.sys.controlle
 INSERT INTO `sys_oper_log` VALUES (516, '数据集', 2, 'com.ruoyi.sys.controller.SysDatasetController.edit()', 'PUT', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"all_worth\",\"listSort\":2,\"params\":{},\"title\":\"资产总值\",\"type\":\"3\",\"sqls\":\"select (select sum(price2 * amount) from asset_material where status !=\'3\') + (select sum(price) from asset_info where status !=\'5\')\",\"id\":24,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-10 16:39:15');
 INSERT INTO `sys_oper_log` VALUES (517, '数据集', 1, 'com.ruoyi.sys.controller.SysDatasetController.add()', 'POST', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"asset_worth\",\"listSort\":2,\"params\":{},\"title\":\"固定资产总值\",\"type\":\"3\",\"sqls\":\"select sum(price) from asset_info where status !=\'5\'\",\"id\":28,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-10 16:39:46');
 INSERT INTO `sys_oper_log` VALUES (518, '审核资产维护申请', 2, 'com.ruoyi.asset.controller.AssetMaintainController.check()', 'PUT', 1, 'admin', NULL, '/asset/maintain/check', '127.0.0.1', '内网IP', '{\"reason\":\"543523454\",\"checkUserId\":1,\"type\":\"1\",\"result\":\"5\",\"applyUser\":{\"admin\":true,\"nickName\":\"超级管理员\",\"params\":{},\"userId\":1},\"checkStatus\":\"1\",\"updateBy\":\"admin\",\"assetId\":39,\"startTime\":1615219200000,\"id\":1,\"cate\":{\"params\":{},\"title\":\"笔记本电脑\",\"type\":\"1\",\"children\":[],\"id\":6},\"finishTime\":1615392000000,\"updateTime\":1615278299000,\"params\":{},\"masterUserId\":1,\"checkUser\":{\"admin\":true,\"nickName\":\"超级管理员\",\"params\":{},\"userId\":1},\"createBy\":\"admin\",\"checkTime\":1615367977155,\"money\":345432,\"createTime\":1615271569000,\"cateId\":6,\"masterUser\":{\"admin\":true,\"nickName\":\"超级管理员\",\"params\":{},\"userId\":1},\"comment\":\"<p>asdfasdfdsaf</p>\",\"asset\":{\"num\":\"2341\",\"id\":39,\"params\":{},\"name\":\"开发电脑\"},\"isComplete\":\"N\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-10 17:19:37');
+INSERT INTO `sys_oper_log` VALUES (519, '数据集', 1, 'com.ruoyi.sys.controller.SysDatasetController.add()', 'POST', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"worth_total\",\"listSort\":4,\"params\":{},\"title\":\"总资产统计\",\"type\":\"2\",\"sqls\":\"select * from (select worth,year from asset_stock order by year desc limit 10) t order by year asc\",\"id\":29,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-10 20:22:32');
+INSERT INTO `sys_oper_log` VALUES (520, '数据集', 1, 'com.ruoyi.sys.controller.SysDatasetController.add()', 'POST', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"asset_worth\",\"listSort\":4,\"params\":{},\"title\":\"固定资产统计\",\"type\":\"2\",\"sqls\":\"select * from (select asset_worth,year from asset_stock order by year desc limit 10) t order by year asc\",\"status\":\"1\"}', 'null', 1, '\r\n### Error updating database.  Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'asset_worth\' for key \'code\'\r\n### The error may exist in file [D:\\work-assets\\assets\\ext\\target\\classes\\mapper\\sys\\SysDatasetMapper.xml]\r\n### The error may involve com.ruoyi.sys.mapper.SysDatasetMapper.insertSysDataset-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into sys_dataset          ( code,             type,             title,             sqls,                          list_sort,                          status )           values ( ?,             ?,             ?,             ?,                          ?,                          ? )\r\n### Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'asset_worth\' for key \'code\'\n; Duplicate entry \'asset_worth\' for key \'code\'; nested exception is java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'asset_worth\' for key \'code\'', '2021-03-10 20:23:00');
+INSERT INTO `sys_oper_log` VALUES (521, '数据集', 1, 'com.ruoyi.sys.controller.SysDatasetController.add()', 'POST', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"asset_worth_year\",\"listSort\":4,\"params\":{},\"title\":\"固定资产统计\",\"type\":\"2\",\"sqls\":\"select * from (select asset_worth,year from asset_stock order by year desc limit 10) t order by year asc\",\"id\":31,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-10 20:23:19');
+INSERT INTO `sys_oper_log` VALUES (522, '数据集', 2, 'com.ruoyi.sys.controller.SysDatasetController.edit()', 'PUT', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"all_worth_year\",\"listSort\":2,\"params\":{},\"title\":\"资产总值\",\"type\":\"3\",\"sqls\":\"select (select sum(price2 * amount) from asset_material where status !=\'3\') + (select sum(price) from asset_info where status !=\'5\')\",\"id\":24,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-10 20:23:27');
+INSERT INTO `sys_oper_log` VALUES (523, '数据集', 2, 'com.ruoyi.sys.controller.SysDatasetController.edit()', 'PUT', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"all_worth\",\"listSort\":2,\"params\":{},\"title\":\"资产总值\",\"type\":\"3\",\"sqls\":\"select (select sum(price2 * amount) from asset_material where status !=\'3\') + (select sum(price) from asset_info where status !=\'5\')\",\"id\":24,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-10 20:23:37');
+INSERT INTO `sys_oper_log` VALUES (524, '数据集', 2, 'com.ruoyi.sys.controller.SysDatasetController.edit()', 'PUT', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"worth_year\",\"listSort\":4,\"params\":{},\"title\":\"总资产统计\",\"type\":\"2\",\"sqls\":\"select * from (select worth,year from asset_stock order by year desc limit 10) t order by year asc\",\"id\":29,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-10 20:23:43');
+INSERT INTO `sys_oper_log` VALUES (525, '数据集', 1, 'com.ruoyi.sys.controller.SysDatasetController.add()', 'POST', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"purchase_worth_year\",\"listSort\":4,\"params\":{},\"title\":\"采购统计\",\"type\":\"2\",\"sqls\":\"select * from (select purchase_worth value,year title from asset_stock order by year desc limit 10) t order by year asc\",\"id\":32,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-10 20:24:47');
+INSERT INTO `sys_oper_log` VALUES (526, '数据集', 2, 'com.ruoyi.sys.controller.SysDatasetController.edit()', 'PUT', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"asset_worth_year\",\"listSort\":4,\"params\":{},\"title\":\"固定资产统计\",\"type\":\"2\",\"sqls\":\"select * from (select asset_worth value,year title from asset_stock order by year desc limit 10) t order by year asc\",\"id\":31,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-10 20:24:58');
+INSERT INTO `sys_oper_log` VALUES (527, '数据集', 2, 'com.ruoyi.sys.controller.SysDatasetController.edit()', 'PUT', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"worth_year\",\"listSort\":4,\"params\":{},\"title\":\"总资产统计\",\"type\":\"2\",\"sqls\":\"select * from (select worth value,year title from asset_stock order by year desc limit 10) t order by year asc\",\"id\":29,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-10 20:25:09');
+INSERT INTO `sys_oper_log` VALUES (528, '数据集', 1, 'com.ruoyi.sys.controller.SysDatasetController.add()', 'POST', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"scrap_worth_year\",\"listSort\":4,\"params\":{},\"title\":\"报废统计\",\"type\":\"2\",\"sqls\":\"select * from (select scrap_worth value,year title from asset_stock order by year desc limit 10) t order by year asc\",\"id\":33,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-10 20:25:49');
+INSERT INTO `sys_oper_log` VALUES (529, '数据集', 1, 'com.ruoyi.sys.controller.SysDatasetController.add()', 'POST', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"maintain_year\",\"listSort\":4,\"params\":{},\"title\":\"维护统计\",\"type\":\"2\",\"sqls\":\"select * from (select maintain_count value,year title from asset_stock order by year desc limit 10) t order by year asc\",\"id\":34,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-10 20:26:27');
+INSERT INTO `sys_oper_log` VALUES (530, '报表管理', 1, 'com.ruoyi.sys.controller.SysChartController.add()', 'POST', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"worth_year_bar\",\"dsId\":29,\"listSort\":1,\"params\":{},\"title\":\"总资产统计\",\"type\":\"bar\",\"yaxis\":\"total=总资产额\",\"xaxis\":\"year=年度\",\"id\":13,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 14:40:54');
+INSERT INTO `sys_oper_log` VALUES (531, '数据集', 2, 'com.ruoyi.sys.controller.SysDatasetController.edit()', 'PUT', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"worth_year\",\"listSort\":4,\"params\":{},\"title\":\"总资产统计\",\"type\":\"2\",\"sqls\":\"select * from (select worth value,year title from asset_stock order by year desc limit 10) t order by title asc\",\"id\":29,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 14:41:28');
+INSERT INTO `sys_oper_log` VALUES (532, '报表管理', 2, 'com.ruoyi.sys.controller.SysChartController.edit()', 'PUT', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"worth_year_bar\",\"dsId\":29,\"listSort\":1,\"params\":{},\"title\":\"总资产统计\",\"type\":\"bar\",\"yaxis\":\"total=总资产额\",\"xaxis\":\"title=年度\",\"id\":13,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 14:41:49');
+INSERT INTO `sys_oper_log` VALUES (533, '报表管理', 2, 'com.ruoyi.sys.controller.SysChartController.edit()', 'PUT', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"worth_year_bar\",\"dsId\":29,\"listSort\":1,\"params\":{},\"title\":\"总资产统计\",\"type\":\"bar\",\"yaxis\":\"value=资产总值\",\"xaxis\":\"title=年度\",\"id\":13,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 14:42:35');
+INSERT INTO `sys_oper_log` VALUES (534, '数据集', 2, 'com.ruoyi.sys.controller.SysDatasetController.edit()', 'PUT', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"asset_worth_year\",\"listSort\":4,\"params\":{},\"title\":\"固定资产统计\",\"type\":\"2\",\"sqls\":\"select * from (select asset_worth value,year title from asset_stock order by year desc limit 10) t order by title asc\",\"id\":31,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 14:43:00');
+INSERT INTO `sys_oper_log` VALUES (535, '报表管理', 1, 'com.ruoyi.sys.controller.SysChartController.add()', 'POST', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"asset_worth_year_bar\",\"dsId\":31,\"listSort\":2,\"params\":{},\"title\":\"固定资产统计\",\"type\":\"bar\",\"yaxis\":\"value=总值\",\"xaxis\":\"title=年度\",\"id\":14,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 14:43:49');
+INSERT INTO `sys_oper_log` VALUES (536, '报表管理', 1, 'com.ruoyi.sys.controller.SysChartController.add()', 'POST', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"purchase_worth_year_bar\",\"dsId\":32,\"listSort\":3,\"params\":{},\"title\":\"采购统计\",\"type\":\"bar\",\"yaxis\":\"value=总额\",\"xaxis\":\"title=年度\",\"id\":15,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 14:44:52');
+INSERT INTO `sys_oper_log` VALUES (537, '数据集', 2, 'com.ruoyi.sys.controller.SysDatasetController.edit()', 'PUT', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"purchase_worth_year\",\"listSort\":4,\"params\":{},\"title\":\"采购统计\",\"type\":\"2\",\"sqls\":\"select * from (select purchase_worth value,year title from asset_stock order by year desc limit 10) t order by title asc\",\"id\":32,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 14:45:11');
+INSERT INTO `sys_oper_log` VALUES (538, '数据集', 2, 'com.ruoyi.sys.controller.SysDatasetController.edit()', 'PUT', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"scrap_worth_year\",\"listSort\":4,\"params\":{},\"title\":\"报废统计\",\"type\":\"2\",\"sqls\":\"select * from (select scrap_worth value,year title from asset_stock order by year desc limit 10) t order by title asc\",\"id\":33,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 14:45:17');
+INSERT INTO `sys_oper_log` VALUES (539, '数据集', 2, 'com.ruoyi.sys.controller.SysDatasetController.edit()', 'PUT', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"maintain_year\",\"listSort\":4,\"params\":{},\"title\":\"维护统计\",\"type\":\"2\",\"sqls\":\"select * from (select maintain_count value,year title from asset_stock order by year desc limit 10) t order by title asc\",\"id\":34,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 14:45:42');
+INSERT INTO `sys_oper_log` VALUES (540, '报表管理', 1, 'com.ruoyi.sys.controller.SysChartController.add()', 'POST', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"scrap_worth_year_bar\",\"dsId\":33,\"listSort\":4,\"params\":{},\"title\":\"报废统计\",\"type\":\"bar\",\"yaxis\":\"value=报废价值\",\"xaxis\":\"title=年度\",\"id\":16,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 14:46:34');
+INSERT INTO `sys_oper_log` VALUES (541, '报表管理', 1, 'com.ruoyi.sys.controller.SysChartController.add()', 'POST', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"maintain_year_bar\",\"dsId\":34,\"listSort\":5,\"params\":{},\"title\":\"维护统计\",\"type\":\"bar\",\"yaxis\":\"value=次数\",\"xaxis\":\"title=年度\",\"id\":17,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 14:47:12');
+INSERT INTO `sys_oper_log` VALUES (542, '数据集', 2, 'com.ruoyi.sys.controller.SysDatasetController.edit()', 'PUT', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"all_worth\",\"listSort\":2,\"params\":{},\"title\":\"资产总值\",\"type\":\"3\",\"sqls\":\"select worth from  asset_stock where year = DATE_FORMAT(now(),\'%Y\')\",\"id\":24,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:05:24');
+INSERT INTO `sys_oper_log` VALUES (543, '数据集', 2, 'com.ruoyi.sys.controller.SysDatasetController.edit()', 'PUT', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"asset_count\",\"listSort\":2,\"params\":{},\"title\":\"固定资产总数\",\"type\":\"3\",\"sqls\":\"select asset_worth from  asset_stock where year = DATE_FORMAT(now(),\'%Y\')\",\"id\":25,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:05:35');
+INSERT INTO `sys_oper_log` VALUES (544, '数据集', 1, 'com.ruoyi.sys.controller.SysDatasetController.add()', 'POST', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"scrap_worth\",\"listSort\":2,\"params\":{},\"title\":\"报废总值\",\"type\":\"3\",\"sqls\":\"select worth from  asset_stock where year = DATE_FORMAT(now(),\'%Y\')\",\"id\":35,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:06:10');
+INSERT INTO `sys_oper_log` VALUES (545, '数据集', 1, 'com.ruoyi.sys.controller.SysDatasetController.add()', 'POST', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"purchase_worth\",\"listSort\":4,\"params\":{},\"title\":\"采购总值\",\"type\":\"3\",\"sqls\":\"select purchase_worth from  asset_stock where year = DATE_FORMAT(now(),\'%Y\')\",\"id\":36,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:06:41');
+INSERT INTO `sys_oper_log` VALUES (546, '报表管理', 2, 'com.ruoyi.sys.controller.SysChartController.edit()', 'PUT', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"worth_year_bar\",\"dsId\":29,\"listSort\":1,\"params\":{},\"title\":\"总资产统计\",\"type\":\"line\",\"yaxis\":\"value=资产总值\",\"xaxis\":\"title=年度\",\"id\":13,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:29:43');
+INSERT INTO `sys_oper_log` VALUES (547, '资产盘点', 1, 'com.ruoyi.asset.controller.AssetStockController.add()', 'POST', 1, 'admin', NULL, '/asset/stock', '127.0.0.1', '内网IP', '{\"assetWorth\":234,\"scrapCount\":234,\"purchaseCount\":3,\"year\":\"2019\",\"purchaseWorth\":432143214,\"materialWorth\":3214,\"scrapWorth\":324,\"params\":{},\"worth\":4132,\"createBy\":\"admin\",\"createTime\":1615447865309,\"maintainCount\":234,\"assetCount\":1324,\"materialCount\":4}', 'null', 1, '\r\n### Error updating database.  Cause: com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: Out of range value for column \'purchase_worth\' at row 1\r\n### The error may exist in file [D:\\work-assets\\assets\\asset\\target\\classes\\mapper\\asset\\AssetStockMapper.xml]\r\n### The error may involve com.ruoyi.asset.mapper.AssetStockMapper.insertAssetStock-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into asset_stock          ( year,             worth,             asset_count,             asset_worth,             material_count,             material_worth,             scrap_count,             scrap_worth,             maintain_count,             purchase_count,             purchase_worth,                          create_by,             create_time )           values ( ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,             ?,                          ?,             ? )\r\n### Cause: com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: Out of range value for column \'purchase_worth\' at row 1\n; Data truncation: Out of range value for column \'purchase_worth\' at row 1; nested exception is com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: Out of range value for column \'purchase_worth\' at row 1', '2021-03-11 15:31:05');
+INSERT INTO `sys_oper_log` VALUES (548, '资产盘点', 1, 'com.ruoyi.asset.controller.AssetStockController.add()', 'POST', 1, 'admin', NULL, '/asset/stock', '127.0.0.1', '内网IP', '{\"assetWorth\":234,\"scrapCount\":234,\"purchaseCount\":3,\"year\":\"2019\",\"purchaseWorth\":4321432,\"materialWorth\":3214,\"scrapWorth\":324,\"params\":{},\"worth\":4132,\"createBy\":\"admin\",\"createTime\":1615447875071,\"maintainCount\":234,\"assetCount\":1324,\"id\":4,\"materialCount\":4}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:31:15');
+INSERT INTO `sys_oper_log` VALUES (549, '资产盘点', 2, 'com.ruoyi.asset.controller.AssetStockController.edit()', 'PUT', 1, 'admin', NULL, '/asset/stock', '127.0.0.1', '内网IP', '{\"assetWorth\":32300,\"scrapCount\":34,\"purchaseCount\":1,\"year\":\"2020\",\"materialWorth\":58,\"scrapWorth\":4800,\"updateTime\":1615447902960,\"params\":{},\"worth\":36358,\"createBy\":\"admin\",\"createTime\":1615359274000,\"maintainCount\":34,\"updateBy\":\"admin\",\"assetCount\":9,\"id\":1,\"materialCount\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:31:42');
+INSERT INTO `sys_oper_log` VALUES (550, '资产盘点', 2, 'com.ruoyi.asset.controller.AssetStockController.edit()', 'PUT', 1, 'admin', NULL, '/asset/stock', '127.0.0.1', '内网IP', '{\"assetWorth\":33300,\"scrapCount\":0,\"purchaseCount\":0,\"year\":\"2019\",\"materialWorth\":58,\"updateTime\":1615447930718,\"params\":{},\"worth\":34358,\"createBy\":\"admin\",\"createTime\":1615447875000,\"maintainCount\":0,\"updateBy\":\"admin\",\"assetCount\":9,\"id\":4,\"materialCount\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:32:10');
+INSERT INTO `sys_oper_log` VALUES (551, '报表管理', 2, 'com.ruoyi.sys.controller.SysChartController.edit()', 'PUT', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"asset_worth_year_bar\",\"dsId\":31,\"listSort\":2,\"params\":{},\"title\":\"固定资产统计\",\"type\":\"line\",\"yaxis\":\"value=总值\",\"xaxis\":\"title=年度\",\"id\":14,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:35:48');
+INSERT INTO `sys_oper_log` VALUES (552, '报表管理', 2, 'com.ruoyi.sys.controller.SysChartController.edit()', 'PUT', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"purchase_worth_year_bar\",\"dsId\":32,\"listSort\":3,\"params\":{},\"title\":\"采购统计\",\"type\":\"line\",\"yaxis\":\"value=总额\",\"xaxis\":\"title=年度\",\"id\":15,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:35:55');
+INSERT INTO `sys_oper_log` VALUES (553, '报表管理', 2, 'com.ruoyi.sys.controller.SysChartController.edit()', 'PUT', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"scrap_worth_year_bar\",\"dsId\":33,\"listSort\":4,\"params\":{},\"title\":\"报废统计\",\"type\":\"line\",\"yaxis\":\"value=报废价值\",\"xaxis\":\"title=年度\",\"id\":16,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:36:01');
+INSERT INTO `sys_oper_log` VALUES (554, '报表管理', 2, 'com.ruoyi.sys.controller.SysChartController.edit()', 'PUT', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"worth_year_bar\",\"dsId\":29,\"listSort\":1,\"params\":{},\"title\":\"总资产统计\",\"type\":\"bar\",\"yaxis\":\"value=资产总值\",\"xaxis\":\"title=年度\",\"id\":13,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:45:48');
+INSERT INTO `sys_oper_log` VALUES (555, '报表管理', 2, 'com.ruoyi.sys.controller.SysChartController.edit()', 'PUT', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"asset_worth_year_bar\",\"dsId\":31,\"listSort\":2,\"params\":{},\"title\":\"固定资产统计\",\"type\":\"bar\",\"yaxis\":\"value=总值\",\"xaxis\":\"title=年度\",\"id\":14,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:45:52');
+INSERT INTO `sys_oper_log` VALUES (556, '报表管理', 2, 'com.ruoyi.sys.controller.SysChartController.edit()', 'PUT', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"purchase_worth_year_bar\",\"dsId\":32,\"listSort\":3,\"params\":{},\"title\":\"采购统计\",\"type\":\"bar\",\"yaxis\":\"value=总额\",\"xaxis\":\"title=年度\",\"id\":15,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:45:56');
+INSERT INTO `sys_oper_log` VALUES (557, '报表管理', 2, 'com.ruoyi.sys.controller.SysChartController.edit()', 'PUT', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"scrap_worth_year_bar\",\"dsId\":33,\"listSort\":4,\"params\":{},\"title\":\"报废统计\",\"type\":\"bar\",\"yaxis\":\"value=报废价值\",\"xaxis\":\"title=年度\",\"id\":16,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 15:46:05');
+INSERT INTO `sys_oper_log` VALUES (558, '数据集', 1, 'com.ruoyi.sys.controller.SysDatasetController.add()', 'POST', 1, 'admin', NULL, '/sys/dataset', '127.0.0.1', '内网IP', '{\"code\":\"material_worth_year\",\"listSort\":5,\"params\":{},\"title\":\"耗材统计\",\"type\":\"2\",\"sqls\":\"select * from (select material_worth value,year title from asset_stock order by year desc limit 10) t order by title asc\",\"id\":37,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 16:21:00');
+INSERT INTO `sys_oper_log` VALUES (559, '报表管理', 1, 'com.ruoyi.sys.controller.SysChartController.add()', 'POST', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"material_worth_year_bar\",\"dsId\":37,\"listSort\":7,\"params\":{},\"title\":\"耗材统计\",\"type\":\"bar\",\"yaxis\":\"value=总价值\",\"xaxis\":\"title=年度\",\"id\":18,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 16:21:52');
+INSERT INTO `sys_oper_log` VALUES (560, '资产盘点', 2, 'com.ruoyi.asset.controller.AssetStockController.edit()', 'PUT', 1, 'admin', NULL, '/asset/stock', '127.0.0.1', '内网IP', '{\"assetWorth\":33300,\"scrapCount\":0,\"purchaseCount\":0,\"year\":\"2019\",\"materialWorth\":5843,\"updateTime\":1615450947340,\"params\":{},\"worth\":34358,\"createBy\":\"admin\",\"createTime\":1615447875000,\"maintainCount\":0,\"updateBy\":\"admin\",\"assetCount\":9,\"id\":4,\"materialCount\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 16:22:27');
+INSERT INTO `sys_oper_log` VALUES (561, '资产盘点', 2, 'com.ruoyi.asset.controller.AssetStockController.edit()', 'PUT', 1, 'admin', NULL, '/asset/stock', '127.0.0.1', '内网IP', '{\"assetWorth\":42300,\"scrapCount\":1,\"purchaseCount\":2,\"year\":\"2021\",\"purchaseWorth\":300,\"materialWorth\":583,\"scrapWorth\":4000,\"updateTime\":1615450955781,\"params\":{},\"worth\":42358,\"createBy\":\"admin\",\"createTime\":1615362073000,\"maintainCount\":1,\"updateBy\":\"admin\",\"comment\":\"摇铃的\",\"assetCount\":9,\"id\":3,\"materialCount\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 16:22:35');
+INSERT INTO `sys_oper_log` VALUES (562, '资产盘点', 2, 'com.ruoyi.asset.controller.AssetStockController.edit()', 'PUT', 1, 'admin', NULL, '/asset/stock', '127.0.0.1', '内网IP', '{\"assetWorth\":32300,\"scrapCount\":34,\"purchaseCount\":1,\"year\":\"2020\",\"materialWorth\":3358,\"scrapWorth\":4800,\"updateTime\":1615450961138,\"params\":{},\"worth\":36358,\"createBy\":\"admin\",\"createTime\":1615359274000,\"maintainCount\":34,\"updateBy\":\"admin\",\"assetCount\":9,\"id\":1,\"materialCount\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 16:22:41');
+INSERT INTO `sys_oper_log` VALUES (563, '资产信息', 5, 'com.ruoyi.asset.controller.AssetInfoController.export()', 'GET', 1, 'admin', NULL, '/asset/info/export', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"0870ce99-a31d-4b0a-8aff-4940728f9c63_info.xlsx\",\"code\":200}', 0, NULL, '2021-03-11 16:25:05');
+INSERT INTO `sys_oper_log` VALUES (564, '报表管理', 2, 'com.ruoyi.sys.controller.SysChartController.edit()', 'PUT', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"maintain_year_bar\",\"dsId\":34,\"listSort\":5,\"params\":{},\"title\":\"维护统计\",\"type\":\"line\",\"yaxis\":\"value=次数\",\"xaxis\":\"title=年度\",\"id\":17,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 16:42:55');
+INSERT INTO `sys_oper_log` VALUES (565, '报表管理', 2, 'com.ruoyi.sys.controller.SysChartController.edit()', 'PUT', 1, 'admin', NULL, '/sys/chart', '127.0.0.1', '内网IP', '{\"code\":\"material_worth_year_bar\",\"dsId\":37,\"listSort\":7,\"params\":{},\"title\":\"耗材统计\",\"type\":\"line\",\"yaxis\":\"value=总价值\",\"xaxis\":\"title=年度\",\"id\":18,\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 16:43:01');
+INSERT INTO `sys_oper_log` VALUES (566, '资产盘点', 2, 'com.ruoyi.asset.controller.AssetStockController.edit()', 'PUT', 1, 'admin', NULL, '/asset/stock', '127.0.0.1', '内网IP', '{\"assetWorth\":32300,\"scrapCount\":34,\"purchaseCount\":5,\"year\":\"2020\",\"materialWorth\":3358,\"scrapWorth\":4800,\"updateTime\":1615452237281,\"params\":{},\"worth\":36358,\"createBy\":\"admin\",\"createTime\":1615359274000,\"maintainCount\":34,\"updateBy\":\"admin\",\"assetCount\":9,\"id\":1,\"materialCount\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 16:43:57');
+INSERT INTO `sys_oper_log` VALUES (567, '资产盘点', 2, 'com.ruoyi.asset.controller.AssetStockController.edit()', 'PUT', 1, 'admin', NULL, '/asset/stock', '127.0.0.1', '内网IP', '{\"assetWorth\":33300,\"scrapCount\":0,\"purchaseCount\":34,\"year\":\"2019\",\"purchaseWorth\":45432,\"materialWorth\":5843,\"updateTime\":1615452250293,\"params\":{},\"worth\":34358,\"createBy\":\"admin\",\"createTime\":1615447875000,\"maintainCount\":56,\"updateBy\":\"admin\",\"assetCount\":9,\"id\":4,\"materialCount\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 16:44:10');
+INSERT INTO `sys_oper_log` VALUES (568, '资产盘点', 2, 'com.ruoyi.asset.controller.AssetStockController.edit()', 'PUT', 1, 'admin', NULL, '/asset/stock', '127.0.0.1', '内网IP', '{\"assetWorth\":33300,\"scrapCount\":4,\"purchaseCount\":34,\"year\":\"2019\",\"purchaseWorth\":45432,\"materialWorth\":5843,\"scrapWorth\":435,\"updateTime\":1615452284981,\"params\":{},\"worth\":34358,\"createBy\":\"admin\",\"createTime\":1615447875000,\"maintainCount\":56,\"updateBy\":\"admin\",\"assetCount\":9,\"id\":4,\"materialCount\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 16:44:44');
+INSERT INTO `sys_oper_log` VALUES (569, '资产盘点', 2, 'com.ruoyi.asset.controller.AssetStockController.edit()', 'PUT', 1, 'admin', NULL, '/asset/stock', '127.0.0.1', '内网IP', '{\"assetWorth\":32300,\"scrapCount\":34,\"purchaseCount\":5,\"year\":\"2020\",\"purchaseWorth\":12341,\"materialWorth\":3358,\"scrapWorth\":4800,\"updateTime\":1615452299493,\"params\":{},\"worth\":36358,\"createBy\":\"admin\",\"createTime\":1615359274000,\"maintainCount\":34,\"updateBy\":\"admin\",\"assetCount\":9,\"id\":1,\"materialCount\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-11 16:44:59');
+INSERT INTO `sys_oper_log` VALUES (570, '菜单管理', 1, 'com.ruoyi.web.controller.system.SysMenuController.add()', 'POST', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"visible\":\"0\",\"icon\":\"international\",\"orderNum\":\"3\",\"menuName\":\"网盘管理\",\"params\":{},\"parentId\":4,\"isCache\":\"0\",\"path\":\"yun\",\"createBy\":\"admin\",\"children\":[],\"isFrame\":\"1\",\"menuType\":\"M\",\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 14:33:03');
+INSERT INTO `sys_oper_log` VALUES (571, '角色管理', 2, 'com.ruoyi.web.controller.system.SysRoleController.edit()', 'PUT', 1, 'admin', NULL, '/system/role', '127.0.0.1', '内网IP', '{\"flag\":false,\"roleId\":2,\"admin\":false,\"remark\":\"普通角色\",\"dataScope\":\"2\",\"delFlag\":\"0\",\"params\":{},\"roleSort\":\"2\",\"deptCheckStrictly\":true,\"createTime\":1614242321000,\"updateBy\":\"admin\",\"menuCheckStrictly\":true,\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"menuIds\":[2039,2103,2104,2105,2106,2107,2118,2119,2120,2121,2122,2123,2124,2125,2126,2127,2134,2135,2136,2137,2138,2040,2041,2178],\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 14:34:28');
+INSERT INTO `sys_oper_log` VALUES (572, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"visible\":\"0\",\"icon\":\"monitor\",\"orderNum\":\"4\",\"menuName\":\"系统监控\",\"params\":{},\"parentId\":4,\"isCache\":\"0\",\"path\":\"monitor\",\"children\":[],\"createTime\":1614242321000,\"updateBy\":\"admin\",\"isFrame\":\"1\",\"menuId\":2,\"menuType\":\"M\",\"perms\":\"\",\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 14:45:25');
+INSERT INTO `sys_oper_log` VALUES (573, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"visible\":\"0\",\"icon\":\"tool\",\"orderNum\":\"4\",\"menuName\":\"开发工具\",\"params\":{},\"parentId\":4,\"isCache\":\"0\",\"path\":\"tool\",\"children\":[],\"createTime\":1614242321000,\"updateBy\":\"admin\",\"isFrame\":\"1\",\"menuId\":3,\"menuType\":\"M\",\"perms\":\"\",\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 14:45:35');
+INSERT INTO `sys_oper_log` VALUES (574, '资产信息', 2, 'com.ruoyi.asset.controller.AssetInfoController.edit()', 'PUT', 1, 'admin', NULL, '/asset/info', '127.0.0.1', '内网IP', '{\"img\":{\"path\":\"/profile/upload/2021/03/08/cf8fdbeb-52bd-4fd5-b4de-cf4eef3cc811.jpg\",\"id\":9,\"params\":{},\"title\":\"e824b899a9014c083e64d6f5097b02087bf4f407.jpg\"},\"houseId\":1,\"imgId\":9,\"num\":\"dyj-023414\",\"cateName\":\"打印机\",\"house\":{\"params\":{},\"title\":\"大仓库\",\"id\":1},\"houseName\":\"大仓库\",\"param\":\"激光打印机\",\"updateBy\":\"admin\",\"price\":6500,\"id\":44,\"useUser\":{\"admin\":true,\"nickName\":\"超级管理员\",\"params\":{},\"userId\":1},\"price1\":24,\"price2\":234,\"cate\":{\"params\":{},\"title\":\"打印机\",\"type\":\"1\",\"children\":[],\"id\":8},\"finishTime\":1617120000000,\"deptId\":104,\"updateTime\":1616655460855,\"params\":{},\"userName\":\"超级管理员\",\"createBy\":\"admin\",\"createTime\":1615186097000,\"cateId\":8,\"name\":\"激光打印机\",\"comment\":\"234\",\"useUserId\":1,\"status\":\"2\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 14:57:41');
+INSERT INTO `sys_oper_log` VALUES (575, '资产信息', 2, 'com.ruoyi.asset.controller.AssetInfoController.edit()', 'PUT', 1, 'admin', NULL, '/asset/info', '127.0.0.1', '内网IP', '{\"img\":{\"path\":\"/profile/upload/2021/03/08/cf8fdbeb-52bd-4fd5-b4de-cf4eef3cc811.jpg\",\"id\":9,\"params\":{},\"title\":\"e824b899a9014c083e64d6f5097b02087bf4f407.jpg\"},\"houseId\":1,\"imgId\":9,\"num\":\"dyj-023414\",\"cateName\":\"打印机\",\"house\":{\"params\":{},\"title\":\"大仓库\",\"id\":1},\"houseName\":\"大仓库\",\"param\":\"激光打印机\",\"updateBy\":\"admin\",\"price\":6500,\"id\":44,\"useUser\":{\"admin\":true,\"nickName\":\"超级管理员\",\"params\":{},\"userId\":1},\"price1\":24,\"price2\":234,\"cate\":{\"params\":{},\"title\":\"打印机\",\"type\":\"1\",\"children\":[],\"id\":8},\"finishTime\":1617120000000,\"deptId\":104,\"updateTime\":1616655468974,\"params\":{},\"userName\":\"超级管理员\",\"createBy\":\"admin\",\"createTime\":1615186097000,\"cateId\":8,\"name\":\"激光打印机\",\"comment\":\"234\",\"useUserId\":1,\"status\":\"2\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 14:57:48');
+INSERT INTO `sys_oper_log` VALUES (576, '资产信息', 2, 'com.ruoyi.asset.controller.AssetInfoController.edit()', 'PUT', 1, 'admin', NULL, '/asset/info', '127.0.0.1', '内网IP', '{\"img\":{\"path\":\"/profile/upload/2021/03/08/cf8fdbeb-52bd-4fd5-b4de-cf4eef3cc811.jpg\",\"id\":9,\"params\":{},\"title\":\"e824b899a9014c083e64d6f5097b02087bf4f407.jpg\"},\"houseId\":1,\"imgId\":9,\"num\":\"dyj-023414\",\"cateName\":\"打印机\",\"house\":{\"params\":{},\"title\":\"大仓库\",\"id\":1},\"houseName\":\"大仓库\",\"param\":\"激光打印机\",\"updateBy\":\"admin\",\"price\":6500,\"id\":44,\"useUser\":{\"admin\":true,\"nickName\":\"超级管理员\",\"params\":{},\"userId\":1},\"price1\":24,\"price2\":234,\"cate\":{\"params\":{},\"title\":\"打印机\",\"type\":\"1\",\"children\":[],\"id\":8},\"finishTime\":1617120000000,\"deptId\":104,\"updateTime\":1616655553451,\"params\":{},\"userName\":\"超级管理员\",\"createBy\":\"admin\",\"createTime\":1615186097000,\"cateId\":8,\"name\":\"激光打印机\",\"comment\":\"234\",\"useUserId\":1,\"status\":\"2\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 14:59:13');
+INSERT INTO `sys_oper_log` VALUES (577, '资产信息', 2, 'com.ruoyi.asset.controller.AssetInfoController.edit()', 'PUT', 1, 'admin', NULL, '/asset/info', '127.0.0.1', '内网IP', '{\"houseId\":2,\"num\":\"42134\",\"cateName\":\"笔记本电脑\",\"house\":{\"params\":{},\"title\":\"杂物间\",\"id\":2},\"houseName\":\"杂物间\",\"updateBy\":\"admin\",\"price\":1500,\"id\":41,\"price1\":5000,\"price2\":1500,\"cate\":{\"params\":{},\"title\":\"笔记本电脑\",\"type\":\"1\",\"children\":[],\"id\":6},\"factory\":\"\",\"finishTime\":1615132800000,\"deptId\":105,\"updateTime\":1616655558464,\"params\":{},\"proxy\":\"\",\"createBy\":\"admin\",\"createTime\":1615185152000,\"cateId\":6,\"name\":\"开发电脑\",\"comment\":\"\",\"status\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 14:59:18');
+INSERT INTO `sys_oper_log` VALUES (578, '耗材领用', 1, 'com.ruoyi.asset.controller.AssetPickupController.add()', 'POST', 1, 'admin', NULL, '/asset/pickup', '127.0.0.1', '内网IP', '{\"reason\":\"asfsdafdas\",\"amount\":1,\"materialId\":2,\"params\":{},\"applyUserId\":1,\"checkStatus\":\"0\",\"createBy\":\"admin\",\"createTime\":1616656665376,\"cateId\":11,\"comment\":\"233\",\"id\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 15:17:45');
+INSERT INTO `sys_oper_log` VALUES (579, '审核耗材领用', 2, 'com.ruoyi.asset.controller.AssetPickupController.check()', 'PUT', 1, 'admin', NULL, '/asset/pickup/check', '127.0.0.1', '内网IP', '{\"cate\":{\"params\":{},\"title\":\"圆珠笔\",\"type\":\"2\",\"children\":[],\"id\":11},\"reason\":\"asfsdafdas\",\"amount\":1,\"checkUserId\":1,\"materialId\":2,\"params\":{},\"applyUserId\":1,\"applyUser\":{\"admin\":true,\"nickName\":\"超级管理员\",\"params\":{},\"userId\":1},\"checkStatus\":\"1\",\"createBy\":\"admin\",\"isDelivery\":\"N\",\"checkTime\":1616656676064,\"material\":{\"params\":{},\"cateId\":11,\"name\":\"中性笔\",\"id\":2},\"createTime\":1616656665000,\"cateId\":11,\"comment\":\"233\",\"id\":2}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 15:17:56');
+INSERT INTO `sys_oper_log` VALUES (580, '出库管理', 1, 'com.ruoyi.asset.controller.AssetDeliveryController.add()', 'POST', 1, 'admin', NULL, '/asset/delivery', '127.0.0.1', '内网IP', '{\"amount\":1,\"houseId\":2,\"materialId\":2,\"params\":{},\"applyId\":2,\"createBy\":\"admin\",\"createTime\":1616656886600,\"cateId\":11,\"id\":4,\"recvUserId\":1}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 15:21:26');
+INSERT INTO `sys_oper_log` VALUES (581, '耗材领用', 1, 'com.ruoyi.asset.controller.AssetPickupController.add()', 'POST', 1, 'admin', NULL, '/asset/pickup', '127.0.0.1', '内网IP', '{\"reason\":\"141324\",\"amount\":1,\"materialId\":1,\"params\":{},\"applyUserId\":1,\"checkStatus\":\"0\",\"createBy\":\"admin\",\"createTime\":1616657036320,\"cateId\":8,\"id\":3}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 15:23:56');
+INSERT INTO `sys_oper_log` VALUES (582, '审核耗材领用', 2, 'com.ruoyi.asset.controller.AssetPickupController.check()', 'PUT', 1, 'admin', NULL, '/asset/pickup/check', '127.0.0.1', '内网IP', '{\"cate\":{\"params\":{},\"title\":\"打印机\",\"type\":\"1\",\"children\":[],\"id\":8},\"reason\":\"141324\",\"amount\":1,\"checkUserId\":1,\"materialId\":1,\"params\":{},\"applyUserId\":1,\"applyUser\":{\"admin\":true,\"nickName\":\"超级管理员\",\"params\":{},\"userId\":1},\"checkStatus\":\"1\",\"createBy\":\"admin\",\"isDelivery\":\"N\",\"checkTime\":1616657041479,\"material\":{\"params\":{},\"cateId\":8,\"name\":\"圆珠笔\",\"id\":3},\"createTime\":1616657036000,\"cateId\":8,\"id\":3}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 15:24:01');
+INSERT INTO `sys_oper_log` VALUES (583, '出库管理', 1, 'com.ruoyi.asset.controller.AssetDeliveryController.add()', 'POST', 1, 'admin', NULL, '/asset/delivery', '127.0.0.1', '内网IP', '{\"amount\":1,\"houseId\":2,\"materialId\":1,\"params\":{},\"applyId\":3,\"createBy\":\"admin\",\"createTime\":1616657045355,\"cateId\":8,\"id\":5,\"recvUserId\":1}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 15:24:05');
+INSERT INTO `sys_oper_log` VALUES (584, '耗材领用', 1, 'com.ruoyi.asset.controller.AssetPickupController.add()', 'POST', 1, 'admin', NULL, '/asset/pickup', '127.0.0.1', '内网IP', '{\"reason\":\"21341234\",\"amount\":2,\"materialId\":2,\"params\":{},\"applyUserId\":1,\"checkStatus\":\"1\",\"createBy\":\"admin\",\"createTime\":1616657108841,\"cateId\":11,\"id\":4}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 15:25:09');
+INSERT INTO `sys_oper_log` VALUES (585, '出库管理', 1, 'com.ruoyi.asset.controller.AssetDeliveryController.add()', 'POST', 1, 'admin', NULL, '/asset/delivery', '127.0.0.1', '内网IP', '{\"amount\":2,\"houseId\":2,\"materialId\":2,\"params\":{},\"applyId\":4,\"createBy\":\"admin\",\"createTime\":1616657118714,\"cateId\":11,\"id\":6,\"recvUserId\":1}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2021-03-25 15:25:18');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1975,7 +2091,7 @@ CREATE TABLE `sys_role`  (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, '1', 1, 1, '0', '0', 'admin', '2021-02-25 16:38:41', '', NULL, '超级管理员');
-INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', 1, 1, '0', '0', 'admin', '2021-02-25 16:38:41', 'admin', '2021-03-09 16:38:34', '普通角色');
+INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', 1, 1, '0', '0', 'admin', '2021-02-25 16:38:41', 'admin', '2021-03-25 14:34:28', '普通角色');
 INSERT INTO `sys_role` VALUES (3, '资产维护员', 'maintain', 4, '1', 1, 1, '0', '0', 'admin', '2021-03-09 16:38:16', '', NULL, NULL);
 INSERT INTO `sys_role` VALUES (4, '采购员', 'purchase', 4, '1', 1, 1, '0', '0', 'admin', '2021-03-09 16:39:15', '', NULL, NULL);
 INSERT INTO `sys_role` VALUES (5, '资产主管', 'manager', 5, '1', 1, 1, '0', '0', 'admin', '2021-03-09 16:39:54', '', NULL, NULL);
@@ -2033,6 +2149,7 @@ INSERT INTO `sys_role_menu` VALUES (2, 2135);
 INSERT INTO `sys_role_menu` VALUES (2, 2136);
 INSERT INTO `sys_role_menu` VALUES (2, 2137);
 INSERT INTO `sys_role_menu` VALUES (2, 2138);
+INSERT INTO `sys_role_menu` VALUES (2, 2178);
 INSERT INTO `sys_role_menu` VALUES (3, 2039);
 INSERT INTO `sys_role_menu` VALUES (3, 2139);
 INSERT INTO `sys_role_menu` VALUES (3, 2140);
@@ -2270,7 +2387,58 @@ CREATE TABLE `xdata_pipe`  (
 -- ----------------------------
 -- Records of xdata_pipe
 -- ----------------------------
-INSERT INTO `xdata_pipe` VALUES (1, 1, 1, 'r', 'SELECT id, dept_id, code, title, period, start_date, end_date, master_user, list_sort, status, is_enroll, create_by, create_time, update_by, update_time FROM base_specialty limit #{_page} , #{_rows};', 'INSERT INTO base_specialty( id, dept_id, code, title, period, start_date, end_date, master_user, list_sort, status, is_enroll, create_by, create_time, update_by, update_time ) VALUES ( NULL, #{dept_id}, #{code}, #{title}, #{period}, #{start_date}, #{end_date}, #{master_user}, #{list_sort}, #{status}, #{is_enroll}, #{create_by}, #{create_time}, #{update_by}, #{update_time} );', 'UPDATE base_specialty SET dept_id =  #{dept_id}, code =  #{code}, title =  #{title}, period =  #{period}, start_date =  #{start_date}, end_date =  #{end_date}, master_user =  #{master_user}, list_sort =  #{list_sort}, status =  #{status}, is_enroll =  #{is_enroll}, create_by =  #{create_by}, create_time =  #{create_time}, update_by =  #{update_by}, update_time =  #{update_time} WHERE id = #{id};', NULL, 'SELECT * FROM base_specialty WHERE id = #{id} LIMIT 1', '2020-12-31 10:52:24', 3, 1, '1');
+INSERT INTO `xdata_pipe` VALUES (1, 1, 1, 'r', 'SELECT id, dept_id, code, title, period, start_date, end_date, master_user, list_sort, status, is_enroll, create_by, create_time, update_by, update_time FROM base_specialty limit #{_page} , #{_rows};', 'INSERT INTO base_specialty( id, dept_id, code, title, period, start_date, end_date, master_user, list_sort, status, is_enroll, create_by, create_time, update_by, update_time ) VALUES ( NULL, #{dept_id}, #{code}, #{title}, #{period}, #{start_date}, #{end_date}, #{master_user}, #{list_sort}, #{status}, #{is_enroll}, #{create_by}, #{create_time}, #{update_by}, #{update_time} );', 'UPDATE base_specialty SET dept_id =  #{dept_id}, code =  #{code}, title =  #{title}, period =  #{period}, start_date =  #{start_date}, end_date =  #{end_date}, master_user =  #{master_user}, list_sort =  #{list_sort}, status =  #{status}, is_enroll =  #{is_enroll}, create_by =  #{create_by}, create_time =  #{create_time}, update_by =  #{update_by}, update_time =  #{update_time} WHERE id = #{id};', NULL, 'SELECT * FROM base_specialty WHERE id = #{id} LIMIT 1', '2021-03-25 16:08:00', -1, 1, '1');
 INSERT INTO `xdata_pipe` VALUES (2, 2, 1, 'w', 'SELECT id, dept_id, code, title, period, start_date, end_date, master_user, list_sort, status, is_enroll, create_by, create_time, update_by, update_time FROM base_specialty limit #{_page} , #{_rows};', 'INSERT INTO base_specialty( id, dept_id, code, title, period, start_date, end_date, master_user, list_sort, status, is_enroll, create_by, create_time, update_by, update_time ) VALUES ( NULL, #{dept_id}, #{code}, #{title}, #{period}, #{start_date}, #{end_date}, #{master_user}, #{list_sort}, #{status}, #{is_enroll}, #{create_by}, #{create_time}, #{update_by}, #{update_time} );', 'UPDATE base_specialty SET dept_id =  #{dept_id}, code =  #{code}, title =  #{title}, period =  #{period}, start_date =  #{start_date}, end_date =  #{end_date}, master_user =  #{master_user}, list_sort =  #{list_sort}, status =  #{status}, is_enroll =  #{is_enroll}, create_by =  #{create_by}, create_time =  #{create_time}, update_by =  #{update_by}, update_time =  #{update_time} WHERE code = #{code};', NULL, 'SELECT * FROM base_specialty WHERE code = #{code}  LIMIT 1', '2020-12-31 09:05:46', 3, 1, '0');
+
+-- ----------------------------
+-- Table structure for yun_files
+-- ----------------------------
+DROP TABLE IF EXISTS `yun_files`;
+CREATE TABLE `yun_files`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增长主键ID',
+  `folder_id` int(11) NULL DEFAULT 0 COMMENT '目录',
+  `file_id` int(11) NOT NULL COMMENT '文件',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '文件名',
+  `type` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '类型',
+  `is_public` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'N' COMMENT '是否共享',
+  `create_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '云盘文件' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of yun_files
+-- ----------------------------
+INSERT INTO `yun_files` VALUES (5, 0, 10, '微信图片_20201128210814.jpg', '2', 'N', 'admin', '2021-03-17 14:45:11', '', NULL);
+INSERT INTO `yun_files` VALUES (6, 5, 13, '16121474130256962.mp4', '3', 'N', 'admin', '2021-03-17 14:45:19', '', NULL);
+INSERT INTO `yun_files` VALUES (7, 0, 11, 'Web3.2_控件开发包编程指南.pdf', '5', 'Y', 'admin', '2021-03-17 14:45:59', 'admin', '2021-03-17 15:48:43');
+INSERT INTO `yun_files` VALUES (8, 0, 10, '微信图片_20201128210814.jpg', '2', 'N', 'admin', '2021-03-17 15:05:16', '', NULL);
+INSERT INTO `yun_files` VALUES (9, 0, 15, '青鸟消防无线局域智慧消防系统 (1).jpg', '2', 'N', 'admin', '2021-03-17 15:33:51', '', NULL);
+INSERT INTO `yun_files` VALUES (10, 8, 14, '“双随机、一公开”消防监督抽查实施细则（试行） (1).doc', '1', 'N', 'admin', '2021-03-17 15:35:47', '', NULL);
+INSERT INTO `yun_files` VALUES (11, 8, 12, '爱尚酒店.pdf', '1', 'N', 'admin', '2021-03-17 15:37:39', '', NULL);
+
+-- ----------------------------
+-- Table structure for yun_folder
+-- ----------------------------
+DROP TABLE IF EXISTS `yun_folder`;
+CREATE TABLE `yun_folder`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增长主键ID',
+  `title` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '分类名称',
+  `pid` int(11) NULL DEFAULT 0 COMMENT '上级',
+  `list_sort` int(11) NULL DEFAULT 9 COMMENT '排序',
+  `is_public` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'N' COMMENT '是否公开',
+  `create_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_by` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '云盘目录' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of yun_folder
+-- ----------------------------
+INSERT INTO `yun_folder` VALUES (8, '目录1', 0, 9, 'N', 'admin', '2021-03-17 15:33:31', 'admin', '2021-03-17 15:47:42');
 
 SET FOREIGN_KEY_CHECKS = 1;

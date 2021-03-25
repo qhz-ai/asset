@@ -2,6 +2,7 @@ package com.ruoyi.asset.service;
 
 import java.util.List;
 import com.ruoyi.asset.domain.AssetInfo;
+import com.ruoyi.asset.domain.BatchInfo;
 
 /**
  * 资产信息Service接口
@@ -69,4 +70,23 @@ public interface IAssetInfoService
      * @return 结果
      */
     public String imports(List<AssetInfo> list, Boolean isUpdateSupport, String operName);
+    
+
+
+    /**
+     * 资产调拨
+     * 
+     * @param info BatchInfo 调拨信息
+     * @return 结果
+     */
+    public int moveInfo(BatchInfo info);
+
+
+    /**
+     * 资产报废
+     * 
+     * @param info BatchInfo 资产信息
+     * @return 结果
+     */
+    public int scrapInfo(BatchInfo info);
 }

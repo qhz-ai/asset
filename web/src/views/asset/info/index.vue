@@ -22,6 +22,9 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="归属部门" prop="deptId">
+        <treeselect v-model="queryParams.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属部门" style="width:240px" />
+      </el-form-item>
       <el-form-item label="仓库" prop="houseId">
         <el-select v-model="queryParams.houseId" filterable placeholder="请选择仓库">
           <el-option
@@ -71,6 +74,28 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
+          type="warning"
+          plain
+          icon="el-icon-top-right"
+          size="mini"
+          :disabled="multiple"
+          @click="handleMove"
+          v-hasPermi="['asset:info:edit']"
+        >调拨</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-scissors"
+          size="mini"
+          :disabled="multiple"
+          @click="handleScrap"
+          v-hasPermi="['asset:info:edit']"
+        >报废</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
           type="info"
           icon="el-icon-upload2"
           size="mini"
@@ -97,9 +122,8 @@
       <el-table-column label="资产编号" align="center" prop="num" />
       <el-table-column label="产品名称" align="center" prop="name" />
       <el-table-column label="厂商" align="center" prop="factory" />
-      <el-table-column label="购买渠道" align="center" prop="proxy" />
+      <el-table-column label="所属部门" align="center" prop="deptName" />
       <el-table-column label="当前价值" align="center" prop="price" />
-      <el-table-column label="市场价格" align="center" prop="price1" />
       <el-table-column label="购买价格" align="center" prop="price2" />
       <el-table-column label="仓库" align="center" prop="house.title" />
       <el-table-column label="资产状态" align="center" prop="status" :formatter="statusFormat" />
@@ -158,6 +182,9 @@
         </el-form-item>
         <el-form-item label="当前价值" prop="price">
           <el-input-number v-model="form.price" placeholder="请输入当前价值" />
+        </el-form-item>
+        <el-form-item label="归属部门" prop="deptId">
+          <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属部门" />
         </el-form-item>
         <el-form-item label="仓库" prop="houseId">
           <el-select v-model="form.houseId" filterable placeholder="请选择仓库">
@@ -237,6 +264,29 @@
       </div>
     </el-dialog>
 
+    <!-- 调拨资产信息对话框 -->
+    <el-dialog title="资产调拨" :visible.sync="move.open" width="500px" append-to-body>
+      <el-form ref="form" :model="moveForm" :rules="moveRules" label-width="80px">
+        <el-form-item label="归属部门" prop="deptId">
+          <treeselect v-model="moveForm.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属部门" />
+        </el-form-item>
+        <el-form-item label="仓库" prop="houseId">
+          <el-select v-model="moveForm.houseId" filterable placeholder="请选择仓库">
+            <el-option
+              v-for="item in warehouseList"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitMoveForm">确 定</el-button>
+        <el-button @click="cancelMove">取 消</el-button>
+      </div>
+    </el-dialog>
+
     <!-- 导入对话框 -->
     <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
       <el-upload
@@ -271,10 +321,11 @@
 </template>
 
 <script>
-import { listInfo, getInfo, delInfo, addInfo, updateInfo, exportInfo, importTemplate } from "@/api/asset/info";
+import { listInfo, getInfo, delInfo, addInfo, updateInfo, exportInfo, importTemplate, scrapInfo, moveInfo } from "@/api/asset/info";
 import { selectWarehouse } from "@/api/asset/warehouse";
 import { listCategory } from "@/api/asset/category";
 import { selectUser } from "@/api/sys/public";
+import { treeselect } from "@/api/system/dept";
 import { getToken } from "@/utils/auth";
 import Treeselect from "@riophae/vue-treeselect";
 import ImageUpload from '@/components/ImageUpload';
@@ -310,6 +361,7 @@ export default {
       // 资产分类树选项
       categoryOptions: [],
       warehouseList: [],
+      deptOptions:[],
       // 用户数据
       userList: [],
       // 查询参数
@@ -321,6 +373,7 @@ export default {
         name: null,
         houseId: null,
         status: null,
+        deptId: null,
         useUserId: null,
         orderByColumn:"t.id",
         isAsc:"DESC"
@@ -342,6 +395,22 @@ export default {
         // 上传的地址
         url: process.env.VUE_APP_BASE_API + "/asset/info/importData"
       },
+      move: {
+        open: false,
+      },
+      moveForm: {
+        ids: null,
+        houseId: null,
+        deptId: null,
+      },
+      moveRules: {
+        houseId: [
+          { required: true, message: "仓库不能为空", trigger: "blur" }
+        ],
+        deptId: [
+          { required: true, message: "所属部门不能为空", trigger: "blur" }
+        ],
+      },
       // 表单校验
       rules: {
         cateId: [
@@ -349,6 +418,9 @@ export default {
         ],
         houseId: [
           { required: true, message: "仓库不能为空", trigger: "blur" }
+        ],
+        deptId: [
+          { required: true, message: "所属部门不能为空", trigger: "blur" }
         ],
         num: [
           { required: true, message: "资产编号不能为空", trigger: "blur" }
@@ -377,6 +449,9 @@ export default {
       this.warehouseList = response.rows;
     });
     this.getTreeselect();
+    treeselect().then(response => {
+      this.deptOptions = response.data;
+    });
   },
   methods: {
     /** 查询资产信息列表 */
@@ -491,19 +566,41 @@ export default {
         }
       });
     },
-    /** 删除按钮操作 */
-    handleDelete(row) {
+    // 取消按钮
+    cancelMove() {
+      this.move.open = false;
+    },
+    /** 报废按钮操作 */
+    handleScrap(row) {
       const ids = row.id || this.ids;
-      this.$confirm('是否确认删除选中的数据项?', "警告", {
+      this.$confirm('是否确认报废选中的资产信息?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delInfo(ids);
+          return scrapInfo({ids:ids});
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");
         })
+    },
+    /** 调拨按钮操作 */
+    handleMove(row) {
+      this.reset();
+      this.moveForm.ids = row.id || this.ids
+      this.move.open = true;
+    },
+    /** 提交按钮 */
+    submitMoveForm() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          moveInfo(this.moveForm).then(response => {
+            this.msgSuccess("操作成功");
+            this.move.open = false;
+            this.getList();
+          });
+        }
+      });
     },
     /** 导出按钮操作 */
     handleExport() {

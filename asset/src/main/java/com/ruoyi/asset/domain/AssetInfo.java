@@ -110,6 +110,12 @@ public class AssetInfo extends BaseEntity
     @NotNull(message="资产状态不能为空")
     private String status;
 
+    /** 所属部门 */
+    @ApiModelProperty("所属部门")
+    private Long deptId;
+    @Excel(name = "所属部门")
+    private String deptName;
+    
     /** 使用人 */
     @ApiModelProperty("使用人")
     private Long useUserId;

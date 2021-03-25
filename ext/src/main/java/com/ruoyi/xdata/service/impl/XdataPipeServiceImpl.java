@@ -10,10 +10,10 @@ import com.ruoyi.xdata.mapper.XdataPipeMapper;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.generator.domain.GenTableColumn;
 import com.ruoyi.generator.mapper.GenTableColumnMapper;
+import com.ruoyi.task.XDataJob;
 import com.ruoyi.xdata.domain.XdataModel;
 import com.ruoyi.xdata.domain.XdataPipe;
 import com.ruoyi.xdata.service.IXdataPipeService;
-import com.ruoyi.xdata.task.XDataJob;
 
 /**
  * 通道Service业务层处理

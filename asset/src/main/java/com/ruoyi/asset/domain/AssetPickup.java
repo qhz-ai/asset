@@ -53,6 +53,10 @@ public class AssetPickup extends BaseEntity
     @ApiModelProperty("领用数量")
     private BigDecimal amount;
 
+    /** 申请人ID */
+    @ApiModelProperty("申请人ID")
+    private Long applyUserId;
+    
     @Excels({
         @Excel(name = "申请人", targetAttr = "nickName", type = Type.EXPORT)
     })

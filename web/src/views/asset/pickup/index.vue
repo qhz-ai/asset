@@ -125,7 +125,7 @@
 
     <!-- 添加或修改耗材领用对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="资产分类" prop="cateId">
            <treeselect v-model="form.cateId" :options="categoryOptions" @select="remoteMaterial" :normalizer="normalizer" placeholder="请选择分类"  style="width:240px"/>
         </el-form-item>
@@ -139,8 +139,18 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="领用人" prop="applyUserId">
+          <el-select v-model="form.applyUserId" filterable placeholder="请输入姓名选择" :loading="loading">
+            <el-option
+              v-for="item in userList"
+              :key="item.userId"
+              :label="item.nickName"
+              :value="item.userId">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="领用数量" prop="amount">
-          <el-input v-model="form.amount" placeholder="请输入领用数量" />
+          <el-input-number v-model="form.amount" placeholder="请输入领用数量" />
         </el-form-item>
         <el-form-item label="申请原由" prop="reason">
           <el-input v-model="form.reason" placeholder="请输入申请原由" />
@@ -148,7 +158,7 @@
         <el-form-item label="申请说明" prop="comment">
           <el-input v-model="form.comment" placeholder="请输入申请说明" />
         </el-form-item>
-        <el-form-item label="审核结果" v-if="action == 'check' ">
+        <el-form-item label="审核结果" v-if="action != 'delivery'">
           <el-radio-group v-model="form.checkStatus">
             <el-radio
               v-for="dict in checkStatusOptions"
@@ -157,11 +167,17 @@
             >{{dict.dictLabel}}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="不通过原因" prop="checkReason" v-if="form.checkStatus == '2'">
+        <el-form-item label="不通过原因" v-if="form.checkStatus == '2'">
           <el-input v-model="form.checkReason" placeholder="请输入审核不通过原因" />
         </el-form-item>
-        <el-form-item label="出库领用单" v-if="action == 'delivery' ">
-          <imageUpload v-model="form.imgId"/>
+        <el-form-item label="是否出库">
+          <el-radio-group v-model="form.isDelivery">
+            <el-radio
+              v-for="dict in yesnoOptions"
+              :key="dict.dictValue"
+              :label="dict.dictValue"
+            >{{dict.dictLabel}}</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -173,7 +189,7 @@
 </template>
 
 <script>
-import { listPickup, getPickup, delPickup, checkPickup, updatePickup, exportPickup } from "@/api/asset/pickup";
+import { listPickup, addPickup, getPickup, delPickup, checkPickup, updatePickup, exportPickup } from "@/api/asset/pickup";
 import { listCategory } from "@/api/asset/category";
 import { listMaterial} from "@/api/asset/material";
 import { addDelivery } from "@/api/asset/delivery";
@@ -206,6 +222,8 @@ export default {
       materialList:[],
       // 资产分类树选项
       categoryOptions: [],
+      // 用户数据
+      userList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -242,6 +260,9 @@ export default {
         reason: [
           { required: true, message: "申请原由不能为空", trigger: "blur" }
         ],
+        applyUserId: [
+          { required: true, message: "申请人不能为空", trigger: "blur" }
+        ],
       }
     };
   },
@@ -252,6 +273,9 @@ export default {
     });
     this.getDicts("sys_yes_no").then(response => {
       this.yesnoOptions = response.data;
+    });
+    selectUser({status:'0'}).then(response => {
+      this.userList = response.rows;
     });
     this.getTreeselect();
   },
@@ -316,8 +340,7 @@ export default {
         checkUserId: null,
         checkStatus: "0",
         checkTime: null,
-        checkReason: null,
-        imgId: null
+        checkReason: null
       };
       this.resetForm("form");
     },
@@ -367,11 +390,11 @@ export default {
         this.title = "耗材出库";
       });
     },
-    /** 提交按钮
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          console.log(this.action);
           if (this.action == 'check') {
             checkPickup(this.form).then(response => {
               this.msgSuccess("审核成功");
@@ -389,6 +412,12 @@ export default {
 
             addDelivery(delivery).then(response => {
               this.msgSuccess("出库成功");
+              this.open = false;
+              this.getList();
+            });
+          }else if (this.action == 'add') {
+            addPickup(this.form).then(response => {
+              this.msgSuccess("保存成功");
               this.open = false;
               this.getList();
             });

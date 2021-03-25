@@ -1,4 +1,4 @@
-package com.ruoyi.xdata.task;
+package com.ruoyi.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -37,17 +37,21 @@ public class DbUtil {
 		return running;
 	}
 	
-	public void stop() throws SQLException {
+	synchronized public static void stop() {
+		conMap.clear();
+		DbUtil.running = false;
+	}
+	
+	public void release() throws SQLException {
 		for(PreparedStatement ps: psMap.values()) {
 			ps.close();
 		}
 		for(Connection c: conMap.values()) {
 			c.close();
 		}
-		conMap.clear();
 		psMap.clear();
 		paramMap.clear();
-		DbUtil.running = false;
+		
 	}
 	
 	public static Connection getConnection(XdataClient client) {

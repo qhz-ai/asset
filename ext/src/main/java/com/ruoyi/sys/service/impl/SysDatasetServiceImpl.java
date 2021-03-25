@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.pp.util.ExportUtil;
+import com.ruoyi.util.ExportUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,6 @@ import com.ruoyi.sys.mapper.SysChartMapper;
 import com.ruoyi.sys.mapper.SysDatasetMapper;
 import com.ruoyi.common.exception.CustomException;
 import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.sys.domain.SysChart;
@@ -232,7 +231,7 @@ public class SysDatasetServiceImpl implements ISysDatasetService
     	
     	//去除非查询操作
     	String w = where.toLowerCase();
-    	if(w.indexOf("delete") > 0 || w.indexOf("update") >0  || w.indexOf("create") >0  || w.indexOf("alter") >0 || w.indexOf("truncate") >0 || w.indexOf("drop") >0) {
+    	if(w.indexOf("delete") >= 0 || w.indexOf("update") >=0  || w.indexOf("create") >=0  || w.indexOf("alter") >=0 || w.indexOf("truncate") >=0 || w.indexOf("drop") >=0) {
 	   		 throw new CustomException("不允许的操作");
 	   	}
     	

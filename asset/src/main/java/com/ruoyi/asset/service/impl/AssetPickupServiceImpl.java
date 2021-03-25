@@ -59,7 +59,13 @@ public class AssetPickupServiceImpl implements IAssetPickupService
     	if(assetPickup.getAmount().floatValue() <= 0) {
     		throw new CustomException("数量不能小于0");
     	}
-    	
+    	if(assetPickup.getApplyUserId() == null) {
+    		assetPickup.setApplyUserId(SecurityUtils.getLoginUser().getUser().getUserId());
+    	}
+    	if(!"0".equals(assetPickup.getCheckStatus())) {
+        	assetPickup.setCheckUserId(SecurityUtils.getLoginUser().getUser().getUserId());
+        	assetPickup.setCheckTime(DateUtils.getNowDate());    		
+    	}
         assetPickup.setCreateTime(DateUtils.getNowDate());
         assetPickup.setCreateBy(SecurityUtils.getUsername());
         return assetPickupMapper.insertAssetPickup(assetPickup);
