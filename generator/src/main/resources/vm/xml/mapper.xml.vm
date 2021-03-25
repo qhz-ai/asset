@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 #end
 
     <sql id="select${ClassName}Vo">
-        select#foreach($column in $columns) $column.columnName#if($velocityCount != $columns.size()),#end#end from ${tableName}
+        select#foreach($column in $columns) $column.columnName#if($velocityCount != $columns.size()),#end#end from ${tableName} t
     </sql>
 
     <select id="select${ClassName}List" parameterType="${ClassName}" resultMap="${ClassName}Result">
@@ -61,14 +61,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="select${ClassName}ById" parameterType="${pkColumn.javaType}" resultMap="#if($table.sub)${ClassName}${subClassName}Result#else${ClassName}Result#end">
 #if($table.crud || $table.tree)
         <include refid="select${ClassName}Vo"/>
-        where ${pkColumn.columnName} = #{${pkColumn.javaField}}
+        where t.${pkColumn.columnName} = #{${pkColumn.javaField}}
 #elseif($table.sub)
         select#foreach($column in $columns) a.$column.columnName#if($velocityCount != $columns.size()),#end#end,
            #foreach($column in $subTable.columns) b.$column.columnName#if($velocityCount != $subTable.columns.size()),#end#end
 
-        from ${tableName} a
-        left join ${subTableName} b on b.${subTableFkName} = a.${pkColumn.columnName}
-        where a.${pkColumn.columnName} = #{${pkColumn.javaField}}
+        from ${tableName} t.
+        left join ${subTableName} s on s.${subTableFkName} = t.${pkColumn.columnName}
+        where t.${pkColumn.columnName} = #{${pkColumn.javaField}}
 #end
     </select>
         
