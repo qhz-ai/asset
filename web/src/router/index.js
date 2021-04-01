@@ -120,6 +120,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/person/yun/files',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'share',
+        component: (resolve) => require(['@/views/yun/files/share'], resolve),
+        name: 'ShareFiles',
+        meta: { title: '共享文件', icon: '' }
+      }
+    ]
+  },
+  {
     path: '/gen',
     component: Layout,
     hidden: true,
