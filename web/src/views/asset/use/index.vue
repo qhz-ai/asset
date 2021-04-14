@@ -169,7 +169,7 @@
         <el-form-item label="不通过原因" prop="checkReason" v-if="form.checkStatus == '2'">
           <el-input v-model="form.checkReason" placeholder="请输入审核不通过原因" />
         </el-form-item>
-        <el-form-item label="资产编号" prop="assetId" v-if="action == 'delivery'">
+        <el-form-item label="资产编号" prop="assetId" v-if="form.checkStatus == '1'">
           <el-select v-model="form.assetId" filterable placeholder="请输入编号选择" :loading="loading">
             <el-option
               v-for="item in assetList"
@@ -386,7 +386,7 @@ export default {
         this.form = response.data;
         this.open = true;
         this.title = "资产出库";
-        listInfo({cateId:response.data.cateId, status:'1'}).then(response => {
+        listInfo({cateId:response.data.cateId}).then(response => {
           this.assetList = response.rows;
         });
       });

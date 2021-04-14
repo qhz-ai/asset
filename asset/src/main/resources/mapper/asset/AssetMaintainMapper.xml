@@ -81,12 +81,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="params.keywords != null and params.keywords != ''"><!-- 开始时间检索 -->
                 and (i.name like concat('%', #{params.keywords}, '%') or i.num like concat('%', #{params.keywords}, '%'))
             </if>
+            
             <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
                 and date_format(t.start_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
             </if>
             <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
                 and date_format(t.finish_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
+            
+            <if test="params.dataScope != null ">${params.dataScope}</if>
         </where>
     </select>
     

@@ -17,9 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ruoyi.asset.mapper.AssetCategoryMapper;
 import com.ruoyi.asset.mapper.AssetMaterialMapper;
+import com.ruoyi.asset.mapper.AssetTakingMapper;
 import com.ruoyi.asset.mapper.AssetWarehouseMapper;
 import com.ruoyi.asset.domain.AssetCategory;
 import com.ruoyi.asset.domain.AssetMaterial;
+import com.ruoyi.asset.domain.AssetTaking;
 import com.ruoyi.asset.domain.AssetWarehouse;
 import com.ruoyi.asset.service.IAssetMaterialService;
 
@@ -33,6 +35,9 @@ import com.ruoyi.asset.service.IAssetMaterialService;
 public class AssetMaterialServiceImpl implements IAssetMaterialService 
 {
     private static final Logger log = LoggerFactory.getLogger(AssetMaterialServiceImpl.class);
+    
+    @Autowired
+    private AssetTakingMapper assetTakingMapper;
     @Autowired
     private AssetCategoryMapper assetCategoryMapper;
     @Autowired
@@ -85,8 +90,21 @@ public class AssetMaterialServiceImpl implements IAssetMaterialService
      * @return 结果
      */
     @Override
+    @Transactional
     public int updateAssetMaterial(AssetMaterial assetMaterial)
     {
+    	if(assetMaterial.getParams().containsKey("taking") || Boolean.parseBoolean(assetMaterial.getParams().get("taking").toString())) {
+    		AssetTaking assetTaking = new AssetTaking();
+    		assetTaking.setCateId(assetMaterial.getCateId());
+    		assetTaking.setMaterialId(assetMaterial.getId());
+    		assetTaking.setAssetName(assetMaterial.getName());
+    		assetTaking.setHouseId(assetMaterial.getHouseId());
+    		assetTaking.setAmount(assetMaterial.getAmount());
+    		assetTaking.setCreateTime(DateUtils.getNowDate());
+    		assetTaking.setCreateBy(SecurityUtils.getUsername());
+    		assetTakingMapper.insertAssetTaking(assetTaking);
+    	}
+    	
         assetMaterial.setUpdateTime(DateUtils.getNowDate());
         assetMaterial.setUpdateBy(SecurityUtils.getUsername());
         return assetMaterialMapper.updateAssetMaterial(assetMaterial);

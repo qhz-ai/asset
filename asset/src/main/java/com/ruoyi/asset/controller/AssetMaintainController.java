@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -39,6 +41,7 @@ public class AssetMaintainController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('asset:maintain:my')")
     @GetMapping("/my")
+    @DataScope(userAlias = "au", deptAlias = "au")
     public TableDataInfo my(AssetMaintain assetMaintain)
     {
     	assetMaintain.setCreateBy(SecurityUtils.getUsername());
@@ -52,6 +55,7 @@ public class AssetMaintainController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('asset:maintain:task')")
     @GetMapping("/task")
+    @DataScope(userAlias = "mu")
     public TableDataInfo task(AssetMaintain assetMaintain)
     {
     	assetMaintain.setMasterUserId(SecurityUtils.getLoginUser().getUser().getUserId());
@@ -67,6 +71,7 @@ public class AssetMaintainController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('asset:maintain:list')")
     @GetMapping("/list")
+    @DataScope(userAlias = "au", deptAlias = "au")
     public TableDataInfo list(AssetMaintain assetMaintain)
     {
         startPage();

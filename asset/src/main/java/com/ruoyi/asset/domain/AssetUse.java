@@ -43,6 +43,10 @@ public class AssetUse extends BaseEntity
     @Excel(name = "资产参数")
     private String param;
 
+    /** 申请人ID */
+    @ApiModelProperty("申请人ID")
+    private Long applyUserId;
+    
     @Excels({
         @Excel(name = "申请人", targetAttr = "nickName", type = Type.EXPORT)
     })

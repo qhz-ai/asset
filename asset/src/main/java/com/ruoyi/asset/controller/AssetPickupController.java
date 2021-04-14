@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -39,6 +41,7 @@ public class AssetPickupController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('asset:pickup:list')")
     @GetMapping("/list")
+    @DataScope(userAlias = "au", deptAlias = "au")
     public TableDataInfo list(AssetPickup assetPickup)
     {
         startPage();

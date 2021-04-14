@@ -114,7 +114,7 @@
 
     <!-- 添加或修改耗材信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
        <el-tabs type="card" >
         <el-tab-pane label="基本信息">
         <el-form-item label="资产分类" prop="cateId">
@@ -151,6 +151,9 @@
               :value="dict.dictValue"
             />
           </el-select>
+        </el-form-item>
+        <el-form-item label="生成盘点记录" v-if="form.id">
+          <el-checkbox @change="recordTaking">是</el-checkbox>
         </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="详细信息">
@@ -344,6 +347,9 @@ export default {
         data.children = this.handleTree(response.data, "id", "pid");
         this.categoryOptions.push(data);
       });
+    },
+    recordTaking(v) {
+      this.form.params.taking = v;
     },
     // 取消按钮
     cancel() {

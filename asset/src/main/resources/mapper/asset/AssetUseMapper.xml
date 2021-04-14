@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="AssetUse" id="AssetUseResult">
         <result property="id"    column="id"    />
         <result property="cateId"    column="cate_id"    />
+        <result property="applyUserId"    column="apply_user_id"    />
         <result property="param"    column="param"    />
         <result property="reason"    column="reason"    />
         <result property="comment"    column="comment"    />
@@ -25,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
     
-        <association property="applyUser"    column="create_by" javaType="SysUser" resultMap="applyUserResult" />
+        <association property="applyUser"    column="apply_user_id" javaType="SysUser" resultMap="applyUserResult" />
         <association property="checkUser"    column="check_user_id" javaType="SysUser" resultMap="checkUserResult" />
         <association property="cate"    column="cate_id" javaType="AssetCategory" resultMap="cateResult" />
         <association property="asset"    column="asset_id" javaType="AssetInfo" resultMap="assetInfoResult" />
@@ -53,9 +54,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <sql id="selectAssetUseVo">
         select t.*, au.user_id apply_user_id, au.nick_name apply_user_name, cu.nick_name check_user_name, c.title cate_name, c.type cate_type,i.name asset_name, i.num asset_num
          from asset_use t
-         left join asset_info i on t.asset_id = i.id
+         join sys_user au on au.user_id = t.apply_user_id
          join asset_category c on t.cate_id = c.id
-         join sys_user au on au.user_name = t.create_by
+         left join asset_info i on t.asset_id = i.id
          left join sys_user cu on cu.user_id = t.check_user_id
     </sql>
 
@@ -64,6 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectAssetUseVo"/>
         <where>  
             <if test="cateId != null "> and t.cate_id = #{cateId}</if>
+            <if test="applyUserId != null "> and t.apply_user_id = #{applyUserId}</if>
             <if test="checkUserId != null "> and t.check_user_id = #{checkUserId}</if>
             <if test="checkStatus != null  and checkStatus != ''"> and t.check_status = #{checkStatus}</if>
             <if test="assetId != null "> and t.asset_id = #{assetId}</if>
@@ -77,6 +79,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
                 and date_format(t.finish_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
+            
+            <if test="params.dataScope != null ">${params.dataScope}</if>
         </where>
     </select>
     
@@ -89,6 +93,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into asset_use
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="cateId != null">cate_id,</if>
+            <if test="applyUserId != null">apply_user_id,</if>
             <if test="param != null and param != ''">param,</if>
             <if test="reason != null and reason != ''">reason,</if>
             <if test="comment != null">comment,</if>
@@ -109,6 +114,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="cateId != null">#{cateId},</if>
+            <if test="applyUserId != null">#{applyUserId},</if>
             <if test="param != null and param != ''">#{param},</if>
             <if test="reason != null and reason != ''">#{reason},</if>
             <if test="comment != null">#{comment},</if>
@@ -133,6 +139,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update asset_use
         <trim prefix="SET" suffixOverrides=",">
             <if test="cateId != null">cate_id = #{cateId},</if>
+            <if test="applyUserId != null">apply_user_id = #{applyUserId},</if>
             <if test="param != null and param != ''">param = #{param},</if>
             <if test="reason != null and reason != ''">reason = #{reason},</if>
             <if test="comment != null">comment = #{comment},</if>

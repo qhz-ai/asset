@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -41,6 +43,7 @@ public class AssetUseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('asset:use:my')")
     @GetMapping("/my")
+    @DataScope(userAlias = "au")
     public TableDataInfo my(AssetUse assetUse)
     {
     	assetUse.setCreateBy(SecurityUtils.getUsername());
@@ -55,6 +58,7 @@ public class AssetUseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('asset:use:list')")
     @GetMapping("/list")
+    @DataScope(deptAlias = "au")
     public TableDataInfo list(AssetUse assetUse)
     {
         startPage();

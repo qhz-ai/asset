@@ -67,6 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null  and name != ''"> and t.name like concat('%', #{name}, '%')</if>
             <if test="checkStatus != null  and checkStatus != ''"> and t.check_status = #{checkStatus}</if>
             <if test="isComplete != null  and isComplete != ''"> and t.is_complete = #{isComplete}</if>
+            <if test="params.dataScope != null ">${params.dataScope}</if>
         </where>
     </select>
     

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -39,6 +41,7 @@ public class AssetPurchaseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('asset:purchase:my')")
     @GetMapping("/my")
+    @DataScope(userAlias = "au")
     public TableDataInfo my(AssetPurchase assetPurchase)
     {
     	assetPurchase.setCreateBy(SecurityUtils.getUsername());
@@ -52,6 +55,7 @@ public class AssetPurchaseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('asset:purchase:task')")
     @GetMapping("/task")
+    @DataScope(userAlias = "mu")
     public TableDataInfo task(AssetPurchase assetPurchase)
     {
     	assetPurchase.setMasterUserId(SecurityUtils.getLoginUser().getUser().getUserId());
@@ -66,6 +70,7 @@ public class AssetPurchaseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('asset:purchase:list')")
     @GetMapping("/list")
+    @DataScope(deptAlias = "au")
     public TableDataInfo list(AssetPurchase assetPurchase)
     {
         startPage();

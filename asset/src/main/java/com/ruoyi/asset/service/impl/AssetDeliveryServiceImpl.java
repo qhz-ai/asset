@@ -78,7 +78,7 @@ public class AssetDeliveryServiceImpl implements IAssetDeliveryService
     {
     	if(assetDelivery.getAssetId() != null) {
     		AssetInfo info = assetInfoMapper.selectAssetInfoById(assetDelivery.getAssetId());
-    		if(info == null || !"1".equals(info.getStatus())) {
+    		if(info == null) {
     			throw new CustomException("资产不存在或者已经被领用");
     		}
     		assetDelivery.setHouseId(info.getHouseId());
@@ -86,6 +86,9 @@ public class AssetDeliveryServiceImpl implements IAssetDeliveryService
     		AssetUse use = assetUseMapper.selectAssetUseById(assetDelivery.getApplyId());
     		if(use == null) {
     			throw new CustomException("没有使用申请信息");
+    		}
+    		if(!info.getUseUserId().equals(use.getApplyUserId())) {
+    			throw new CustomException("申请信息有误");
     		}
     		if("Y".equalsIgnoreCase(use.getIsDelivery())) {
     			throw new CustomException("已经出库的不能重复出库");

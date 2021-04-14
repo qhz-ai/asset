@@ -62,6 +62,9 @@ public class AssetUseServiceImpl implements IAssetUseService
     @Override
     public int insertAssetUse(AssetUse assetUse)
     {
+    	if(assetUse.getApplyUserId() == null) {
+    		assetUse.setApplyUserId(SecurityUtils.getLoginUser().getUser().getUserId());
+    	}
         assetUse.setCreateTime(DateUtils.getNowDate());
         assetUse.setCreateBy(SecurityUtils.getUsername());
         assetUse.setIsRevert("N");
@@ -124,6 +127,7 @@ public class AssetUseServiceImpl implements IAssetUseService
     		AssetInfo info = assetInfoMapper.selectAssetInfoById(old.getAssetId());
         	info.setStatus("1");
         	info.setFinishTime(DateUtils.getNowDate());
+        	info.setUseUserId(null);
         	assetInfoMapper.updateAssetInfo(info);
     	}
     	
@@ -131,6 +135,7 @@ public class AssetUseServiceImpl implements IAssetUseService
     	if("1".equals(assetUse.getCheckStatus())) {
         	AssetInfo info = assetInfoMapper.selectAssetInfoById(assetUse.getAssetId());
         	info.setStatus("2");
+        	info.setUseUserId(assetUse.getApplyUserId());
         	info.setFinishTime(assetUse.getFinishTime());
         	assetInfoMapper.updateAssetInfo(info);
         	

@@ -168,7 +168,7 @@
 
     <!-- 添加或修改资产信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
        <el-tabs type="card" >
         <el-tab-pane label="基本信息">
         <el-form-item label="资产分类" prop="cateId">
@@ -232,6 +232,10 @@
             placeholder="选择预计归还时间">
           </el-date-picker>
         </el-form-item>
+        <el-form-item label="生成盘点记录" v-if="form.id">
+          <el-checkbox @change="recordTaking">是</el-checkbox>
+        </el-form-item>
+  
         </el-tab-pane>
         <el-tab-pane label="详细信息">
         <el-form-item label="参数" prop="param">
@@ -255,6 +259,9 @@
         <el-form-item label="图例">
           <imageUpload v-model="form.imgId" :file="form.img"/>
         </el-form-item>
+        </el-tab-pane>
+        <el-tab-pane label="二维码" v-if="form.id">
+          <vue-qr :text="qr.text" :margin="0" :download="qr.name" colorDark="#000" colorLight="#fff" :logoScale="0.3" :size="200" class="qr-down"></vue-qr>
         </el-tab-pane>
       </el-tabs>
       </el-form>
@@ -330,11 +337,12 @@ import { getToken } from "@/utils/auth";
 import Treeselect from "@riophae/vue-treeselect";
 import ImageUpload from '@/components/ImageUpload';
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import VueQr from 'vue-qr'
 
 export default {
   name: "Info",
   components: {
-    ImageUpload,Treeselect
+    ImageUpload,Treeselect, VueQr
   },
   data() {
     return {
@@ -394,6 +402,11 @@ export default {
         headers: { Authorization: "Bearer " + getToken() },
         // 上传的地址
         url: process.env.VUE_APP_BASE_API + "/asset/info/importData"
+      },
+      //二维码
+      qr:{
+        text: null,
+        name: null
       },
       move: {
         open: false,
@@ -487,6 +500,9 @@ export default {
         this.categoryOptions.push(data);
       });
     },
+    recordTaking(v) {
+      this.form.params.taking = v;
+    },
     // 取消按钮
     cancel() {
       this.open = false;
@@ -544,6 +560,9 @@ export default {
         this.form = response.data;
         this.open = true;
         this.title = "修改资产信息";
+
+        this.qr.text = "asset://"+response.data.num;
+        this.qr.name = response.data.name;
       });
     },
     /** 提交按钮 */

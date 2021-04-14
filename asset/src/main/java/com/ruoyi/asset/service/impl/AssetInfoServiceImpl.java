@@ -21,9 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ruoyi.asset.mapper.AssetCategoryMapper;
 import com.ruoyi.asset.mapper.AssetInfoMapper;
+import com.ruoyi.asset.mapper.AssetTakingMapper;
 import com.ruoyi.asset.mapper.AssetWarehouseMapper;
 import com.ruoyi.asset.domain.AssetCategory;
 import com.ruoyi.asset.domain.AssetInfo;
+import com.ruoyi.asset.domain.AssetTaking;
 import com.ruoyi.asset.domain.AssetWarehouse;
 import com.ruoyi.asset.domain.BatchInfo;
 import com.ruoyi.asset.service.IAssetInfoService;
@@ -38,7 +40,9 @@ import com.ruoyi.asset.service.IAssetInfoService;
 public class AssetInfoServiceImpl implements IAssetInfoService 
 {
     private static final Logger log = LoggerFactory.getLogger(AssetInfoServiceImpl.class);
-    
+
+    @Autowired
+    private AssetTakingMapper assetTakingMapper;
     @Autowired
     private AssetCategoryMapper assetCategoryMapper;
     @Autowired
@@ -95,8 +99,23 @@ public class AssetInfoServiceImpl implements IAssetInfoService
      * @return 结果
      */
     @Override
+    @Transactional
     public int updateAssetInfo(AssetInfo assetInfo)
     {
+    	if(assetInfo.getParams().containsKey("taking") || Boolean.parseBoolean(assetInfo.getParams().get("taking").toString())) {
+    		AssetTaking assetTaking = new AssetTaking();
+    		assetTaking.setCateId(assetInfo.getCateId());
+    		assetTaking.setAssetId(assetInfo.getId());
+    		assetTaking.setAssetName(assetInfo.getName());
+    		assetTaking.setHouseId(assetInfo.getHouseId());
+    		assetTaking.setDeptId(assetInfo.getDeptId());
+    		assetTaking.setUserId(assetInfo.getUseUserId());
+    		assetTaking.setStatus(assetInfo.getStatus());
+    		assetTaking.setCreateTime(DateUtils.getNowDate());
+    		assetTaking.setCreateBy(SecurityUtils.getUsername());
+    		assetTakingMapper.insertAssetTaking(assetTaking);
+    	}
+    	
         assetInfo.setUpdateTime(DateUtils.getNowDate());
         assetInfo.setUpdateBy(SecurityUtils.getUsername());
         return assetInfoMapper.updateAssetInfo(assetInfo);
