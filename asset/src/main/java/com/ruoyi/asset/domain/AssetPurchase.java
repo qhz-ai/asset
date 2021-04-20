@@ -133,4 +133,11 @@ public class AssetPurchase extends BaseEntity
     private String isComplete;
 
 
+    public void setMasterUserId(Long masterUserId) {
+        this.masterUserId = masterUserId;
+    }
+
+    public void setCheckStatus(String checkStatus) {
+        this.checkStatus = checkStatus;
+    }
 }

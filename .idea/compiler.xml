@@ -9,6 +9,7 @@
         <module name="admin" />
         <module name="asset" />
         <module name="common" />
+        <module name="demo" />
         <module name="ext" />
         <module name="framework" />
         <module name="generator" />
@@ -19,6 +20,8 @@
       <module name="admin" target="1.8" />
       <module name="asset" target="1.8" />
       <module name="common" target="1.8" />
+      <module name="demo" target="1.8" />
+      <module name="demo (1)" target="1.8" />
       <module name="ext" target="1.8" />
       <module name="framework" target="1.8" />
       <module name="generator" target="1.8" />
