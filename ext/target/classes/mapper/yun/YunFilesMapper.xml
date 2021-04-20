@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.yun.mapper.YunFilesMapper">
+    
+    <resultMap type="YunFiles" id="YunFilesResult">
+        <result property="id"    column="id"    />
+        <result property="folderId"    column="folder_id"    />
+        <result property="fileId"    column="file_id"    />
+        <result property="title"    column="title"    />
+        <result property="type"    column="type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="isPublic"    column="is_public"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+		<association property="user" javaType="SysUser">
+			<id property="userId" column="user_id"/>
+			<result property="userName" column="user_name"/>
+			<result property="nickName" column="nick_name"/>
+		</association>
+    </resultMap>
+
+    <sql id="selectYunFilesVo">
+        select id, folder_id, file_id, title, type, create_by, is_public, create_time, update_by, update_time from yun_files
+    </sql>
+
+    <select id="selectYunFilesList" parameterType="YunFiles" resultMap="YunFilesResult">
+        <include refid="selectYunFilesVo"/>
+        <where>  
+            <if test="folderId != null "> and folder_id = #{folderId}</if>
+            <if test="fileId != null "> and file_id = #{fileId}</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="isPublic != null  and isPublic != ''"> and is_public = #{isPublic}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+        </where>
+    </select>
+    
+    <select id="selectShareFilesList" parameterType="YunFiles" resultMap="YunFilesResult">
+        select t.* , u.user_id, u.user_name, u.nick_name
+        from yun_files t
+        join yun_folder f on t.folder_id = f.id
+        join sys_user u on u.user_name = t.create_by
+        <where>  
+        	and t.is_public = 'Y' OR f.is_public = 'Y'
+            <if test="title != null  and title != ''"> and t.title like concat('%', #{title}, '%')</if>
+            <if test="type != null  and type != ''"> and t.type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectYunFilesById" parameterType="Long" resultMap="YunFilesResult">
+        <include refid="selectYunFilesVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertYunFiles" parameterType="YunFiles" useGeneratedKeys="true" keyProperty="id">
+        insert into yun_files
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="folderId != null">folder_id,</if>
+            <if test="fileId != null">file_id,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="isPublic != null">is_public,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="folderId != null">#{folderId},</if>
+            <if test="fileId != null">#{fileId},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="isPublic != null">#{isPublic},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYunFiles" parameterType="YunFiles">
+        update yun_files
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="folderId != null">folder_id = #{folderId},</if>
+            <if test="fileId != null">file_id = #{fileId},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="isPublic != null">is_public = #{isPublic},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="moveYunFiles" parameterType="YunFiles">
+        update yun_files set folder_id = #{toFolder} where folder_id=#{fromFolder}
+    </update>
+
+    <delete id="deleteYunFilesById" parameterType="Long">
+        delete from yun_files where id = #{id}
+    </delete>
+
+    <delete id="deleteYunFilesByIds" parameterType="String">
+        delete from yun_files where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

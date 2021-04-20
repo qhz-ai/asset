@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.asset.mapper.AssetEnteringMapper">
+    
+    <resultMap type="AssetEntering" id="AssetEnteringResult">
+        <result property="id"    column="id"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="purchaseId"    column="purchase_id"    />
+        <result property="houseId"    column="house_id"    />
+        <result property="name"    column="name"    />
+        <result property="param"    column="param"    />
+        <result property="factory"    column="factory"    />
+        <result property="proxy"    column="proxy"    />
+        <result property="amount"    column="amount"    />
+        <result property="price1"    column="price1"    />
+        <result property="price2"    column="price2"    />
+        <result property="recvUserId"    column="recv_user_id"    />
+        <result property="recvTime"    column="recv_time"    />
+        <result property="imgId"    column="img_id"    />
+        <result property="nums"    column="nums"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <association property="recvUser"    column="recv_user_id" javaType="SysUser" resultMap="recvUserResult" />
+        <association property="cate"    column="cate_id" javaType="AssetCategory" resultMap="cateResult" />
+        <association property="house"    column="house_id" javaType="AssetWarehouse" resultMap="warehouseResult" />
+        <association property="img"    column="img_id" javaType="SysFiles" resultMap="imgResult" />
+    </resultMap>
+    <resultMap type="SysUser" id="recvUserResult">
+        <result property="userId"    column="recv_user_id"    />
+        <result property="nickName"    column="recv_user_name"    />
+    </resultMap>
+    <resultMap type="AssetCategory" id="cateResult">
+        <result property="id"    column="cate_id"    />
+        <result property="title"    column="cate_name"    />
+        <result property="type"    column="cate_type"    />
+    </resultMap>
+    <resultMap type="AssetWarehouse" id="warehouseResult">
+        <result property="id"    column="house_id"    />
+        <result property="title"    column="house_name"    />
+    </resultMap>
+    <resultMap type="SysFiles" id="imgResult">
+        <result property="id"    column="img_id"    />
+        <result property="title"    column="img_name"    />
+        <result property="path"    column="img_path"    />
+    </resultMap>
+
+    <sql id="selectAssetEnteringVo">
+        select t.*, au.nick_name recv_user_name, au.nick_name recv_user_name, c.title cate_name, c.type cate_type, w.title house_name, f.title img_name, f.path img_path
+        from asset_entering t
+        join asset_category c on t.cate_id = c.id
+        left join asset_warehouse w on w.id = t.house_id
+        left join sys_user au on au.user_id = t.recv_user_id
+        left join sys_files f on f.id = t.img_id
+    </sql>
+
+    <select id="selectAssetEnteringList" parameterType="AssetEntering" resultMap="AssetEnteringResult">
+        <include refid="selectAssetEnteringVo"/>
+        <where>  
+            <if test="cateId != null "> and t.cate_id = #{cateId}</if>
+            <if test="purchaseId != null "> and t.purchase_id = #{purchaseId}</if>
+            <if test="houseId != null "> and t.house_id = #{houseId}</if>
+            <if test="name != null  and name != ''"> and t.name like concat('%', #{name}, '%')</if>
+            <if test="param != null  and param != ''"> and param = #{param}</if>
+            <if test="recvUserId != null "> and t.recv_user_id = #{recvUserId}</if>
+
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(t.recv_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(t.recv_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectAssetEnteringById" parameterType="Long" resultMap="AssetEnteringResult">
+        <include refid="selectAssetEnteringVo"/>
+        where t.id = #{id}
+    </select>
+        
+    <insert id="insertAssetEntering" parameterType="AssetEntering" useGeneratedKeys="true" keyProperty="id">
+        insert into asset_entering
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">cate_id,</if>
+            <if test="purchaseId != null">purchase_id,</if>
+            <if test="houseId != null">house_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="param != null and param != ''">param,</if>
+            <if test="factory != null">factory,</if>
+            <if test="proxy != null">proxy,</if>
+            <if test="amount != null">amount,</if>
+            <if test="price1 != null">price1,</if>
+            <if test="price2 != null">price2,</if>
+            <if test="recvUserId != null">recv_user_id,</if>
+            <if test="recvTime != null">recv_time,</if>
+            <if test="imgId != null">img_id,</if>
+            <if test="nums != null and nums != ''">nums,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">#{cateId},</if>
+            <if test="purchaseId != null">#{purchaseId},</if>
+            <if test="houseId != null">#{houseId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="param != null and param != ''">#{param},</if>
+            <if test="factory != null">#{factory},</if>
+            <if test="proxy != null">#{proxy},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="price1 != null">#{price1},</if>
+            <if test="price2 != null">#{price2},</if>
+            <if test="recvUserId != null">#{recvUserId},</if>
+            <if test="recvTime != null">#{recvTime},</if>
+            <if test="imgId != null">#{imgId},</if>
+            <if test="nums != null and nums != ''">#{nums},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAssetEntering" parameterType="AssetEntering">
+        update asset_entering
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cateId != null">cate_id = #{cateId},</if>
+            <if test="purchaseId != null">purchase_id = #{purchaseId},</if>
+            <if test="houseId != null">house_id = #{houseId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="param != null and param != ''">param = #{param},</if>
+            <if test="factory != null">factory = #{factory},</if>
+            <if test="proxy != null">proxy = #{proxy},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="price1 != null">price1 = #{price1},</if>
+            <if test="price2 != null">price2 = #{price2},</if>
+            <if test="recvUserId != null">recv_user_id = #{recvUserId},</if>
+            <if test="recvTime != null">recv_time = #{recvTime},</if>
+            <if test="imgId != null">img_id = #{imgId},</if>
+            <if test="nums != null and nums != ''">nums = #{nums},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAssetEnteringById" parameterType="Long">
+        delete from asset_entering where id = #{id}
+    </delete>
+
+    <delete id="deleteAssetEnteringByIds" parameterType="String">
+        delete from asset_entering where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

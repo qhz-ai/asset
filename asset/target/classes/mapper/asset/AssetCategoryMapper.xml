@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.asset.mapper.AssetCategoryMapper">
+    
+    <resultMap type="AssetCategory" id="AssetCategoryResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="pid"    column="pid"    />
+        <result property="type"    column="type"    />
+        <result property="listSort"    column="list_sort"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectAssetCategoryVo">
+        select id, title, pid, type, list_sort, status from asset_category
+    </sql>
+
+    <select id="selectAssetCategoryList" parameterType="AssetCategory" resultMap="AssetCategoryResult">
+        <include refid="selectAssetCategoryVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectAssetCategoryById" parameterType="Long" resultMap="AssetCategoryResult">
+        <include refid="selectAssetCategoryVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectAssetCategoryByTitle" parameterType="String" resultMap="AssetCategoryResult">
+       <include refid="selectAssetCategoryVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+        </where>
+        limit 1
+    </select>
+        
+    <insert id="insertAssetCategory" parameterType="AssetCategory" useGeneratedKeys="true" keyProperty="id">
+        insert into asset_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="pid != null">pid,</if>
+            <if test="type != null">type,</if>
+            <if test="listSort != null">list_sort,</if>
+            <if test="status != null and status != ''">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="pid != null">#{pid},</if>
+            <if test="type != null">#{type},</if>
+            <if test="listSort != null">#{listSort},</if>
+            <if test="status != null and status != ''">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAssetCategory" parameterType="AssetCategory">
+        update asset_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="pid != null">pid = #{pid},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="listSort != null">list_sort = #{listSort},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAssetCategoryById" parameterType="Long">
+        delete from asset_category where id = #{id}
+    </delete>
+
+    <delete id="deleteAssetCategoryByIds" parameterType="String">
+        delete from asset_category where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

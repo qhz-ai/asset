@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.asset.mapper.AssetTakingMapper">
+    
+    <resultMap type="AssetTaking" id="AssetTakingResult">
+        <result property="id"    column="id"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="cateName"    column="cate_name"    />
+        <result property="materialId"    column="material_id"    />
+        <result property="assetId"    column="asset_id"    />
+        <result property="assetName"    column="asset_name"    />
+        <result property="amount"    column="amount"    />
+        <result property="houseId"    column="house_id"    />
+        <result property="houseName"    column="house_name"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="imgId"    column="img_id"    />
+        <result property="status"    column="status"    />
+        <result property="comment"    column="comment"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <association property="img"    column="img_id" javaType="SysFiles" resultMap="imgResult" />
+    </resultMap>
+    <resultMap type="SysFiles" id="imgResult">
+        <result property="id"    column="img_id"    />
+        <result property="title"    column="img_name"    />
+        <result property="path"    column="img_path"    />
+    </resultMap>
+
+
+    <sql id="selectAssetTakingVo">
+        select t.*, u.nick_name user_name, d.dept_name, c.title cate_name, w.title house_name, f.title img_name, f.path img_path
+         from asset_taking t
+         join asset_category c on t.cate_id = c.id
+         left join sys_user u on u.user_id = t.user_id
+         left join sys_dept d on d.dept_id = t.dept_id
+         left join asset_warehouse w on w.id = t.house_id
+         left join sys_files f on f.id = t.img_id
+    </sql>
+    
+    <select id="selectAssetTakingList" parameterType="AssetTaking" resultMap="AssetTakingResult">
+        <include refid="selectAssetTakingVo"/>
+        <where>  
+            <if test="cateId != null "> and cate_id = #{cateId}</if>
+            <if test="materialId != null "> and material_id = #{materialId}</if>
+            <if test="assetId != null "> and asset_id = #{assetId}</if>
+            <if test="houseId != null "> and house_id = #{houseId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="assetName != null  and assetName != ''"> and t.asset_name like concat('%', #{assetName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectAssetTakingById" parameterType="Long" resultMap="AssetTakingResult">
+        <include refid="selectAssetTakingVo"/>
+        where t.id = #{id}
+    </select>
+        
+    <insert id="insertAssetTaking" parameterType="AssetTaking" useGeneratedKeys="true" keyProperty="id">
+        insert into asset_taking
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">cate_id,</if>
+            <if test="assetName != null  and assetName != ''">asset_name,</if>
+            <if test="materialId != null">material_id,</if>
+            <if test="assetId != null">asset_id,</if>
+            <if test="amount != null">amount,</if>
+            <if test="houseId != null">house_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="imgId != null">img_id,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="comment != null">comment,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">#{cateId},</if>
+            <if test="assetName != null  and assetName != ''">#{assetName},</if>
+            <if test="materialId != null">#{materialId},</if>
+            <if test="assetId != null">#{assetId},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="houseId != null">#{houseId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="imgId != null">#{imgId},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAssetTaking" parameterType="AssetTaking">
+        update asset_taking
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cateId != null">cate_id = #{cateId},</if>
+            <if test="assetName != null  and assetName != ''">asset_name = #{assetName},</if>
+            <if test="materialId != null">material_id = #{materialId},</if>
+            <if test="assetId != null">asset_id = #{assetId},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="houseId != null">house_id = #{houseId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="imgId != null">img_id = #{imgId},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAssetTakingById" parameterType="Long">
+        delete from asset_taking where id = #{id}
+    </delete>
+
+    <delete id="deleteAssetTakingByIds" parameterType="String">
+        delete from asset_taking where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

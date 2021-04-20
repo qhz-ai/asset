@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.asset.mapper.AssetSalesMapper">
+    
+    <resultMap type="AssetSales" id="AssetSalesResult">
+        <result property="id"    column="id"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="materialId"    column="material_id"    />
+        <result property="assetId"    column="asset_id"    />
+        <result property="aptitudeId"    column="aptitude_id"    />        
+        <result property="type"    column="type"    />
+        <result property="amount"    column="amount"    />
+        <result property="price"    column="price"    />
+        <result property="reason"    column="reason"    />
+        <result property="masterUserId"    column="master_user_id"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="finishTime"    column="finish_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="isComplete"    column="is_complete"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <association property="masterUser"    column="master_user_id" javaType="SysUser" resultMap="masterUserResult" />
+        <association property="cate"    column="cate_id" javaType="AssetCategory" resultMap="cateResult" />
+        <association property="asset"    column="asset_id" javaType="AssetInfo" resultMap="assetInfoResult" />
+        <association property="material"    column="material_id" javaType="AssetMaterial" resultMap="assetMaterialResult" />
+        <association property="aptitude"    column="aptitude_id" javaType="AssetAptitude" resultMap="assetAptitudeResult" />
+    </resultMap>
+    <resultMap type="SysUser" id="masterUserResult">
+        <result property="userId"    column="master_user_id"    />
+        <result property="nickName"    column="master_user_name"    />
+    </resultMap>
+    <resultMap type="AssetCategory" id="cateResult">
+        <result property="id"    column="cate_id"    />
+        <result property="title"    column="cate_name"    />
+        <result property="type"    column="cate_type"    />
+    </resultMap>
+    <resultMap type="AssetInfo" id="assetInfoResult">
+        <result property="id"    column="asset_id"    />
+        <result property="num"    column="asset_num"    />
+        <result property="name"    column="asset_name"    />
+    </resultMap> 
+    <resultMap type="AssetMaterial" id="assetMaterialResult">
+        <result property="id"    column="material_id"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="name"    column="material_name"    />
+    </resultMap>
+    <resultMap type="AssetAptitude" id="assetAptitudeResult">
+        <result property="id"    column="aptitude_id"    />
+        <result property="name"    column="aptitude_name"    />
+    </resultMap>
+    
+    <sql id="selectAssetSalesVo">
+        select t.*, cu.nick_name master_user_name, c.title cate_name, c.type cate_type,i.name asset_name, i.num asset_num, m.name material_name, a.name aptitude_name
+         from asset_sales t
+         join asset_category c on t.cate_id = c.id
+         left join sys_user cu on cu.user_id = t.master_user_id
+         left join asset_info i on t.asset_id = i.id
+         left join asset_material m on t.material_id = m.id
+         left join asset_aptitude a on a.id = t.aptitude_id
+    </sql>
+
+    <select id="selectAssetSalesList" parameterType="AssetSales" resultMap="AssetSalesResult">
+        <include refid="selectAssetSalesVo"/>
+        <where>  
+            <if test="cateId != null "> and t.cate_id = #{cateId}</if>
+            <if test="materialId != null "> and t.material_id = #{materialId}</if>
+            <if test="assetId != null "> and t.asset_id = #{assetId}</if>
+            <if test="aptitudeId != null "> and t.aptitude_id = #{aptitudeId}</if>
+            <if test="type != null  and type != ''"> and t.type = #{type}</if>
+            <if test="masterUserId != null "> and t.master_user_id = #{masterUserId}</if>
+            <if test="isComplete != null  and isComplete != ''"> and t.is_complete = #{isComplete}</if>
+            
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(t.start_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(t.finish_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectAssetSalesById" parameterType="Long" resultMap="AssetSalesResult">
+        <include refid="selectAssetSalesVo"/>
+        where t.id = #{id}
+    </select>
+        
+    <insert id="insertAssetSales" parameterType="AssetSales" useGeneratedKeys="true" keyProperty="id">
+        insert into asset_sales
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">cate_id,</if>
+            <if test="materialId != null">material_id,</if>
+            <if test="assetId != null">asset_id,</if>
+            <if test="aptitudeId != null">aptitude_id,</if>
+            <if test="type != null">type,</if>
+            <if test="amount != null">amount,</if>
+            <if test="price != null">price,</if>
+            <if test="reason != null and reason != ''">reason,</if>
+            <if test="masterUserId != null">master_user_id,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="finishTime != null">finish_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="isComplete != null">is_complete,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">#{cateId},</if>
+            <if test="materialId != null">#{materialId},</if>
+            <if test="assetId != null">#{assetId},</if>
+            <if test="aptitudeId != null">#{aptitudeId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="price != null">#{price},</if>
+            <if test="reason != null and reason != ''">#{reason},</if>
+            <if test="masterUserId != null">#{masterUserId},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="finishTime != null">#{finishTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="isComplete != null">#{isComplete},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAssetSales" parameterType="AssetSales">
+        update asset_sales
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cateId != null">cate_id = #{cateId},</if>
+            <if test="materialId != null">material_id = #{materialId},</if>
+            <if test="assetId != null">asset_id = #{assetId},</if>
+            <if test="aptitudeId != null">aptitude_id = #{aptitudeId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="reason != null and reason != ''">reason = #{reason},</if>
+            <if test="masterUserId != null">master_user_id = #{masterUserId},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="finishTime != null">finish_time = #{finishTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="isComplete != null">is_complete = #{isComplete},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAssetSalesById" parameterType="Long">
+        delete from asset_sales where id = #{id}
+    </delete>
+
+    <delete id="deleteAssetSalesByIds" parameterType="String">
+        delete from asset_sales where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

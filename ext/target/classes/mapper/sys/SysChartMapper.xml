@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.sys.mapper.SysChartMapper">
+    
+    <resultMap type="SysChart" id="SysChartResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="title"    column="title"    />
+        <result property="dsId"    column="ds_id"    />
+        <result property="dsName"    column="ds_name"    />
+        <result property="type"    column="type"    />
+        <result property="xaxis"    column="xaxis"    />
+        <result property="yaxis"    column="yaxis"    />
+        <result property="comment"    column="comment"    />
+        <result property="listSort"    column="list_sort"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectSysChartVo">
+        select id, code, title, ds_id, type, comment, list_sort, status, xaxis, yaxis from sys_chart
+    </sql>
+
+    <select id="selectSysChartList" parameterType="SysChart" resultMap="SysChartResult">
+        select c.*,d.title ds_name from sys_chart c join sys_dataset d on c.ds_id=d.id
+        <where>  
+            <if test="code != null  and code != ''"> and c.code like concat('%', #{code}, '%')</if>
+            <if test="title != null  and title != ''"> and c.title like concat('%', #{title}, '%')</if>
+            <if test="type != null  and type != ''"> and c.type = #{type}</if>
+            <if test="status != null  and status != ''"> and c.status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysChartById" parameterType="Long" resultMap="SysChartResult">
+        <include refid="selectSysChartVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectSysChartByCode" parameterType="String" resultMap="SysChartResult">
+        <include refid="selectSysChartVo"/>
+        where code = #{code}
+    </select>
+        
+    <insert id="insertSysChart" parameterType="SysChart" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_chart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null and code != ''">code,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="dsId != null">ds_id,</if>
+            <if test="xaxis != null">xaxis,</if>
+            <if test="yaxis != null">yaxis,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="comment != null">comment,</if>
+            <if test="listSort != null">list_sort,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null and code != ''">#{code},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="dsId != null">#{dsId},</if>
+            <if test="xaxis != null">#{xaxis},</if>
+            <if test="yaxis != null">#{yaxis},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="listSort != null">#{listSort},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysChart" parameterType="SysChart">
+        update sys_chart
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null and code != ''">code = #{code},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="dsId != null">ds_id = #{dsId},</if>
+            <if test="xaxis != null">xaxis = #{xaxis},</if>
+            <if test="yaxis != null">yaxis = #{yaxis},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="listSort != null">list_sort = #{listSort},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysChartById" parameterType="Long">
+        delete from sys_chart where id = #{id}
+    </delete>
+
+    <delete id="deleteSysChartByIds" parameterType="String">
+        delete from sys_chart where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

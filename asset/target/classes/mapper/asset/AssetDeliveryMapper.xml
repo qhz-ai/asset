@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.asset.mapper.AssetDeliveryMapper">
+    
+    <resultMap type="AssetDelivery" id="AssetDeliveryResult">
+        <result property="id"    column="id"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="applyId"    column="apply_id"    />
+        <result property="materialId"    column="material_id"    />
+        <result property="assetId"    column="asset_id"    />
+        <result property="amount"    column="amount"    />
+        <result property="houseId"    column="house_id"    />
+        <result property="recvUserId"    column="recv_user_id"    />
+        <result property="imgId"    column="img_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <association property="user"    column="create_by" javaType="SysUser" resultMap="userResult" />
+        <association property="recvUser"    column="check_user_id" javaType="SysUser" resultMap="recvUserResult" />
+        <association property="cate"    column="cate_id" javaType="AssetCategory" resultMap="cateResult" />
+        <association property="asset"    column="asset_id" javaType="AssetInfo" resultMap="assetInfoResult" />
+        <association property="material"    column="material_id" javaType="AssetMaterial" resultMap="assetMaterialResult" />
+        <association property="house"    column="house_id" javaType="AssetWarehouse" resultMap="warehouseResult" />
+        <association property="img"    column="img_id" javaType="SysFiles" resultMap="imgResult" />
+    </resultMap>
+    
+    <resultMap type="SysUser" id="userResult">
+        <result property="userId"    column="user_id"    />
+        <result property="nickName"    column="user_name"    />
+    </resultMap>
+    <resultMap type="SysUser" id="recvUserResult">
+        <result property="userId"    column="recv_user_id"    />
+        <result property="nickName"    column="recv_user_name"    />
+    </resultMap>
+    <resultMap type="AssetCategory" id="cateResult">
+        <result property="id"    column="cate_id"    />
+        <result property="title"    column="cate_name"    />
+        <result property="type"    column="cate_type"    />
+    </resultMap>
+    <resultMap type="AssetInfo" id="assetInfoResult">
+        <result property="id"    column="asset_id"    />
+        <result property="num"    column="asset_num"    />
+        <result property="name"    column="asset_name"    />
+    </resultMap> 
+    <resultMap type="AssetMaterial" id="assetMaterialResult">
+        <result property="id"    column="material_id"    />
+        <result property="cateId"    column="cate_id"    />
+        <result property="name"    column="material_name"    />
+    </resultMap>
+    <resultMap type="AssetWarehouse" id="warehouseResult">
+        <result property="id"    column="house_id"    />
+        <result property="title"    column="house_name"    />
+    </resultMap>
+    
+    <resultMap type="SysFiles" id="imgResult">
+        <result property="id"    column="img_id"    />
+        <result property="title"    column="img_name"    />
+        <result property="path"    column="img_path"    />
+    </resultMap>
+
+    <sql id="selectAssetDeliveryVo">
+        select t.*, au.user_id, au.nick_name user_name, cu.nick_name recv_user_name, c.title cate_name, c.type cate_type,i.name asset_name, i.num asset_num, m.name material_name, w.title house_name, f.title img_name, f.path img_path
+         from asset_delivery t
+         join asset_category c on t.cate_id = c.id
+         join sys_user au on au.user_name = t.create_by
+         left join sys_user cu on cu.user_id = t.recv_user_id
+         left join asset_info i on t.asset_id = i.id
+         left join asset_material m on t.material_id = m.id
+        left join asset_warehouse w on w.id = t.house_id
+        left join sys_files f on f.id = t.img_id
+    </sql>
+
+    <select id="selectAssetDeliveryList" parameterType="AssetDelivery" resultMap="AssetDeliveryResult">
+        <include refid="selectAssetDeliveryVo"/>
+        <where>  
+            <if test="cateId != null "> and t.cate_id = #{cateId}</if>
+            <if test="materialId != null "> and t.material_id = #{materialId}</if>
+            <if test="assetId != null "> and t.asset_id = #{assetId}</if>
+            <if test="houseId != null "> and t.house_id = #{houseId}</if>
+            <if test="recvUserId != null "> and t.recv_user_id = #{recvUserId}</if>
+            
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(t.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(t.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectAssetDeliveryById" parameterType="Long" resultMap="AssetDeliveryResult">
+        <include refid="selectAssetDeliveryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAssetDelivery" parameterType="AssetDelivery" useGeneratedKeys="true" keyProperty="id">
+        insert into asset_delivery
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">cate_id,</if>
+            <if test="applyId != null">apply_id,</if>
+            <if test="materialId != null">material_id,</if>
+            <if test="assetId != null">asset_id,</if>
+            <if test="amount != null">amount,</if>
+            <if test="houseId != null">house_id,</if>
+            <if test="recvUserId != null">recv_user_id,</if>
+            <if test="imgId != null">img_id,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cateId != null">#{cateId},</if>
+            <if test="applyId != null">#{applyId},</if>
+            <if test="materialId != null">#{materialId},</if>
+            <if test="assetId != null">#{assetId},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="houseId != null">#{houseId},</if>
+            <if test="recvUserId != null">#{recvUserId},</if>
+            <if test="imgId != null">#{imgId},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAssetDelivery" parameterType="AssetDelivery">
+        update asset_delivery
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cateId != null">cate_id = #{cateId},</if>
+            <if test="applyId != null">apply_id = #{applyId},</if>
+            <if test="materialId != null">material_id = #{materialId},</if>
+            <if test="assetId != null">asset_id = #{assetId},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="houseId != null">house_id = #{houseId},</if>
+            <if test="recvUserId != null">recv_user_id = #{recvUserId},</if>
+            <if test="imgId != null">img_id = #{imgId},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAssetDeliveryById" parameterType="Long">
+        delete from asset_delivery where id = #{id}
+    </delete>
+
+    <delete id="deleteAssetDeliveryByIds" parameterType="String">
+        delete from asset_delivery where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
